@@ -2,6 +2,10 @@
 import { NButton, NIcon, NDropdown, DropdownOption } from 'naive-ui';
 import { MoreHorizontal16Regular } from '@vicons/fluent';
 
+const emit = defineEmits<{
+  edit: [];
+}>();
+
 const options: DropdownOption[] = [
   {
     key: 'edit',
@@ -12,10 +16,21 @@ const options: DropdownOption[] = [
     label: 'Delete',
   },
 ];
+
+function handleSelect(key: string) {
+  if (key === 'edit') {
+    emit('edit');
+  }
+}
 </script>
 
 <template>
-  <n-dropdown :options="options" trigger="click" placement="bottom-end">
+  <n-dropdown
+    :options="options"
+    trigger="click"
+    placement="bottom-end"
+    v-on:select="handleSelect"
+  >
     <n-button quaternary size="small">
       <template #icon>
         <n-icon>
