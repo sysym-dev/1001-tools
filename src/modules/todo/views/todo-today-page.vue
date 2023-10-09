@@ -5,17 +5,12 @@ import {
   NCheckbox,
   NPageHeader,
   NSpace,
-  NInput,
-  NText,
 } from 'naive-ui';
-import { h, ref } from 'vue';
+import { h, reactive } from 'vue';
 import TodoCreateDropdown from 'src/modules/todo/components/todo-create-dropdown.vue';
 import TodoActionDropdown from 'src/modules/todo/components/todo-action-dropdown.vue';
-
-interface Todo {
-  id: number;
-  name: string;
-}
+import TodoEditModal from 'src/modules/todo/components/todo-edit-modal.vue';
+import { Todo } from 'src/modules/todo/todo.types';
 
 const data: Todo[] = [
   {
@@ -23,7 +18,15 @@ const data: Todo[] = [
     name: 'Beli Bensin',
   },
 ];
-const editingIds = ref<Todo['id'][]>([]);
+
+const editModal = reactive<{
+  visible: boolean;
+  data: Todo | null;
+}>({
+  visible: false,
+  data: null,
+});
+
 const columns: DataTableColumn[] = [
   {
     key: 'isDone',
@@ -34,17 +37,6 @@ const columns: DataTableColumn[] = [
   {
     key: 'name',
     title: 'Name',
-    render: (rowData: Record<string, any>, index: number) => {
-      if (editingIds.value.includes(rowData.id)) {
-        return h(NInput, {
-          value: data[index].name,
-        });
-      }
-
-      return h(NText, null, {
-        default: () => rowData.name,
-      });
-    },
   },
   {
     key: 'actions',
@@ -57,7 +49,8 @@ const columns: DataTableColumn[] = [
 ];
 
 function handleEdit(todo: Todo) {
-  editingIds.value.push(todo.id);
+  editModal.visible = true;
+  editModal.data = todo;
 }
 </script>
 
@@ -67,4 +60,6 @@ function handleEdit(todo: Todo) {
     <n-data-table :columns="columns" :data="data" />
     <todo-create-dropdown />
   </n-space>
+
+  <todo-edit-modal :todo="editModal.data" v-model:visible="editModal.visible" />
 </template>
