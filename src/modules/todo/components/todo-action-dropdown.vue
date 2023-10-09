@@ -1,10 +1,13 @@
 <script setup lang="ts">
-import { NButton, NIcon, NDropdown, DropdownOption } from 'naive-ui';
+import { NButton, NIcon, NDropdown, DropdownOption, useDialog } from 'naive-ui';
 import { MoreHorizontal16Regular } from '@vicons/fluent';
 
 const emit = defineEmits<{
   edit: [];
+  delete: [];
 }>();
+
+const dialog = useDialog();
 
 const options: DropdownOption[] = [
   {
@@ -20,6 +23,13 @@ const options: DropdownOption[] = [
 function handleSelect(key: string) {
   if (key === 'edit') {
     emit('edit');
+  } else if (key === 'delete') {
+    dialog.warning({
+      title: 'Confirm',
+      content: 'Are you sure?',
+      positiveText: 'Yes, sure',
+      negativeText: 'Cancel',
+    });
   }
 }
 </script>

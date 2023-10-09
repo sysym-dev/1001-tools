@@ -44,7 +44,9 @@ const columns: DataTableColumn[] = [
     align: 'right',
     width: 10,
     render: (rowData: Record<string, any>) =>
-      h(TodoActionDropdown, { onEdit: () => handleEdit(rowData as Todo) }),
+      h(TodoActionDropdown, {
+        onEdit: () => handleEdit(rowData as Todo),
+      }),
   },
 ];
 
