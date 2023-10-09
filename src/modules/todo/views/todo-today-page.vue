@@ -8,8 +8,9 @@ import {
   NButton,
   NIcon,
 } from 'naive-ui';
-import { MoreHorizontal16Regular, Add12Regular } from '@vicons/fluent';
+import { MoreHorizontal16Regular } from '@vicons/fluent';
 import { h } from 'vue';
+import TodoCreateDropdown from 'src/modules/todo/components/todo-create-dropdown.vue';
 
 interface Todo {
   name: string;
@@ -52,13 +53,6 @@ const data: Todo[] = [
   <n-space vertical size="large">
     <n-page-header title="Today Todo" subtitle="22 Mei 2023" />
     <n-data-table :columns="columns" :data="data" />
-    <n-button text type="primary">
-      <template #icon>
-        <n-icon>
-          <add-12-regular />
-        </n-icon>
-      </template>
-      New Todo
-    </n-button>
+    <todo-create-dropdown />
   </n-space>
 </template>
