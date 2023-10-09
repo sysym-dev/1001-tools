@@ -5,12 +5,10 @@ import {
   NCheckbox,
   NPageHeader,
   NSpace,
-  NButton,
-  NIcon,
 } from 'naive-ui';
-import { MoreHorizontal16Regular } from '@vicons/fluent';
 import { h } from 'vue';
 import TodoCreateDropdown from 'src/modules/todo/components/todo-create-dropdown.vue';
+import TodoActionDropdown from 'src/modules/todo/components/todo-action-dropdown.vue';
 
 interface Todo {
   name: string;
@@ -31,15 +29,7 @@ const columns: DataTableColumn[] = [
     key: 'actions',
     title: '',
     align: 'right',
-    render: () =>
-      h(
-        NButton,
-        { quaternary: true, size: 'small' },
-        {
-          icon: () =>
-            h(NIcon, null, { default: () => h(MoreHorizontal16Regular) }),
-        },
-      ),
+    render: () => h(TodoActionDropdown),
   },
 ];
 const data: Todo[] = [
