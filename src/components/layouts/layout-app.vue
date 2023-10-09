@@ -7,7 +7,7 @@ import {
   MenuOption,
   NIcon,
 } from 'naive-ui';
-import { h } from 'vue';
+import { computed, h } from 'vue';
 import { Component } from 'vue';
 import {
   MailInbox16Regular,
@@ -37,6 +37,7 @@ const menuOptions: MenuOption[] = [
   },
 ];
 const isCollapsed = ref(false);
+const active = computed<string>(() => route.name as string);
 
 function renderIcon(icon: Component) {
   return () => h(NIcon, null, { default: () => h(icon) });
@@ -54,7 +55,7 @@ function renderIcon(icon: Component) {
       <n-menu
         :options="menuOptions"
         :collapsed="isCollapsed"
-        :value="route.name"
+        :value="active"
       ></n-menu>
     </n-layout-sider>
     <n-layout content-style="padding: 24px" :embedded="true">
