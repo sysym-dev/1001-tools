@@ -4,7 +4,7 @@ import TodoListTable from 'src/modules/todo/components/todo-list-table.vue';
 </script>
 
 <template>
-  <n-space vertical :size="[0, 24]">
+  <n-space vertical :size="[0, 16]">
     <todo-list-table
       title="Today"
       subtitle="22 Mei 2023"

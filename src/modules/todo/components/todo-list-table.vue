@@ -12,12 +12,17 @@ import TodoCreateDropdown from 'src/modules/todo/components/todo-create-dropdown
 import TodoActionDropdown from 'src/modules/todo/components/todo-action-dropdown.vue';
 import TodoEditModal from 'src/modules/todo/components/todo-edit-modal.vue';
 import { Todo } from 'src/modules/todo/todo.types';
+import { optionalElement } from 'src/utils/array';
 
-defineProps<{
+const props = defineProps<{
   title?: string;
   subtitle?: string;
   withHeader?: boolean;
   withCreate?: boolean;
+  withLateLabel?: boolean;
+  withColumns?: {
+    date?: boolean;
+  };
 }>();
 
 const data: Todo[] = [
@@ -25,11 +30,13 @@ const data: Todo[] = [
     id: 1,
     name: 'Beli Bensin',
     isDone: false,
+    createdAt: new Date(),
   },
   {
     id: 2,
     name: 'Ganti oli',
     isDone: true,
+    createdAt: new Date(),
   },
 ];
 
@@ -53,12 +60,25 @@ const columns: DataTableColumn[] = [
     key: 'name',
     title: 'Name',
     render: (rowData: Record<string, any>) =>
-      h(
-        NText,
-        { style: { textDecoration: rowData.isDone ? 'line-through' : '' } },
-        { default: () => (rowData as Todo).name },
-      ),
+      h(NSpace, null, {
+        default: () =>
+          [
+            props.withLateLabel &&
+              h(NText, { type: 'error' }, { default: () => '2 days ago' }),
+            h(
+              NText,
+              { delete: rowData.isDone },
+              { default: () => (rowData as Todo).name },
+            ),
+          ].filter(Boolean),
+      }),
   },
+  ...optionalElement(props.withColumns?.date, {
+    key: 'createdAt',
+    title: 'Date',
+    render: (rowData: Record<string, any>) =>
+      h(NText, null, { default: () => (rowData as Todo).createdAt.toString() }),
+  }),
   {
     key: 'actions',
     title: '',
@@ -86,3 +106,4 @@ function handleEdit(todo: Todo) {
 
   <todo-edit-modal :todo="editModal.data" v-model:visible="editModal.visible" />
 </template>
+src/utils/array

@@ -3,7 +3,7 @@ import 'vfonts/Lato.css';
 import 'vfonts/FiraCode.css';
 import './style.css';
 import App from './App.vue';
-import { setupRouter } from './router/routes';
+import { setupRouter } from './router/setup';
 
 const app = createApp(App);
 
