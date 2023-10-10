@@ -13,6 +13,7 @@ import TodoActionDropdown from 'src/modules/todo/components/todo-action-dropdown
 import TodoEditModal from 'src/modules/todo/components/todo-edit-modal.vue';
 import { Todo } from 'src/modules/todo/todo.types';
 import { optionalElement } from 'src/utils/array';
+import { formatDate } from 'src/utils/date';
 
 const props = defineProps<{
   title?: string;
@@ -77,7 +78,9 @@ const columns: DataTableColumn[] = [
     key: 'createdAt',
     title: 'Date',
     render: (rowData: Record<string, any>) =>
-      h(NText, null, { default: () => (rowData as Todo).createdAt.toString() }),
+      h(NText, null, {
+        default: () => formatDate((rowData as Todo).createdAt),
+      }),
   }),
   {
     key: 'actions',
