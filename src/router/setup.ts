@@ -1,9 +1,12 @@
-import { RouteRecordSingleView } from 'vue-router';
+import { App } from 'vue';
+import { createRouter, createWebHistory } from 'vue-router';
+import { routes } from './routes';
 
-export const routes: RouteRecordSingleView[] = [
-  {
-    path: '/',
-    name: 'today',
-    component: () => import('src/modules/todo/views/todo-today-page.vue'),
-  },
-];
+export function setupRouter(app: App) {
+  app.use(
+    createRouter({
+      history: createWebHistory(),
+      routes,
+    }),
+  );
+}

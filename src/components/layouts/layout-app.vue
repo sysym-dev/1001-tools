@@ -8,6 +8,7 @@ import {
   NIcon,
 } from 'naive-ui';
 import { computed, h } from 'vue';
+import { RouterLink } from 'vue-router';
 import { Component } from 'vue';
 import {
   MailInbox16Regular,
@@ -21,17 +22,38 @@ const route = useRoute();
 
 const menuOptions: MenuOption[] = [
   {
-    label: 'Today Todo',
+    label: () =>
+      h(
+        RouterLink,
+        {
+          to: { name: 'today' },
+        },
+        { default: () => 'Today Todo' },
+      ),
     key: 'today',
     icon: renderIcon(MailInbox16Regular),
   },
   {
-    label: 'Late Todo',
+    label: () =>
+      h(
+        RouterLink,
+        {
+          to: { name: 'late' },
+        },
+        { default: () => 'Late Todo' },
+      ),
     key: 'late',
     icon: renderIcon(Archive16Regular),
   },
   {
-    label: 'All Todo',
+    label: () =>
+      h(
+        RouterLink,
+        {
+          to: { name: 'all' },
+        },
+        { default: () => 'All Todo' },
+      ),
     key: 'all',
     icon: renderIcon(Folder16Regular),
   },
