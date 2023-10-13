@@ -6,6 +6,7 @@ import {
   NPageHeader,
   NSpace,
   NText,
+  PaginationProps,
 } from 'naive-ui';
 import { h, reactive } from 'vue';
 import TodoQuickCreateDropdown from 'src/modules/todo/components/todo-quick-create-dropdown.vue';
@@ -22,6 +23,8 @@ const props = defineProps<{
   withHeader?: boolean;
   withQuickCreate?: boolean;
   withLateLabel?: boolean;
+  withPagination?: boolean;
+  withHeaderExtra?: boolean;
   withColumns?: {
     date?: boolean;
   };
@@ -41,6 +44,9 @@ const data: Todo[] = [
     createdAt: new Date(),
   },
 ];
+const pagination: PaginationProps = {
+  pageSize: 10,
+};
 
 const editModal = reactive<{
   visible: boolean;
@@ -105,10 +111,14 @@ function handleEdit(todo: Todo) {
   <n-space vertical size="large">
     <n-page-header v-if="withHeader" :title="title" :subtitle="subtitle">
       <template #extra>
-        <todo-list-filter />
+        <todo-list-filter v-if="withHeaderExtra" />
       </template>
     </n-page-header>
-    <n-data-table :columns="columns" :data="data" />
+    <n-data-table
+      :columns="columns"
+      :data="data"
+      :pagination="withPagination ? pagination : false"
+    />
     <todo-quick-create-dropdown v-if="withQuickCreate" />
   </n-space>
 
