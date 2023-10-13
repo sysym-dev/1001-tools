@@ -5,7 +5,6 @@ import TodoListTable from 'src/modules/todo/components/todo-list-table.vue';
 <template>
   <todo-list-table
     title="Late Todo"
-    with-create
     with-header
     :with-columns="{
       date: true,
