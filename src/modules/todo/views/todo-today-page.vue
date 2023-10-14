@@ -8,7 +8,7 @@ import TodoListTable from 'src/modules/todo/components/todo-list-table.vue';
     <todo-list-table
       title="Today"
       subtitle="22 Mei 2023"
-      with-create
+      with-quick-create
       with-header
     />
 
@@ -17,7 +17,7 @@ import TodoListTable from 'src/modules/todo/components/todo-list-table.vue';
         <template #header>
           <n-page-header title="Done" />
         </template>
-        <todo-list-table :with-create="false" :with-header="false" />
+        <todo-list-table :with-quick-create="false" :with-header="false" />
       </n-collapse-item>
     </n-collapse>
   </n-space>

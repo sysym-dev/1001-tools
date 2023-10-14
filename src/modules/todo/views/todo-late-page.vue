@@ -5,8 +5,10 @@ import TodoListTable from 'src/modules/todo/components/todo-list-table.vue';
 <template>
   <todo-list-table
     title="Late Todo"
-    :with-create="false"
+    :with-quick-create="false"
     with-header
+    with-header-extra
     with-late-label
+    with-pagination
   />
 </template>
