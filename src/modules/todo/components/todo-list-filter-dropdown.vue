@@ -5,37 +5,11 @@ import {
   NIcon,
   NDropdown,
   DropdownRenderOption,
-  NSelect,
-  SelectOption,
   NFormItem,
+  NDatePicker,
 } from 'naive-ui';
-import { ArrowSortDownLines16Regular } from '@vicons/fluent';
+import { Filter16Regular } from '@vicons/fluent';
 import { h } from 'vue';
-
-const sortOptions: SelectOption[] = [
-  {
-    label: 'Name',
-    value: 'name',
-  },
-  {
-    label: 'Created At',
-    value: 'createdAt',
-  },
-  {
-    label: 'Done At',
-    value: 'done at',
-  },
-];
-const sortDirectionOptions: SelectOption[] = [
-  {
-    label: 'Asc',
-    value: 'asc',
-  },
-  {
-    label: 'Desc',
-    value: 'desc',
-  },
-];
 
 const filterOptions: DropdownRenderOption[] = [
   {
@@ -50,21 +24,16 @@ const filterOptions: DropdownRenderOption[] = [
           default: () => [
             h(
               NFormItem,
-              { label: 'Sort Column', showFeedback: false },
+              { label: 'Created At', showFeedback: false },
               {
-                default: () =>
-                  h(NSelect, { options: sortOptions, placeholder: 'Column' }),
+                default: () => h(NDatePicker),
               },
             ),
             h(
               NFormItem,
-              { label: 'Sort Direction', showFeedback: false },
+              { label: 'Done At', showFeedback: false },
               {
-                default: () =>
-                  h(NSelect, {
-                    options: sortDirectionOptions,
-                    placeholder: 'Direction',
-                  }),
+                default: () => h(NDatePicker),
               },
             ),
           ],
@@ -87,10 +56,9 @@ const filterOptions: DropdownRenderOption[] = [
     <n-button>
       <template #icon>
         <n-icon>
-          <arrow-sort-down-lines-16-regular />
+          <filter-16-regular />
         </n-icon>
       </template>
-      Created At
     </n-button>
   </n-dropdown>
 </template>
