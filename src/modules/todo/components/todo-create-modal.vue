@@ -5,7 +5,6 @@ import { Todo } from 'src/modules/todo/todo.types';
 
 const props = defineProps<{
   visible: boolean;
-  todo: Todo | null;
 }>();
 const emit = defineEmits<{
   'update:visible': [value: boolean];
@@ -24,7 +23,7 @@ const form = reactive<Partial<Todo>>({
 });
 
 function handleVisible() {
-  form.name = props.todo?.name as string;
+  //   form.name = props.todo?.name as string;
 }
 </script>
 
@@ -33,7 +32,7 @@ function handleVisible() {
     v-model:show="visible"
     preset="card"
     style="width: 600px"
-    title="Edit Modal"
+    title="Create Modal"
     v-on:after-enter="handleVisible"
   >
     <n-form-item label="Name" :show-feedback="false">
