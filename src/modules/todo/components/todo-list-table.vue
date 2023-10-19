@@ -13,9 +13,11 @@ import TodoQuickCreateDropdown from 'src/modules/todo/components/todo-quick-crea
 import TodoActionDropdown from 'src/modules/todo/components/todo-action-dropdown.vue';
 import TodoEditModal from 'src/modules/todo/components/todo-edit-modal.vue';
 import TodoListFilter from 'src/modules/todo/components/todo-list-filter.vue';
-import { Todo } from 'src/modules/todo/todo.types';
+import { Todo } from 'src/modules/todo/todo.entity';
 import { optionalElement } from 'src/utils/array';
 import { formatDate } from 'src/utils/date';
+import { useTodoResourceCollection } from 'src/modules/todo/composes/todo-resource-collection.compose';
+import { computed } from 'vue';
 
 const props = defineProps<{
   title?: string;
@@ -30,23 +32,17 @@ const props = defineProps<{
   };
 }>();
 
-const data: Todo[] = [
-  {
-    id: 1,
-    name: 'Beli Bensin',
-    isDone: false,
-    createdAt: new Date(),
-  },
-  {
-    id: 2,
-    name: 'Ganti oli',
-    isDone: true,
-    createdAt: new Date(),
-  },
-];
-const pagination: PaginationProps = {
-  pageSize: 10,
-};
+const {
+  data,
+  meta,
+  load: loadResourceCollection,
+} = useTodoResourceCollection();
+
+const pagination = computed<PaginationProps>(() => {
+  return {
+    pageSize: meta.page.size,
+  };
+});
 
 const editModal = reactive<{
   visible: boolean;
@@ -62,7 +58,7 @@ const columns: DataTableColumn[] = [
     title: '',
     width: 10,
     render: (rowData: Record<string, any>) =>
-      h(NCheckbox, { checked: (rowData as Todo).isDone }),
+      h(NCheckbox, { checked: (rowData as Todo).done_at }),
   },
   {
     key: 'name',
@@ -86,7 +82,7 @@ const columns: DataTableColumn[] = [
     title: 'Date',
     render: (rowData: Record<string, any>) =>
       h(NText, null, {
-        default: () => formatDate((rowData as Todo).createdAt),
+        default: () => formatDate((rowData as Todo).created_at),
       }),
   }),
   {
@@ -105,6 +101,8 @@ function handleEdit(todo: Todo) {
   editModal.visible = true;
   editModal.data = todo;
 }
+
+loadResourceCollection();
 </script>
 
 <template>
@@ -115,12 +113,12 @@ function handleEdit(todo: Todo) {
       </template>
     </n-page-header>
     <n-data-table
+      remote
       :columns="columns"
       :data="data"
       :pagination="withPagination ? pagination : false"
     />
     <todo-quick-create-dropdown v-if="withQuickCreate" />
   </n-space>
-
   <todo-edit-modal :todo="editModal.data" v-model:visible="editModal.visible" />
 </template>
