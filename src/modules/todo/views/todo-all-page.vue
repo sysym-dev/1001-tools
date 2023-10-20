@@ -4,7 +4,7 @@ import TodoListTable from 'src/modules/todo/components/todo-list-table.vue';
 
 <template>
   <todo-list-table
-    title="Late Todo"
+    title="All Todo"
     with-header
     with-header-extra
     with-pagination

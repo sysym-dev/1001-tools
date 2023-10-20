@@ -8,7 +8,7 @@ import {
   NText,
   PaginationProps,
 } from 'naive-ui';
-import { h, reactive } from 'vue';
+import { h, reactive, ref } from 'vue';
 import TodoQuickCreateDropdown from 'src/modules/todo/components/todo-quick-create-dropdown.vue';
 import TodoActionDropdown from 'src/modules/todo/components/todo-action-dropdown.vue';
 import TodoEditModal from 'src/modules/todo/components/todo-edit-modal.vue';
@@ -18,6 +18,7 @@ import { optionalElement } from 'src/utils/array';
 import { formatDate } from 'src/utils/date';
 import { useTodoResourceCollection } from 'src/modules/todo/composes/todo-resource-collection.compose';
 import { computed } from 'vue';
+import { LoadResourceCollectionParams } from 'src/common/resource/collection';
 
 const props = defineProps<{
   title?: string;
@@ -32,11 +33,19 @@ const props = defineProps<{
   };
 }>();
 
+const loadResourceCollectionParams = ref<LoadResourceCollectionParams>({
+  page: {
+    size: 5,
+    number: 1,
+  },
+});
+
 const {
+  loading,
   data,
   meta,
   load: loadResourceCollection,
-} = useTodoResourceCollection();
+} = useTodoResourceCollection(loadResourceCollectionParams);
 
 const pagination = computed<PaginationProps>(() => {
   return {
@@ -104,12 +113,15 @@ function handleEdit(todo: Todo) {
   editModal.data = todo;
 }
 
-loadResourceCollection({
-  page: {
-    size: 5,
-    number: 2,
-  },
-});
+loadResourceCollection();
+
+function handleChangePage(page: number) {
+  if (loadResourceCollectionParams.value.page) {
+    loadResourceCollectionParams.value.page.number = page;
+  }
+
+  loadResourceCollection();
+}
 </script>
 
 <template>
@@ -121,9 +133,11 @@ loadResourceCollection({
     </n-page-header>
     <n-data-table
       remote
+      :loading="loading"
       :columns="columns"
       :data="data"
       :pagination="withPagination ? pagination : false"
+      @update-page="handleChangePage"
     />
     <todo-quick-create-dropdown v-if="withQuickCreate" />
   </n-space>
