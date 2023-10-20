@@ -30,7 +30,9 @@ const props = defineProps<{
   withHeaderExtra?: boolean;
   withColumns?: {
     date?: boolean;
+    doneCheck?: boolean;
   };
+  withLateStrikethrough?: boolean;
 }>();
 
 const loadResourceCollectionParams = ref<LoadResourceCollectionParams>({
@@ -64,13 +66,13 @@ const editModal = reactive<{
 });
 
 const columns: DataTableColumn[] = [
-  {
-    key: 'isDone',
+  ...optionalElement(props.withColumns?.doneCheck, {
+    key: 'done-check',
     title: '',
     width: 10,
     render: (rowData: Record<string, any>) =>
-      h(NCheckbox, { checked: (rowData as Todo).done_at }),
-  },
+      h(NCheckbox, { checked: !!(rowData as Todo).done_at }),
+  }),
   {
     key: 'name',
     title: 'Name',
@@ -82,14 +84,17 @@ const columns: DataTableColumn[] = [
               h(NText, { type: 'error' }, { default: () => '2 days ago' }),
             h(
               NText,
-              { delete: rowData.isDone },
+              {
+                delete:
+                  props.withLateStrikethrough && !!(rowData as Todo).done_at,
+              },
               { default: () => (rowData as Todo).name },
             ),
           ].filter(Boolean),
       }),
   },
   ...optionalElement(props.withColumns?.date, {
-    key: 'createdAt',
+    key: 'created-date',
     title: 'Date',
     render: (rowData: Record<string, any>) =>
       h(NText, null, {
