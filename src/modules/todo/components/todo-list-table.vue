@@ -40,7 +40,9 @@ const {
 
 const pagination = computed<PaginationProps>(() => {
   return {
-    pageSize: meta.page.size,
+    pageSize: meta.value.page.size,
+    pageCount: Math.ceil(meta.value.total / meta.value.page.size),
+    page: meta.value.page.number,
   };
 });
 
@@ -102,7 +104,12 @@ function handleEdit(todo: Todo) {
   editModal.data = todo;
 }
 
-loadResourceCollection();
+loadResourceCollection({
+  page: {
+    size: 5,
+    number: 2,
+  },
+});
 </script>
 
 <template>

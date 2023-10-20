@@ -10,3 +10,12 @@ export interface ResourceCollection<T extends Entity> {
   };
   rows: T[];
 }
+
+export interface LoadResourceCollectionParams {
+  page?: {
+    size?: number;
+    number?: number;
+  };
+  filter?: Record<string, any>;
+  sort?: string;
+}
