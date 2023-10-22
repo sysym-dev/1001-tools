@@ -107,7 +107,7 @@ const columns: DataTableColumn[] = [
     key: 'status',
     title: 'Status',
     render: (rowData: Record<string, any>) =>
-      h(TodoStatusTag, { todo: rowData }),
+      h(TodoStatusTag, { todo: rowData as Todo }),
   }),
   {
     key: 'actions',
