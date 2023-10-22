@@ -5,10 +5,14 @@ import {
 import { Todo } from '../todo.entity';
 import { Ref, reactive, ref, toRef } from 'vue';
 import { HttpResponse, http } from 'src/common/http/http';
+import { useMessage } from 'naive-ui';
+import axios, { Axios } from 'axios';
 
 export function useTodoResourceCollection(
   params?: Ref<LoadResourceCollectionParams>,
 ) {
+  const message = useMessage();
+
   const loading = ref(false);
   const collection = reactive<ResourceCollection<Todo>>({
     meta: {
@@ -33,6 +37,10 @@ export function useTodoResourceCollection(
 
       collection.rows = res.data.data.rows;
       collection.meta = res.data.data.meta;
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        message.error(err.message);
+      }
     } finally {
       loading.value = false;
     }
