@@ -13,6 +13,7 @@ import TodoQuickCreateDropdown from 'src/modules/todo/components/todo-quick-crea
 import TodoActionDropdown from 'src/modules/todo/components/todo-action-dropdown.vue';
 import TodoEditModal from 'src/modules/todo/components/todo-edit-modal.vue';
 import TodoListFilter from 'src/modules/todo/components/todo-list-filter.vue';
+import TodoStatusTag from './todo-status-tag.vue';
 import { Todo } from 'src/modules/todo/todo.entity';
 import { optionalElement } from 'src/utils/array';
 import { formatDate } from 'src/utils/date';
@@ -31,6 +32,7 @@ const props = defineProps<{
   withColumns?: {
     date?: boolean;
     doneCheck?: boolean;
+    status?: boolean;
   };
   withLateStrikethrough?: boolean;
 }>();
@@ -100,6 +102,12 @@ const columns: DataTableColumn[] = [
       h(NText, null, {
         default: () => formatDate((rowData as Todo).created_at),
       }),
+  }),
+  ...optionalElement(props.withColumns?.status, {
+    key: 'status',
+    title: 'Status',
+    render: (rowData: Record<string, any>) =>
+      h(TodoStatusTag, { todo: rowData }),
   }),
   {
     key: 'actions',

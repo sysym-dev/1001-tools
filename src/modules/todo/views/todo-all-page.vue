@@ -10,6 +10,7 @@ import TodoListTable from 'src/modules/todo/components/todo-list-table.vue';
     with-pagination
     :with-columns="{
       date: true,
+      status: true,
     }"
   />
 </template>
