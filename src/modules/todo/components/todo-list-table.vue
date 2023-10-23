@@ -8,14 +8,18 @@ import {
   NText,
   PaginationProps,
 } from 'naive-ui';
-import { h, reactive } from 'vue';
+import { h, reactive, ref } from 'vue';
 import TodoQuickCreateDropdown from 'src/modules/todo/components/todo-quick-create-dropdown.vue';
 import TodoActionDropdown from 'src/modules/todo/components/todo-action-dropdown.vue';
 import TodoEditModal from 'src/modules/todo/components/todo-edit-modal.vue';
 import TodoListFilter from 'src/modules/todo/components/todo-list-filter.vue';
-import { Todo } from 'src/modules/todo/todo.types';
+import TodoStatusTag from './todo-status-tag.vue';
+import { Todo } from 'src/modules/todo/todo.entity';
 import { optionalElement } from 'src/utils/array';
 import { formatDate } from 'src/utils/date';
+import { useTodoResourceCollection } from 'src/modules/todo/composes/todo-resource-collection.compose';
+import { computed } from 'vue';
+import { LoadResourceCollectionParams } from 'src/common/resource/collection';
 
 const props = defineProps<{
   title?: string;
@@ -27,26 +31,36 @@ const props = defineProps<{
   withHeaderExtra?: boolean;
   withColumns?: {
     date?: boolean;
+    doneCheck?: boolean;
+    status?: boolean;
   };
+  withLateStrikethrough?: boolean;
 }>();
 
-const data: Todo[] = [
-  {
-    id: 1,
-    name: 'Beli Bensin',
-    isDone: false,
-    createdAt: new Date(),
+const loadResourceCollectionParams = ref<LoadResourceCollectionParams>({
+  page: {
+    size: 5,
+    number: 1,
   },
-  {
-    id: 2,
-    name: 'Ganti oli',
-    isDone: true,
-    createdAt: new Date(),
+  filter: {
+    is_done: null,
   },
-];
-const pagination: PaginationProps = {
-  pageSize: 10,
-};
+});
+
+const {
+  loading,
+  data,
+  meta,
+  load: loadResourceCollection,
+} = useTodoResourceCollection(loadResourceCollectionParams);
+
+const pagination = computed<PaginationProps>(() => {
+  return {
+    pageSize: meta.value.page.size,
+    pageCount: Math.ceil(meta.value.total / meta.value.page.size),
+    page: meta.value.page.number,
+  };
+});
 
 const editModal = reactive<{
   visible: boolean;
@@ -57,13 +71,13 @@ const editModal = reactive<{
 });
 
 const columns: DataTableColumn[] = [
-  {
-    key: 'isDone',
+  ...optionalElement(props.withColumns?.doneCheck, {
+    key: 'done-check',
     title: '',
     width: 10,
     render: (rowData: Record<string, any>) =>
-      h(NCheckbox, { checked: (rowData as Todo).isDone }),
-  },
+      h(NCheckbox, { checked: !!(rowData as Todo).done_at }),
+  }),
   {
     key: 'name',
     title: 'Name',
@@ -75,19 +89,28 @@ const columns: DataTableColumn[] = [
               h(NText, { type: 'error' }, { default: () => '2 days ago' }),
             h(
               NText,
-              { delete: rowData.isDone },
+              {
+                delete:
+                  props.withLateStrikethrough && !!(rowData as Todo).done_at,
+              },
               { default: () => (rowData as Todo).name },
             ),
           ].filter(Boolean),
       }),
   },
   ...optionalElement(props.withColumns?.date, {
-    key: 'createdAt',
+    key: 'created-date',
     title: 'Date',
     render: (rowData: Record<string, any>) =>
       h(NText, null, {
-        default: () => formatDate((rowData as Todo).createdAt),
+        default: () => formatDate((rowData as Todo).created_at),
       }),
+  }),
+  ...optionalElement(props.withColumns?.status, {
+    key: 'status',
+    title: 'Status',
+    render: (rowData: Record<string, any>) =>
+      h(TodoStatusTag, { todo: rowData as Todo }),
   }),
   {
     key: 'actions',
@@ -105,22 +128,46 @@ function handleEdit(todo: Todo) {
   editModal.visible = true;
   editModal.data = todo;
 }
+
+loadResourceCollection();
+
+function handleChangePage(page: number) {
+  if (loadResourceCollectionParams.value.page) {
+    loadResourceCollectionParams.value.page.number = page;
+  }
+
+  loadResourceCollection();
+}
+function handleFilter() {
+  loadResourceCollection({
+    resetPage: true,
+  });
+}
 </script>
 
 <template>
+  {{ loadResourceCollectionParams }}
   <n-space vertical size="large">
     <n-page-header v-if="withHeader" :title="title" :subtitle="subtitle">
       <template #extra>
-        <todo-list-filter v-if="withHeaderExtra" />
+        <todo-list-filter
+          v-if="withHeaderExtra"
+          v-model:filter="
+            loadResourceCollectionParams.filter as Record<string, any>
+          "
+          v-on:filter="handleFilter"
+        />
       </template>
     </n-page-header>
     <n-data-table
+      remote
+      :loading="loading"
       :columns="columns"
       :data="data"
       :pagination="withPagination ? pagination : false"
+      @update-page="handleChangePage"
     />
     <todo-quick-create-dropdown v-if="withQuickCreate" />
   </n-space>
-
   <todo-edit-modal :todo="editModal.data" v-model:visible="editModal.visible" />
 </template>

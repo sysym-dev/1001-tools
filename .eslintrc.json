@@ -14,5 +14,6 @@
         "vue"
     ],
     "rules": {
+        "vue/valid-v-model": "off"
     }
 }

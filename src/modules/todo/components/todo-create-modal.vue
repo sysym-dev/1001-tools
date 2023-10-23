@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { NSpace, NFormItem, NInput, NModal, NButton } from 'naive-ui';
 import { computed, reactive } from 'vue';
-import { Todo } from 'src/modules/todo/todo.types';
+import { Todo } from 'src/modules/todo/todo.entity';
 
 const props = defineProps<{
   visible: boolean;
