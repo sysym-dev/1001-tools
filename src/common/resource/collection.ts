@@ -19,3 +19,7 @@ export interface LoadResourceCollectionParams {
   filter?: Record<string, any>;
   sort?: string;
 }
+
+export interface LoadResourceCollectionOptions {
+  resetPage?: boolean;
+}
