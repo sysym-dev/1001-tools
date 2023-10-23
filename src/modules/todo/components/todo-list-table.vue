@@ -42,6 +42,9 @@ const loadResourceCollectionParams = ref<LoadResourceCollectionParams>({
     size: 5,
     number: 1,
   },
+  filter: {
+    is_done: null,
+  },
 });
 
 const {
@@ -135,13 +138,25 @@ function handleChangePage(page: number) {
 
   loadResourceCollection();
 }
+function handleFilter() {
+  loadResourceCollection({
+    resetPage: true,
+  });
+}
 </script>
 
 <template>
+  {{ loadResourceCollectionParams }}
   <n-space vertical size="large">
     <n-page-header v-if="withHeader" :title="title" :subtitle="subtitle">
       <template #extra>
-        <todo-list-filter v-if="withHeaderExtra" />
+        <todo-list-filter
+          v-if="withHeaderExtra"
+          v-model:filter="
+            loadResourceCollectionParams.filter as Record<string, any>
+          "
+          v-on:filter="handleFilter"
+        />
       </template>
     </n-page-header>
     <n-data-table
