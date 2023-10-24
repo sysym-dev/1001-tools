@@ -9,21 +9,62 @@ import {
   SelectOption,
   NFormItem,
 } from 'naive-ui';
-import { ArrowSortDownLines16Regular } from '@vicons/fluent';
-import { h } from 'vue';
+import {
+  TextSortAscending16Regular,
+  TextSortDescending16Regular,
+} from '@vicons/fluent';
+import { h, computed } from 'vue';
 
-const sortOptions: SelectOption[] = [
+const props = defineProps<{
+  modelValue: string;
+}>();
+const emit = defineEmits<{
+  'update:modelValue': [value: string];
+  sort: [];
+}>();
+
+const selectedSort = computed<string>({
+  get() {
+    return props.modelValue;
+  },
+  set(value: string) {
+    emit('update:modelValue', value);
+    emit('sort');
+  },
+});
+const selectedDirection = computed<string>({
+  get() {
+    return selectedSort.value.charAt(0) === '-' ? 'desc' : 'asc';
+  },
+  set(value) {
+    selectedSort.value =
+      value === 'asc' ? selectedColumn.value : `-${selectedColumn.value}`;
+  },
+});
+const selectedColumn = computed<string>({
+  get() {
+    return selectedDirection.value === 'asc'
+      ? selectedSort.value
+      : selectedSort.value.slice(1);
+  },
+  set(value) {
+    selectedSort.value =
+      selectedDirection.value === 'asc' ? value : `-${value}`;
+  },
+});
+
+const sortColumnOptions: SelectOption[] = [
   {
     label: 'Name',
     value: 'name',
   },
   {
     label: 'Created At',
-    value: 'createdAt',
+    value: 'created_at',
   },
   {
     label: 'Done At',
-    value: 'done at',
+    value: 'done_at',
   },
 ];
 const sortDirectionOptions: SelectOption[] = [
@@ -53,7 +94,13 @@ const filterOptions: DropdownRenderOption[] = [
               { label: 'Sort Column', showFeedback: false },
               {
                 default: () =>
-                  h(NSelect, { options: sortOptions, placeholder: 'Column' }),
+                  h(NSelect, {
+                    options: sortColumnOptions,
+                    placeholder: 'Column',
+                    value: selectedColumn.value,
+                    'onUpdate:value': (value: string) =>
+                      (selectedColumn.value = value),
+                  }),
               },
             ),
             h(
@@ -64,6 +111,9 @@ const filterOptions: DropdownRenderOption[] = [
                   h(NSelect, {
                     options: sortDirectionOptions,
                     placeholder: 'Direction',
+                    value: selectedDirection.value,
+                    'onUpdate:value': (value: string) =>
+                      (selectedDirection.value = value),
                   }),
               },
             ),
@@ -72,6 +122,12 @@ const filterOptions: DropdownRenderOption[] = [
       ),
   },
 ];
+
+const selectedColumnName = computed<string>((): string => {
+  return sortColumnOptions.find(
+    (options) => options.value === selectedColumn.value,
+  )?.label as string;
+});
 </script>
 
 <template>
@@ -87,10 +143,13 @@ const filterOptions: DropdownRenderOption[] = [
     <n-button>
       <template #icon>
         <n-icon>
-          <arrow-sort-down-lines-16-regular />
+          <text-sort-descending-16-regular
+            v-if="selectedDirection === 'desc'"
+          />
+          <text-sort-ascending-16-regular v-else />
         </n-icon>
       </template>
-      Created At
+      {{ selectedColumnName }}
     </n-button>
   </n-dropdown>
 </template>

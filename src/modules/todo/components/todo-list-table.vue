@@ -45,6 +45,7 @@ const loadResourceCollectionParams = ref<LoadResourceCollectionParams>({
   filter: {
     is_done: null,
   },
+  sort: '-created_at',
 });
 
 const {
@@ -138,7 +139,7 @@ function handleChangePage(page: number) {
 
   loadResourceCollection();
 }
-function handleFilter() {
+function handleRefresh() {
   loadResourceCollection({
     resetPage: true,
   });
@@ -146,7 +147,6 @@ function handleFilter() {
 </script>
 
 <template>
-  {{ loadResourceCollectionParams }}
   <n-space vertical size="large">
     <n-page-header v-if="withHeader" :title="title" :subtitle="subtitle">
       <template #extra>
@@ -155,7 +155,9 @@ function handleFilter() {
           v-model:filter="
             loadResourceCollectionParams.filter as Record<string, any>
           "
-          v-on:filter="handleFilter"
+          v-model:sort="loadResourceCollectionParams.sort as string"
+          v-on:filter="handleRefresh"
+          v-on:sort="handleRefresh"
         />
       </template>
     </n-page-header>

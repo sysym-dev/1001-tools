@@ -15,10 +15,13 @@ import { ref, computed } from 'vue';
 
 const props = defineProps<{
   filter: Record<string, any>;
+  sort: string;
 }>();
 const emit = defineEmits<{
   'update:filter': [values: Record<string, any>];
+  'update:sort': [value: string];
   filter: [];
+  sort: [];
 }>();
 
 const filter = computed({
@@ -27,6 +30,14 @@ const filter = computed({
   },
   set(value) {
     emit('update:filter', value);
+  },
+});
+const sort = computed({
+  get() {
+    return props.sort;
+  },
+  set(value) {
+    emit('update:sort', value);
   },
 });
 const selectedStatus = computed<string>({
@@ -78,6 +89,9 @@ const sortDirectionOptions: SelectOption[] = [
 function handleCreate() {
   visibleCreate.value = true;
 }
+function handleSort() {
+  emit('sort');
+}
 </script>
 
 <template>
@@ -92,7 +106,7 @@ function handleCreate() {
       v-model:value="selectedStatus"
     />
     <todo-list-filter-dropdown />
-    <todo-list-sort-dropdown />
+    <todo-list-sort-dropdown v-model="sort" v-on:sort="handleSort" />
     <n-button type="primary" v-on:click="handleCreate">
       <template #icon>
         <n-icon>
