@@ -3,7 +3,7 @@ import {
   LoadResourceCollectionParams,
   ResourceCollection,
 } from 'src/common/resource/collection';
-import { Ref, ref } from 'vue';
+import { Ref, ref, toRef } from 'vue';
 import { HttpResponse, http } from 'src/common/http/http';
 import { useMessage } from 'naive-ui';
 import axios from 'axios';
@@ -53,8 +53,8 @@ export function useResourceCollection<T extends Entity>(
   }
 
   return {
-    data: collection.value.rows,
-    meta: collection.value.meta,
+    data: toRef(collection.value, 'rows'),
+    meta: toRef(collection.value, 'meta'),
     loading,
     load,
   };
