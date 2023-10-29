@@ -17,9 +17,9 @@ import TodoStatusTag from './todo-status-tag.vue';
 import { Todo } from 'src/modules/todo/todo.entity';
 import { optionalElement } from 'src/utils/array';
 import { formatDate } from 'src/utils/date';
-import { useTodoResourceCollection } from 'src/modules/todo/composes/todo-resource-collection.compose';
 import { computed } from 'vue';
 import { LoadResourceCollectionParams } from 'src/common/resource/collection';
+import { useResourceCollection } from 'src/common/resource/composes/resource-collection.compose';
 
 const props = defineProps<{
   title?: string;
@@ -53,7 +53,7 @@ const {
   data,
   meta,
   load: loadResourceCollection,
-} = useTodoResourceCollection(loadResourceCollectionParams);
+} = useResourceCollection('todos', loadResourceCollectionParams);
 
 const pagination = computed<PaginationProps>(() => {
   return {

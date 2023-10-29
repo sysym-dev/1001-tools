@@ -3,19 +3,20 @@ import {
   LoadResourceCollectionParams,
   ResourceCollection,
 } from 'src/common/resource/collection';
-import { Todo } from '../todo.entity';
-import { Ref, reactive, ref, toRef } from 'vue';
+import { Ref, ref, toRef } from 'vue';
 import { HttpResponse, http } from 'src/common/http/http';
 import { useMessage } from 'naive-ui';
 import axios from 'axios';
+import { Entity } from '../entity';
 
-export function useTodoResourceCollection(
+export function useResourceCollection<T extends Entity>(
+  url: string,
   params?: Ref<LoadResourceCollectionParams>,
 ) {
   const message = useMessage();
 
   const loading = ref(false);
-  const collection = reactive<ResourceCollection<Todo>>({
+  const collection = ref<ResourceCollection<T>>({
     meta: {
       page: {
         number: 1,
@@ -24,7 +25,7 @@ export function useTodoResourceCollection(
       total: 0,
     },
     rows: [],
-  });
+  }) as Ref<ResourceCollection<T>>;
 
   async function load(options?: LoadResourceCollectionOptions) {
     loading.value = true;
@@ -34,14 +35,14 @@ export function useTodoResourceCollection(
     }
 
     try {
-      const res = await http<HttpResponse<ResourceCollection<Todo>>>({
-        url: '/todos',
+      const res = await http<HttpResponse<ResourceCollection<T>>>({
+        url,
         method: 'get',
         params: params?.value,
       });
 
-      collection.rows = res.data.data.rows;
-      collection.meta = res.data.data.meta;
+      collection.value.rows = res.data.data.rows;
+      collection.value.meta = res.data.data.meta;
     } catch (err) {
       if (axios.isAxiosError(err)) {
         message.error(err.message);
@@ -52,8 +53,8 @@ export function useTodoResourceCollection(
   }
 
   return {
-    data: toRef(collection, 'rows'),
-    meta: toRef(collection, 'meta'),
+    data: toRef(collection.value, 'rows'),
+    meta: toRef(collection.value, 'meta'),
     loading,
     load,
   };
