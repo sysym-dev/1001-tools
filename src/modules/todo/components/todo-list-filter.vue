@@ -92,6 +92,9 @@ function handleCreate() {
 function handleSort() {
   emit('sort');
 }
+function handleFilter() {
+  emit('filter');
+}
 </script>
 
 <template>
@@ -105,7 +108,7 @@ function handleSort() {
       placeholder="Status"
       v-model:value="selectedStatus"
     />
-    <todo-list-filter-dropdown v-model="filter" />
+    <todo-list-filter-dropdown v-model="filter" v-on:filter="handleFilter" />
     <todo-list-sort-dropdown v-model="sort" v-on:sort="handleSort" />
     <n-button type="primary" v-on:click="handleCreate">
       <template #icon>

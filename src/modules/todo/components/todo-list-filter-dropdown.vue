@@ -10,12 +10,14 @@ import {
 } from 'naive-ui';
 import { Filter16Regular } from '@vicons/fluent';
 import { h, computed } from 'vue';
+import { getTimestamp, fromTimestamp } from 'src/utils/date';
 
 const props = defineProps<{
   modelValue: Record<string, any>;
 }>();
 const emit = defineEmits<{
   'update:modelValue': [value: Record<string, any>];
+  filter: [];
 }>();
 
 const filter = computed<Record<string, any>>({
@@ -44,9 +46,20 @@ const filterOptions: DropdownRenderOption[] = [
               {
                 default: () =>
                   h(NDatePicker, {
-                    value: filter.value.due_at,
-                    'onUpdate:value': (value: number) =>
-                      (filter.value.due_at = value),
+                    clearable: true,
+                    value: filter.value.due_at_from
+                      ? getTimestamp(filter.value.due_at_from)
+                      : filter.value.due_at_from,
+                    'onUpdate:value': (value: number) => {
+                      filter.value.due_at_from = value
+                        ? fromTimestamp(value).startOf('day').toDate()
+                        : value;
+                      filter.value.due_at_to = value
+                        ? fromTimestamp(value).endOf('day').toDate()
+                        : value;
+
+                      emit('filter');
+                    },
                   }),
               },
             ),
@@ -65,7 +78,6 @@ const filterOptions: DropdownRenderOption[] = [
 </script>
 
 <template>
-  {{ filter }}
   <n-dropdown
     trigger="click"
     placement="bottom-end"
