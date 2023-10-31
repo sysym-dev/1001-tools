@@ -44,6 +44,8 @@ const loadResourceCollectionParams = ref<LoadResourceCollectionParams>({
   },
   filter: {
     is_done: null,
+    due_date_from: null,
+    due_date_to: null,
   },
   sort: '-created_at',
 });

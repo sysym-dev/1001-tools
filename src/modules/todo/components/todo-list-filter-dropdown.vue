@@ -9,7 +9,23 @@ import {
   NDatePicker,
 } from 'naive-ui';
 import { Filter16Regular } from '@vicons/fluent';
-import { h } from 'vue';
+import { h, computed } from 'vue';
+
+const props = defineProps<{
+  modelValue: Record<string, any>;
+}>();
+const emit = defineEmits<{
+  'update:modelValue': [value: Record<string, any>];
+}>();
+
+const filter = computed<Record<string, any>>({
+  get() {
+    return props.modelValue;
+  },
+  set(value) {
+    emit('update:modelValue', value);
+  },
+});
 
 const filterOptions: DropdownRenderOption[] = [
   {
@@ -24,9 +40,14 @@ const filterOptions: DropdownRenderOption[] = [
           default: () => [
             h(
               NFormItem,
-              { label: 'Created At', showFeedback: false },
+              { label: 'Due At', showFeedback: false },
               {
-                default: () => h(NDatePicker),
+                default: () =>
+                  h(NDatePicker, {
+                    value: filter.value.due_at,
+                    'onUpdate:value': (value: number) =>
+                      (filter.value.due_at = value),
+                  }),
               },
             ),
             h(
@@ -44,6 +65,7 @@ const filterOptions: DropdownRenderOption[] = [
 </script>
 
 <template>
+  {{ filter }}
   <n-dropdown
     trigger="click"
     placement="bottom-end"
