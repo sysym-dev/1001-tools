@@ -67,7 +67,23 @@ const filterOptions: DropdownRenderOption[] = [
               NFormItem,
               { label: 'Done At', showFeedback: false },
               {
-                default: () => h(NDatePicker),
+                default: () =>
+                  h(NDatePicker, {
+                    clearable: true,
+                    value: filter.value.done_at_from
+                      ? getTimestamp(filter.value.done_at_from)
+                      : filter.value.done_at_from,
+                    'onUpdate:value': (value: number) => {
+                      filter.value.done_at_from = value
+                        ? fromTimestamp(value).startOf('day').toDate()
+                        : value;
+                      filter.value.done_at_to = value
+                        ? fromTimestamp(value).endOf('day').toDate()
+                        : value;
+
+                      emit('filter');
+                    },
+                  }),
               },
             ),
           ],
