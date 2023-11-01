@@ -47,6 +47,8 @@ const loadResourceCollectionParams = ref<LoadResourceCollectionParams>({
     due_at_from: null,
     due_at_to: null,
     search: null,
+    done_at_from: null,
+    done_at_to: null,
   },
   sort: '-created_at',
 });
