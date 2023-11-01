@@ -12,6 +12,7 @@ import TodoCreateModal from './todo-create-modal.vue';
 import TodoListSortDropdown from './todo-list-sort-dropdown.vue';
 import TodoListFilterDropdown from './todo-list-filter-dropdown.vue';
 import { ref, computed } from 'vue';
+import { debounce } from 'src/utils/debounce';
 
 const props = defineProps<{
   filter: Record<string, any>;
@@ -86,20 +87,30 @@ const sortDirectionOptions: SelectOption[] = [
   },
 ];
 
+const debounceFilter = debounce(() => emit('filter'));
+
 function handleCreate() {
   visibleCreate.value = true;
 }
 function handleSort() {
   emit('sort');
 }
-function handleFilter() {
-  emit('filter');
+function handleFilter(options?: { debounce: boolean }) {
+  if (options?.debounce) {
+    debounceFilter();
+  } else {
+    emit('filter');
+  }
 }
 </script>
 
 <template>
   <n-space>
-    <n-input placeholder="Search" />
+    <n-input
+      placeholder="Search"
+      v-model:value="filter.search"
+      v-on:input="handleFilter({ debounce: true })"
+    />
     <n-select
       :style="{
         width: '125px',
