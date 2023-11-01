@@ -28,6 +28,9 @@ const filter = computed<Record<string, any>>({
     emit('update:modelValue', value);
   },
 });
+const countApplied = computed<number>(
+  () => +!!filter.value.due_at_from + +!!filter.value.done_at_from,
+);
 
 const filterOptions: DropdownRenderOption[] = [
   {
@@ -109,6 +112,7 @@ const filterOptions: DropdownRenderOption[] = [
           <filter-16-regular />
         </n-icon>
       </template>
+      <template v-if="countApplied"> {{ countApplied }} Applied </template>
     </n-button>
   </n-dropdown>
 </template>
