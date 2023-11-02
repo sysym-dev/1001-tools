@@ -47,6 +47,8 @@ export function useResourceCollection<T extends Entity>(
       if (axios.isAxiosError(err)) {
         message.error(err.message);
       }
+
+      throw err;
     } finally {
       loading.value = false;
     }
