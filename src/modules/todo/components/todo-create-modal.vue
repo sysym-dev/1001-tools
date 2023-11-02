@@ -16,6 +16,7 @@ import { computed, reactive } from 'vue';
 import { useCreateResource } from 'src/common/resource/composes/create-resource.compose';
 import { Todo } from '../todo.entity';
 import { fromTimestamp } from 'src/utils/date';
+import { useValidation } from 'src/common/form/composes/validation.compose';
 
 const props = defineProps<{
   visible: boolean;
@@ -27,6 +28,7 @@ const emit = defineEmits<{
 
 const message = useMessage();
 const { loading, save } = useCreateResource<Todo>('todos');
+const { validate } = useValidation();
 
 const formRef = ref<FormInst | null>(null);
 
@@ -59,27 +61,13 @@ const rules: FormRules = {
   },
 };
 
-async function validate() {
-  return new Promise((resolve, reject) => {
-    formRef.value?.validate((errors) => {
-      if (errors) {
-        message.error('Please fill out the form');
-
-        reject(errors);
-      } else {
-        resolve(true);
-      }
-    });
-  });
-}
-
 function handleVisible() {
   form.name = null;
   form.due_at = null;
 }
 async function handleSave() {
   try {
-    await validate();
+    await validate(formRef.value as FormInst);
     await save({
       name: form.name as string,
       due_at: fromTimestamp(form.due_at as number)

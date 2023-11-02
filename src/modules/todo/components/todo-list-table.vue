@@ -201,5 +201,9 @@ load();
     />
     <todo-quick-create-dropdown v-if="withQuickCreate" />
   </n-space>
-  <todo-edit-modal :todo="editModal.data" v-model:visible="editModal.visible" />
+  <todo-edit-modal
+    :todo="editModal.data"
+    v-model:visible="editModal.visible"
+    v-on:updated="handleRefresh"
+  />
 </template>
