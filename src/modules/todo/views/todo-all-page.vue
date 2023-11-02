@@ -9,7 +9,7 @@ import TodoListTable from 'src/modules/todo/components/todo-list-table.vue';
     with-header-extra
     with-pagination
     :with-columns="{
-      date: true,
+      due_at: true,
       status: true,
     }"
   />
