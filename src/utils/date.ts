@@ -33,3 +33,7 @@ export function fromDate(date: string | Date, compare?: string | Date): string {
 
   return dayjs(date).from(dayjs(compare));
 }
+
+export function parseDate(raw: string | number | Date): Dayjs {
+  return dayjs(raw);
+}
