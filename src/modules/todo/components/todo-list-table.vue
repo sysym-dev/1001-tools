@@ -18,7 +18,10 @@ import { Todo } from 'src/modules/todo/todo.entity';
 import { optionalElement } from 'src/utils/array';
 import { fromDate } from 'src/utils/date';
 import { computed } from 'vue';
-import { LoadResourceCollectionParams } from 'src/common/resource/collection';
+import {
+  LoadResourceCollectionOptions,
+  LoadResourceCollectionParams,
+} from 'src/common/resource/collection';
 import { useResourceCollection } from 'src/common/resource/composes/resource-collection.compose';
 
 const props = defineProps<{
@@ -134,21 +137,42 @@ function handleEdit(todo: Todo) {
   editModal.visible = true;
   editModal.data = todo;
 }
-
-loadResourceCollection();
+async function load(params?: LoadResourceCollectionOptions) {
+  try {
+    await loadResourceCollection(params);
+  } catch (err) {}
+}
 
 function handleChangePage(page: number) {
   if (loadResourceCollectionParams.value.page) {
     loadResourceCollectionParams.value.page.number = page;
   }
 
-  loadResourceCollection();
+  load();
 }
-function handleRefresh() {
-  loadResourceCollection({
+function handleReload() {
+  load({
     resetPage: true,
   });
 }
+function handleRefresh() {
+  if (loadResourceCollectionParams.value.filter) {
+    loadResourceCollectionParams.value.filter.is_done = null;
+    loadResourceCollectionParams.value.filter.due_at_from = null;
+    loadResourceCollectionParams.value.filter.due_at_to = null;
+    loadResourceCollectionParams.value.filter.search = null;
+    loadResourceCollectionParams.value.filter.done_at_from = null;
+    loadResourceCollectionParams.value.filter.done_at_to = null;
+  }
+
+  loadResourceCollectionParams.value.sort = '-created_at';
+
+  load({
+    resetPage: true,
+  });
+}
+
+load();
 </script>
 
 <template>
@@ -161,8 +185,9 @@ function handleRefresh() {
             loadResourceCollectionParams.filter as Record<string, any>
           "
           v-model:sort="loadResourceCollectionParams.sort as string"
-          v-on:filter="handleRefresh"
-          v-on:sort="handleRefresh"
+          v-on:filter="handleReload"
+          v-on:sort="handleReload"
+          v-on:created="handleRefresh"
         />
       </template>
     </n-page-header>
