@@ -14,6 +14,8 @@ import {
 import { ref } from 'vue';
 import { computed, reactive } from 'vue';
 import { useCreateResource } from 'src/common/resource/composes/create-resource.compose';
+import { Todo } from '../todo.entity';
+import { fromTimestamp } from 'src/utils/date';
 
 const props = defineProps<{
   visible: boolean;
@@ -24,7 +26,7 @@ const emit = defineEmits<{
 }>();
 
 const message = useMessage();
-const { loading, save } = useCreateResource('todos');
+const { loading, save } = useCreateResource<Todo>('todos');
 
 const formRef = ref<FormInst | null>(null);
 
@@ -78,7 +80,12 @@ function handleVisible() {
 async function handleSave() {
   try {
     await validate();
-    await save(form);
+    await save({
+      name: form.name as string,
+      due_at: fromTimestamp(form.due_at as number)
+        .endOf('d')
+        .toISOString(),
+    });
 
     handleSuccess();
   } catch (err) {

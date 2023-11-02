@@ -3,14 +3,14 @@ import { useMessage } from 'naive-ui';
 import { http } from 'src/common/http/http';
 import { Ref, ref } from 'vue';
 
-export function useCreateResource(url: string): {
+export function useCreateResource<T>(url: string): {
   loading: Ref<boolean>;
-  save: (payload: Record<string, any>) => void;
+  save: (payload: Partial<T>) => void;
 } {
   const loading = ref<boolean>(false);
   const message = useMessage();
 
-  async function save(payload: Record<string, any>) {
+  async function save(payload: Partial<T>) {
     loading.value = true;
 
     try {
