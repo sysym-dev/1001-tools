@@ -23,6 +23,7 @@ const emit = defineEmits<{
   'update:sort': [value: string];
   filter: [];
   sort: [];
+  created: [];
 }>();
 
 const filter = computed({
@@ -102,6 +103,9 @@ function handleFilter(options?: { debounce: boolean }) {
     emit('filter');
   }
 }
+function handleCreated() {
+  emit('created');
+}
 </script>
 
 <template>
@@ -131,5 +135,8 @@ function handleFilter(options?: { debounce: boolean }) {
     </n-button>
   </n-space>
 
-  <todo-create-modal v-model:visible="visibleCreate" />
+  <todo-create-modal
+    v-model:visible="visibleCreate"
+    v-on:created="handleCreated"
+  />
 </template>
