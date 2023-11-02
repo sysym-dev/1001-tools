@@ -16,7 +16,7 @@ import TodoListFilter from 'src/modules/todo/components/todo-list-filter.vue';
 import TodoStatusTag from './todo-status-tag.vue';
 import { Todo } from 'src/modules/todo/todo.entity';
 import { optionalElement } from 'src/utils/array';
-import { formatDate } from 'src/utils/date';
+import { fromDate } from 'src/utils/date';
 import { computed } from 'vue';
 import { LoadResourceCollectionParams } from 'src/common/resource/collection';
 import { useResourceCollection } from 'src/common/resource/composes/resource-collection.compose';
@@ -30,7 +30,7 @@ const props = defineProps<{
   withPagination?: boolean;
   withHeaderExtra?: boolean;
   withColumns?: {
-    date?: boolean;
+    due_at?: boolean;
     doneCheck?: boolean;
     status?: boolean;
   };
@@ -104,12 +104,12 @@ const columns: DataTableColumn[] = [
           ].filter(Boolean),
       }),
   },
-  ...optionalElement(props.withColumns?.date, {
-    key: 'created-date',
-    title: 'Date',
+  ...optionalElement(props.withColumns?.due_at, {
+    key: 'due-at',
+    title: 'Due At',
     render: (rowData: Record<string, any>) =>
       h(NText, null, {
-        default: () => formatDate((rowData as Todo).created_at),
+        default: () => fromDate((rowData as Todo).due_at),
       }),
   }),
   ...optionalElement(props.withColumns?.status, {
