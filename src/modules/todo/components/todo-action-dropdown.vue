@@ -1,13 +1,27 @@
 <script setup lang="ts">
-import { NButton, NIcon, NDropdown, DropdownOption, useDialog } from 'naive-ui';
+import {
+  NButton,
+  NIcon,
+  NDropdown,
+  DropdownOption,
+  useDialog,
+  useMessage,
+} from 'naive-ui';
 import { MoreHorizontal16Regular } from '@vicons/fluent';
+import { Todo } from '../todo.entity';
+import { useDeleteResource } from 'src/common/resource/composes/delete-resource.compose';
 
+const props = defineProps<{
+  todo: Todo;
+}>();
 const emit = defineEmits<{
   edit: [];
-  delete: [];
+  deleted: [];
 }>();
 
 const dialog = useDialog();
+const message = useMessage();
+const { del } = useDeleteResource('todos');
 
 const options: DropdownOption[] = [
   {
@@ -29,8 +43,24 @@ function handleSelect(key: string) {
       content: 'Are you sure?',
       positiveText: 'Yes, sure',
       negativeText: 'Cancel',
+      onPositiveClick: async () => await handleDelete(),
     });
   }
+}
+async function handleDelete() {
+  try {
+    await del(props.todo.id);
+    handleSuccess();
+
+    return true;
+  } catch (err) {
+    return false;
+  }
+}
+function handleSuccess() {
+  message.success('Todo deleted');
+
+  emit('deleted');
 }
 </script>
 

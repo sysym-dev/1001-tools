@@ -128,7 +128,9 @@ const columns: DataTableColumn[] = [
     width: 10,
     render: (rowData: Record<string, any>) =>
       h(TodoActionDropdown, {
+        todo: rowData as Todo,
         onEdit: () => handleEdit(rowData as Todo),
+        onDeleted: () => handleRefresh(),
       }),
   },
 ];
