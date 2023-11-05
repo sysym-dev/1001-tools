@@ -7,6 +7,7 @@ import {
   NSpace,
   NText,
   PaginationProps,
+  NTag,
 } from 'naive-ui';
 import { h, reactive, ref } from 'vue';
 import TodoQuickCreateDropdown from 'src/modules/todo/components/todo-quick-create-dropdown.vue';
@@ -23,6 +24,7 @@ import {
   LoadResourceCollectionParams,
 } from 'src/common/resource/collection';
 import { useResourceCollection } from 'src/common/resource/composes/resource-collection.compose';
+import { isLate } from '../todo.util';
 
 const props = defineProps<{
   title?: string;
@@ -104,6 +106,8 @@ const columns: DataTableColumn[] = [
               },
               { default: () => (rowData as Todo).name },
             ),
+            isLate(rowData as Todo) &&
+              h(NTag, { size: 'small', type: 'error' }, () => 'Late'),
           ].filter(Boolean),
       }),
   },
