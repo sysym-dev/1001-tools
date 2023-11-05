@@ -44,6 +44,10 @@ const sort = computed({
 });
 const selectedStatus = computed<string>({
   get() {
+    if (filter.value.is_late) {
+      return 'late';
+    }
+
     if (filter.value.is_done === null) {
       return 'all';
     }
@@ -57,10 +61,16 @@ const selectedStatus = computed<string>({
   set(value) {
     if (value === 'all') {
       filter.value.is_done = null;
+      filter.value.is_late = null;
     } else if (value === 'done') {
       filter.value.is_done = true;
+      filter.value.is_late = null;
+    } else if (value === 'late') {
+      filter.value.is_done = null;
+      filter.value.is_late = true;
     } else {
       filter.value.is_done = false;
+      filter.value.is_late = null;
     }
 
     emit('filter');
@@ -69,7 +79,7 @@ const selectedStatus = computed<string>({
 
 const visibleCreate = ref(false);
 
-const sortDirectionOptions: SelectOption[] = [
+const statusOptions: SelectOption[] = [
   {
     label: 'All Status',
     value: 'all',
@@ -119,7 +129,7 @@ function handleCreated() {
       :style="{
         width: '125px',
       }"
-      :options="sortDirectionOptions"
+      :options="statusOptions"
       placeholder="Status"
       v-model:value="selectedStatus"
     />
