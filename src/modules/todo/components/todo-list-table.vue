@@ -54,6 +54,7 @@ const loadResourceCollectionParams = ref<LoadResourceCollectionParams>({
     search: null,
     done_at_from: null,
     done_at_to: null,
+    is_late: null,
   },
   sort: '-created_at',
 });
@@ -169,6 +170,7 @@ function handleRefresh() {
     loadResourceCollectionParams.value.filter.search = null;
     loadResourceCollectionParams.value.filter.done_at_from = null;
     loadResourceCollectionParams.value.filter.done_at_to = null;
+    loadResourceCollectionParams.value.filter.is_late = null;
   }
 
   loadResourceCollectionParams.value.sort = '-created_at';
