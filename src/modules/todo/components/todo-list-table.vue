@@ -17,7 +17,7 @@ import TodoListFilter from 'src/modules/todo/components/todo-list-filter.vue';
 import TodoStatusTag from './todo-status-tag.vue';
 import { Todo } from 'src/modules/todo/todo.entity';
 import { optionalElement } from 'src/utils/array';
-import { fromDate } from 'src/utils/date';
+import { fromDate, parseDate } from 'src/utils/date';
 import { computed } from 'vue';
 import {
   LoadResourceCollectionOptions,
@@ -40,6 +40,7 @@ const props = defineProps<{
     status?: boolean;
   };
   withLateStrikethrough?: boolean;
+  filter?: Record<string, any>;
 }>();
 
 const loadResourceCollectionParams = ref<LoadResourceCollectionParams>({
@@ -98,7 +99,11 @@ const columns: DataTableColumn[] = [
         default: () =>
           [
             props.withLateLabel &&
-              h(NText, { type: 'error' }, { default: () => '2 days ago' }),
+              h(
+                NText,
+                { type: 'error' },
+                { default: () => parseDate(rowData.due_at).fromNow() },
+              ),
             h(
               NText,
               {
@@ -143,6 +148,13 @@ const columns: DataTableColumn[] = [
   },
 ];
 
+function setFilterFromProps() {
+  if (props.filter?.is_late) {
+    (loadResourceCollectionParams.value.filter as Record<string, any>).is_late =
+      props.filter?.is_late;
+  }
+}
+
 function handleEdit(todo: Todo) {
   editModal.visible = true;
   editModal.data = todo;
@@ -183,6 +195,7 @@ function handleRefresh() {
   });
 }
 
+setFilterFromProps();
 load();
 </script>
 

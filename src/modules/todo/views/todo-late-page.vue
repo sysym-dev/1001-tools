@@ -10,5 +10,8 @@ import TodoListTable from 'src/modules/todo/components/todo-list-table.vue';
     with-header-extra
     with-late-label
     with-pagination
+    :filter="{
+      is_late: true,
+    }"
   />
 </template>
