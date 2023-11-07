@@ -267,7 +267,10 @@ load();
       :pagination="withPagination ? pagination : false"
       @update-page="handleChangePage"
     />
-    <todo-quick-create-dropdown v-if="withQuickCreate" />
+    <todo-quick-create-dropdown
+      v-if="withQuickCreate"
+      v-on:created="handleRefresh"
+    />
   </n-space>
   <todo-edit-modal
     :todo="editModal.data"
