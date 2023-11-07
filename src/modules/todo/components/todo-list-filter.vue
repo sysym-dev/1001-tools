@@ -18,6 +18,8 @@ const props = defineProps<{
   filter: Record<string, any>;
   sort: string;
   withCreate?: boolean;
+  withFilterStatus?: boolean;
+  withFilter?: boolean;
 }>();
 const emit = defineEmits<{
   'update:filter': [values: Record<string, any>];
@@ -127,6 +129,7 @@ function handleCreated() {
       v-on:input="handleFilter({ debounce: true })"
     />
     <n-select
+      v-if="withFilterStatus"
       :style="{
         width: '125px',
       }"
@@ -134,7 +137,11 @@ function handleCreated() {
       placeholder="Status"
       v-model:value="selectedStatus"
     />
-    <todo-list-filter-dropdown v-model="filter" v-on:filter="handleFilter" />
+    <todo-list-filter-dropdown
+      v-if="withFilter"
+      v-model="filter"
+      v-on:filter="handleFilter"
+    />
     <todo-list-sort-dropdown v-model="sort" v-on:sort="handleSort" />
     <n-button v-if="withCreate" type="primary" v-on:click="handleCreate">
       <template #icon>

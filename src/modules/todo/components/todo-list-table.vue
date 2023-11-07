@@ -42,6 +42,8 @@ const props = defineProps<{
     status?: boolean;
   };
   withLateStrikethrough?: boolean;
+  withFilter?: boolean;
+  withFilterStatus?: boolean;
   filter?: Record<string, any>;
 }>();
 
@@ -209,6 +211,8 @@ load();
         <todo-list-filter
           v-if="withHeaderExtra"
           :with-create="withCreate"
+          :with-filter="withFilter"
+          :with-filter-status="withFilterStatus"
           v-model:filter="
             loadResourceCollectionParams.filter as Record<string, any>
           "

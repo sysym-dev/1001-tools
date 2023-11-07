@@ -10,6 +10,8 @@ import TodoListTable from 'src/modules/todo/components/todo-list-table.vue';
     with-pagination
     with-late-tag
     with-create
+    with-filter
+    with-filter-status
     :with-columns="{
       due_at: true,
       status: true,
