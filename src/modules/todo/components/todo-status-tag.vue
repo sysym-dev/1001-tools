@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { NTag, NDropdown, DropdownOption, NIcon, useMessage } from 'naive-ui';
+import { NTag, NDropdown, DropdownOption, NIcon } from 'naive-ui';
 import { Todo } from 'src/modules/todo/todo.entity';
 import { computed } from 'vue';
 import { ChevronDown12Regular } from '@vicons/fluent';
@@ -12,7 +12,6 @@ const emit = defineEmits<{
   updated: [];
 }>();
 
-const message = useMessage();
 const { loading, save } = useUpdateResource<Todo>('todos');
 
 const type = computed<'success' | 'default' | 'warning'>(() => {
@@ -55,8 +54,6 @@ async function handleChange(key: string) {
   await updateTodoStatus(key === 'done');
 }
 function handleSuccess() {
-  message.success('Todo saved');
-
   emit('updated');
 }
 </script>
