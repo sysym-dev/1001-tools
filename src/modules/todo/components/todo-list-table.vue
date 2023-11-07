@@ -8,6 +8,7 @@ import {
   NText,
   PaginationProps,
   NTag,
+  NButton,
 } from 'naive-ui';
 import { h, reactive, ref } from 'vue';
 import TodoQuickCreateDropdown from 'src/modules/todo/components/todo-quick-create-dropdown.vue';
@@ -46,6 +47,7 @@ const props = defineProps<{
   withFilter?: boolean;
   withFilterStatus?: boolean;
   filter?: Record<string, any>;
+  withQuickDone?: boolean;
 }>();
 
 const loadResourceCollectionParams = ref<LoadResourceCollectionParams>({
@@ -144,13 +146,22 @@ const columns: DataTableColumn[] = [
     key: 'actions',
     title: '',
     align: 'right',
-    width: 10,
     render: (rowData: Record<string, any>) =>
-      h(TodoActionDropdown, {
-        todo: rowData as Todo,
-        onEdit: () => handleEdit(rowData as Todo),
-        onDeleted: () => handleRefresh(),
-      }),
+      h(
+        NSpace,
+        { align: 'center', justify: 'end' },
+        {
+          default: () => [
+            props.withQuickDone &&
+              h(NButton, { size: 'small' }, () => 'Mark as Done'),
+            h(TodoActionDropdown, {
+              todo: rowData as Todo,
+              onEdit: () => handleEdit(rowData as Todo),
+              onDeleted: () => handleRefresh(),
+            }),
+          ],
+        },
+      ),
   },
 ];
 
