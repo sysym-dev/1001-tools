@@ -25,6 +25,7 @@ import {
 } from 'src/common/resource/collection';
 import { useResourceCollection } from 'src/common/resource/composes/resource-collection.compose';
 import { isLate } from '../todo.util';
+import { hasOwnProperty } from 'src/utils/object';
 
 const props = defineProps<{
   title?: string;
@@ -154,9 +155,12 @@ const columns: DataTableColumn[] = [
 ];
 
 function setFilterFromProps() {
-  if (props.filter?.is_late) {
-    (loadResourceCollectionParams.value.filter as Record<string, any>).is_late =
-      props.filter?.is_late;
+  if (props.filter) {
+    if (hasOwnProperty(props.filter, 'is_late')) {
+      (
+        loadResourceCollectionParams.value.filter as Record<string, any>
+      ).is_late = props.filter?.is_late;
+    }
   }
 }
 
@@ -191,6 +195,8 @@ function handleRefresh() {
     loadResourceCollectionParams.value.filter.done_at_from = null;
     loadResourceCollectionParams.value.filter.done_at_to = null;
     loadResourceCollectionParams.value.filter.is_late = null;
+
+    setFilterFromProps();
   }
 
   loadResourceCollectionParams.value.sort = '-created_at';
