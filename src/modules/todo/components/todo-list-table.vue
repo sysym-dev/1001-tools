@@ -17,7 +17,7 @@ import TodoListFilter from 'src/modules/todo/components/todo-list-filter.vue';
 import TodoStatusTag from './todo-status-tag.vue';
 import { Todo } from 'src/modules/todo/todo.entity';
 import { optionalElement } from 'src/utils/array';
-import { fromDate } from 'src/utils/date';
+import { fromDate, parseDate } from 'src/utils/date';
 import { computed } from 'vue';
 import {
   LoadResourceCollectionOptions,
@@ -25,6 +25,8 @@ import {
 } from 'src/common/resource/collection';
 import { useResourceCollection } from 'src/common/resource/composes/resource-collection.compose';
 import { isLate } from '../todo.util';
+import { hasOwnProperty } from 'src/utils/object';
+import TodoStatusQuickAction from './todo-status-quick-action.vue';
 
 const props = defineProps<{
   title?: string;
@@ -34,12 +36,18 @@ const props = defineProps<{
   withLateLabel?: boolean;
   withPagination?: boolean;
   withHeaderExtra?: boolean;
+  withLateTag?: boolean;
+  withCreate?: boolean;
   withColumns?: {
     due_at?: boolean;
     doneCheck?: boolean;
     status?: boolean;
   };
   withLateStrikethrough?: boolean;
+  withFilter?: boolean;
+  withFilterStatus?: boolean;
+  filter?: Record<string, any>;
+  withStatusQuickAction?: boolean;
 }>();
 
 const loadResourceCollectionParams = ref<LoadResourceCollectionParams>({
@@ -98,7 +106,11 @@ const columns: DataTableColumn[] = [
         default: () =>
           [
             props.withLateLabel &&
-              h(NText, { type: 'error' }, { default: () => '2 days ago' }),
+              h(
+                NText,
+                { type: 'error' },
+                { default: () => parseDate(rowData.due_at).fromNow() },
+              ),
             h(
               NText,
               {
@@ -107,7 +119,8 @@ const columns: DataTableColumn[] = [
               },
               { default: () => (rowData as Todo).name },
             ),
-            isLate(rowData as Todo) &&
+            props.withLateTag &&
+              isLate(rowData as Todo) &&
               h(NTag, { size: 'small', type: 'error' }, () => 'Late'),
           ].filter(Boolean),
       }),
@@ -133,15 +146,37 @@ const columns: DataTableColumn[] = [
     key: 'actions',
     title: '',
     align: 'right',
-    width: 10,
     render: (rowData: Record<string, any>) =>
-      h(TodoActionDropdown, {
-        todo: rowData as Todo,
-        onEdit: () => handleEdit(rowData as Todo),
-        onDeleted: () => handleRefresh(),
-      }),
+      h(
+        NSpace,
+        { align: 'center', justify: 'end' },
+        {
+          default: () => [
+            props.withStatusQuickAction &&
+              h(TodoStatusQuickAction, {
+                todo: rowData as Todo,
+                onUpdated: () => handleRefresh(),
+              }),
+            h(TodoActionDropdown, {
+              todo: rowData as Todo,
+              onEdit: () => handleEdit(rowData as Todo),
+              onDeleted: () => handleRefresh(),
+            }),
+          ],
+        },
+      ),
   },
 ];
+
+function setFilterFromProps() {
+  if (props.filter) {
+    if (hasOwnProperty(props.filter, 'is_late')) {
+      (
+        loadResourceCollectionParams.value.filter as Record<string, any>
+      ).is_late = props.filter?.is_late;
+    }
+  }
+}
 
 function handleEdit(todo: Todo) {
   editModal.visible = true;
@@ -174,6 +209,8 @@ function handleRefresh() {
     loadResourceCollectionParams.value.filter.done_at_from = null;
     loadResourceCollectionParams.value.filter.done_at_to = null;
     loadResourceCollectionParams.value.filter.is_late = null;
+
+    setFilterFromProps();
   }
 
   loadResourceCollectionParams.value.sort = '-created_at';
@@ -183,6 +220,7 @@ function handleRefresh() {
   });
 }
 
+setFilterFromProps();
 load();
 </script>
 
@@ -192,6 +230,9 @@ load();
       <template #extra>
         <todo-list-filter
           v-if="withHeaderExtra"
+          :with-create="withCreate"
+          :with-filter="withFilter"
+          :with-filter-status="withFilterStatus"
           v-model:filter="
             loadResourceCollectionParams.filter as Record<string, any>
           "
