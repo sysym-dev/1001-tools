@@ -34,6 +34,8 @@ const props = defineProps<{
   withLateLabel?: boolean;
   withPagination?: boolean;
   withHeaderExtra?: boolean;
+  withLateTag?: boolean;
+  withCreate?: boolean;
   withColumns?: {
     due_at?: boolean;
     doneCheck?: boolean;
@@ -112,7 +114,8 @@ const columns: DataTableColumn[] = [
               },
               { default: () => (rowData as Todo).name },
             ),
-            isLate(rowData as Todo) &&
+            props.withLateTag &&
+              isLate(rowData as Todo) &&
               h(NTag, { size: 'small', type: 'error' }, () => 'Late'),
           ].filter(Boolean),
       }),
@@ -205,6 +208,7 @@ load();
       <template #extra>
         <todo-list-filter
           v-if="withHeaderExtra"
+          :with-create="withCreate"
           v-model:filter="
             loadResourceCollectionParams.filter as Record<string, any>
           "

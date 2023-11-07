@@ -17,6 +17,7 @@ import { debounce } from 'src/utils/debounce';
 const props = defineProps<{
   filter: Record<string, any>;
   sort: string;
+  withCreate?: boolean;
 }>();
 const emit = defineEmits<{
   'update:filter': [values: Record<string, any>];
@@ -135,7 +136,7 @@ function handleCreated() {
     />
     <todo-list-filter-dropdown v-model="filter" v-on:filter="handleFilter" />
     <todo-list-sort-dropdown v-model="sort" v-on:sort="handleSort" />
-    <n-button type="primary" v-on:click="handleCreate">
+    <n-button v-if="withCreate" type="primary" v-on:click="handleCreate">
       <template #icon>
         <n-icon>
           <add-12-regular />
@@ -146,6 +147,7 @@ function handleCreated() {
   </n-space>
 
   <todo-create-modal
+    v-if="withCreate"
     v-model:visible="visibleCreate"
     v-on:created="handleCreated"
   />
