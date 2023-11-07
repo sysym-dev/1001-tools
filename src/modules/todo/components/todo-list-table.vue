@@ -170,10 +170,26 @@ const columns: DataTableColumn[] = [
 
 function setFilterFromProps() {
   if (props.filter) {
-    if (hasOwnProperty(props.filter, 'is_late')) {
-      (
-        loadResourceCollectionParams.value.filter as Record<string, any>
-      ).is_late = props.filter?.is_late;
+    if (loadResourceCollectionParams.value.filter) {
+      if (hasOwnProperty(props.filter, 'is_late')) {
+        loadResourceCollectionParams.value.filter.is_late =
+          props.filter.is_late;
+      }
+
+      if (hasOwnProperty(props.filter, 'due_at_from')) {
+        loadResourceCollectionParams.value.filter.due_at_from =
+          props.filter.due_at_from;
+      }
+
+      if (hasOwnProperty(props.filter, 'due_at_to')) {
+        loadResourceCollectionParams.value.filter.due_at_to =
+          props.filter.due_at_to;
+      }
+
+      if (hasOwnProperty(props.filter, 'is_done')) {
+        loadResourceCollectionParams.value.filter.is_done =
+          props.filter.is_done;
+      }
     }
   }
 }
