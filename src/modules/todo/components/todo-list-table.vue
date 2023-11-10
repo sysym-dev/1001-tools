@@ -48,6 +48,11 @@ const props = defineProps<{
   withFilterStatus?: boolean;
   filter?: Record<string, any>;
   withStatusQuickAction?: boolean;
+  sort?: string;
+  page?: {
+    size?: number;
+    number?: number;
+  };
 }>();
 
 const loadResourceCollectionParams = ref<LoadResourceCollectionParams>({
@@ -168,7 +173,7 @@ const columns: DataTableColumn[] = [
   },
 ];
 
-function setFilterFromProps() {
+function setParamsFromProps() {
   if (props.filter) {
     if (loadResourceCollectionParams.value.filter) {
       if (hasOwnProperty(props.filter, 'is_late')) {
@@ -191,6 +196,21 @@ function setFilterFromProps() {
           props.filter.is_done;
       }
     }
+  }
+  if (props.page) {
+    if (loadResourceCollectionParams.value.page) {
+      if (hasOwnProperty(props.page, 'size')) {
+        loadResourceCollectionParams.value.page.size = props.page.size;
+      }
+
+      if (hasOwnProperty(props.page, 'number')) {
+        loadResourceCollectionParams.value.page.number = props.page.number;
+      }
+    }
+  }
+
+  if (props.sort) {
+    loadResourceCollectionParams.value.sort = props.sort;
   }
 }
 
@@ -226,17 +246,17 @@ function handleRefresh() {
     loadResourceCollectionParams.value.filter.done_at_to = null;
     loadResourceCollectionParams.value.filter.is_late = null;
 
-    setFilterFromProps();
+    setParamsFromProps();
   }
 
-  loadResourceCollectionParams.value.sort = '-created_at';
+  loadResourceCollectionParams.value.sort = props.sort ?? '-created_at';
 
   load({
     resetPage: true,
   });
 }
 
-setFilterFromProps();
+setParamsFromProps();
 load();
 </script>
 

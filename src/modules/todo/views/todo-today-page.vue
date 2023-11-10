@@ -16,6 +16,10 @@ import { parseDate } from 'src/utils/date';
         due_at_to: parseDate(new Date()).endOf('d').toISOString(),
         is_done: false,
       }"
+      sort="created_at"
+      :page="{
+        size: 100,
+      }"
     />
 
     <n-collapse display-directive="show">
@@ -30,6 +34,10 @@ import { parseDate } from 'src/utils/date';
             due_at_from: parseDate(new Date()).startOf('d').toISOString(),
             due_at_to: parseDate(new Date()).endOf('d').toISOString(),
             is_done: true,
+          }"
+          sort="created_at"
+          :page="{
+            size: 100,
           }"
         />
       </n-collapse-item>
