@@ -11,6 +11,7 @@ import { parseDate } from 'src/utils/date';
       :subtitle="parseDate(new Date()).format('LL')"
       with-quick-create
       with-header
+      with-status-quick-action
       :filter="{
         due_at_from: parseDate(new Date()).startOf('d').toISOString(),
         due_at_to: parseDate(new Date()).endOf('d').toISOString(),
@@ -30,6 +31,7 @@ import { parseDate } from 'src/utils/date';
         <todo-list-table
           :with-quick-create="false"
           :with-header="false"
+          with-status-quick-action
           :filter="{
             due_at_from: parseDate(new Date()).startOf('d').toISOString(),
             due_at_to: parseDate(new Date()).endOf('d').toISOString(),

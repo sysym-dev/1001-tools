@@ -15,7 +15,7 @@ const { loading, save } = useUpdateResource<Todo>('todos');
 async function handleClick() {
   try {
     await save(props.todo.id, {
-      done_at: new Date().toISOString(),
+      done_at: props.todo.done_at ? null : new Date().toISOString(),
     });
 
     emit('updated');
@@ -25,6 +25,6 @@ async function handleClick() {
 
 <template>
   <n-button size="small" :loading="loading" v-on:click="handleClick"
-    >Mark as Done</n-button
+    >Mark as {{ todo.done_at ? 'Todo' : 'Done' }}</n-button
   >
 </template>
