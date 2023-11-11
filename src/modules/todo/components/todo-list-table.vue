@@ -40,6 +40,7 @@ const props = defineProps<{
   withCreate?: boolean;
   withColumns?: {
     due_at?: boolean;
+    done_at?: boolean;
     doneCheck?: boolean;
     status?: boolean;
   };
@@ -130,6 +131,14 @@ const columns: DataTableColumn[] = [
           ].filter(Boolean),
       }),
   },
+  ...optionalElement(props.withColumns?.done_at, {
+    key: 'done-at',
+    title: 'Done At',
+    render: (rowData: Record<string, any>) =>
+      h(NText, null, {
+        default: () => fromDate((rowData as Todo).done_at as string),
+      }),
+  }),
   ...optionalElement(props.withColumns?.due_at, {
     key: 'due-at',
     title: 'Due At',

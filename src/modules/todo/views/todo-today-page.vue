@@ -32,6 +32,9 @@ import { parseDate } from 'src/utils/date';
           :with-quick-create="false"
           :with-header="false"
           with-status-quick-action
+          :with-columns="{
+            done_at: true,
+          }"
           :filter="{
             due_at_from: parseDate(new Date()).startOf('d').toISOString(),
             due_at_to: parseDate(new Date()).endOf('d').toISOString(),
