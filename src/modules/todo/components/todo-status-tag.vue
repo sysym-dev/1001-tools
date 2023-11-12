@@ -4,6 +4,8 @@ import { Todo } from 'src/modules/todo/todo.entity';
 import { computed } from 'vue';
 import { ChevronDown12Regular } from '@vicons/fluent';
 import { useUpdateResource } from 'src/common/resource/composes/update-resource.compose';
+import { inject } from 'vue';
+import { Emitter } from 'mitt';
 
 const props = defineProps<{
   todo: Todo;
@@ -12,6 +14,9 @@ const emit = defineEmits<{
   updated: [];
 }>();
 
+const emitter = inject('emitter') as Emitter<{
+  'todo-updated': any;
+}>;
 const { loading, save } = useUpdateResource<Todo>('todos');
 
 const type = computed<'success' | 'default' | 'warning'>(() => {
@@ -55,6 +60,7 @@ async function handleChange(key: string) {
 }
 function handleSuccess() {
   emit('updated');
+  emitter.emit('todo-updated', null);
 }
 </script>
 

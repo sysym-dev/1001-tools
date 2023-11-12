@@ -16,6 +16,8 @@ import { Todo } from 'src/modules/todo/todo.entity';
 import { parseDate } from 'src/utils/date';
 import { useValidation } from 'src/common/form/composes/validation.compose';
 import { useUpdateResource } from 'src/common/resource/composes/update-resource.compose';
+import { inject } from 'vue';
+import { Emitter } from 'mitt';
 
 const props = defineProps<{
   visible: boolean;
@@ -26,6 +28,9 @@ const emit = defineEmits<{
   updated: [];
 }>();
 
+const emitter = inject('emitter') as Emitter<{
+  'todo-updated': any;
+}>;
 const { validate } = useValidation();
 const { loading, save } = useUpdateResource<Todo>('todos');
 const message = useMessage();
@@ -85,6 +90,7 @@ function handleSuccess() {
   visible.value = false;
 
   emit('updated');
+  emitter.emit('todo-updated', null);
 }
 </script>
 

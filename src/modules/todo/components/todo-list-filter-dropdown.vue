@@ -10,7 +10,7 @@ import {
 } from 'naive-ui';
 import { Filter16Regular } from '@vicons/fluent';
 import { h, computed } from 'vue';
-import { getTimestamp, fromTimestamp } from 'src/utils/date';
+import { parseDate } from 'src/utils/date';
 
 const props = defineProps<{
   modelValue: Record<string, any>;
@@ -51,14 +51,14 @@ const filterOptions: DropdownRenderOption[] = [
                   h(NDatePicker, {
                     clearable: true,
                     value: filter.value.due_at_from
-                      ? getTimestamp(filter.value.due_at_from)
+                      ? parseDate(filter.value.due_at_from).valueOf()
                       : filter.value.due_at_from,
                     'onUpdate:value': (value: number) => {
                       filter.value.due_at_from = value
-                        ? fromTimestamp(value).startOf('day').toDate()
+                        ? parseDate(value).startOf('day').toDate()
                         : value;
                       filter.value.due_at_to = value
-                        ? fromTimestamp(value).endOf('day').toDate()
+                        ? parseDate(value).endOf('day').toDate()
                         : value;
 
                       emit('filter');
@@ -74,14 +74,14 @@ const filterOptions: DropdownRenderOption[] = [
                   h(NDatePicker, {
                     clearable: true,
                     value: filter.value.done_at_from
-                      ? getTimestamp(filter.value.done_at_from)
+                      ? parseDate(filter.value.done_at_from).valueOf()
                       : filter.value.done_at_from,
                     'onUpdate:value': (value: number) => {
                       filter.value.done_at_from = value
-                        ? fromTimestamp(value).startOf('day').toDate()
+                        ? parseDate(value).startOf('day').toDate()
                         : value;
                       filter.value.done_at_to = value
-                        ? fromTimestamp(value).endOf('day').toDate()
+                        ? parseDate(value).endOf('day').toDate()
                         : value;
 
                       emit('filter');

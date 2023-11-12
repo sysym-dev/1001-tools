@@ -17,16 +17,19 @@ import TodoListFilter from 'src/modules/todo/components/todo-list-filter.vue';
 import TodoStatusTag from './todo-status-tag.vue';
 import { Todo } from 'src/modules/todo/todo.entity';
 import { optionalElement } from 'src/utils/array';
-import { fromDate, parseDate } from 'src/utils/date';
+import { parseDate } from 'src/utils/date';
 import { computed } from 'vue';
 import {
   LoadResourceCollectionOptions,
   LoadResourceCollectionParams,
+  ResourceCollection,
 } from 'src/common/resource/collection';
 import { useResourceCollection } from 'src/common/resource/composes/resource-collection.compose';
 import { isLate } from '../todo.util';
 import { hasOwnProperty } from 'src/utils/object';
 import TodoStatusQuickAction from './todo-status-quick-action.vue';
+import { inject } from 'vue';
+import { Emitter } from 'mitt';
 
 const props = defineProps<{
   title?: string;
@@ -40,6 +43,7 @@ const props = defineProps<{
   withCreate?: boolean;
   withColumns?: {
     due_at?: boolean;
+    done_at?: boolean;
     doneCheck?: boolean;
     status?: boolean;
   };
@@ -48,7 +52,21 @@ const props = defineProps<{
   withFilterStatus?: boolean;
   filter?: Record<string, any>;
   withStatusQuickAction?: boolean;
+  sort?: string;
+  page?: {
+    size?: number;
+    number?: number;
+  };
 }>();
+const emit = defineEmits<{
+  load: [resource: ResourceCollection<Todo>];
+}>();
+
+const emitter = inject('emitter') as Emitter<{
+  'todo-created': any;
+  'todo-updated': any;
+  'todo-deleted': any;
+}>;
 
 const loadResourceCollectionParams = ref<LoadResourceCollectionParams>({
   page: {
@@ -72,7 +90,7 @@ const {
   data,
   meta,
   load: loadResourceCollection,
-} = useResourceCollection('todos', loadResourceCollectionParams);
+} = useResourceCollection<Todo>('todos', loadResourceCollectionParams);
 
 const pagination = computed<PaginationProps>(() => {
   return {
@@ -125,12 +143,20 @@ const columns: DataTableColumn[] = [
           ].filter(Boolean),
       }),
   },
+  ...optionalElement(props.withColumns?.done_at, {
+    key: 'done-at',
+    title: 'Done At',
+    render: (rowData: Record<string, any>) =>
+      h(NText, null, {
+        default: () => parseDate((rowData as Todo).done_at as string).fromNow(),
+      }),
+  }),
   ...optionalElement(props.withColumns?.due_at, {
     key: 'due-at',
     title: 'Due At',
     render: (rowData: Record<string, any>) =>
       h(NText, null, {
-        default: () => fromDate((rowData as Todo).due_at),
+        default: () => parseDate((rowData as Todo).due_at).fromNow(),
       }),
   }),
   ...optionalElement(props.withColumns?.status, {
@@ -139,7 +165,6 @@ const columns: DataTableColumn[] = [
     render: (rowData: Record<string, any>) =>
       h(TodoStatusTag, {
         todo: rowData as Todo,
-        onUpdated: () => handleRefresh(),
       }),
   }),
   {
@@ -155,12 +180,10 @@ const columns: DataTableColumn[] = [
             props.withStatusQuickAction &&
               h(TodoStatusQuickAction, {
                 todo: rowData as Todo,
-                onUpdated: () => handleRefresh(),
               }),
             h(TodoActionDropdown, {
               todo: rowData as Todo,
               onEdit: () => handleEdit(rowData as Todo),
-              onDeleted: () => handleRefresh(),
             }),
           ],
         },
@@ -168,13 +191,44 @@ const columns: DataTableColumn[] = [
   },
 ];
 
-function setFilterFromProps() {
+function setParamsFromProps() {
   if (props.filter) {
-    if (hasOwnProperty(props.filter, 'is_late')) {
-      (
-        loadResourceCollectionParams.value.filter as Record<string, any>
-      ).is_late = props.filter?.is_late;
+    if (loadResourceCollectionParams.value.filter) {
+      if (hasOwnProperty(props.filter, 'is_late')) {
+        loadResourceCollectionParams.value.filter.is_late =
+          props.filter.is_late;
+      }
+
+      if (hasOwnProperty(props.filter, 'due_at_from')) {
+        loadResourceCollectionParams.value.filter.due_at_from =
+          props.filter.due_at_from;
+      }
+
+      if (hasOwnProperty(props.filter, 'due_at_to')) {
+        loadResourceCollectionParams.value.filter.due_at_to =
+          props.filter.due_at_to;
+      }
+
+      if (hasOwnProperty(props.filter, 'is_done')) {
+        loadResourceCollectionParams.value.filter.is_done =
+          props.filter.is_done;
+      }
     }
+  }
+  if (props.page) {
+    if (loadResourceCollectionParams.value.page) {
+      if (hasOwnProperty(props.page, 'size')) {
+        loadResourceCollectionParams.value.page.size = props.page.size;
+      }
+
+      if (hasOwnProperty(props.page, 'number')) {
+        loadResourceCollectionParams.value.page.number = props.page.number;
+      }
+    }
+  }
+
+  if (props.sort) {
+    loadResourceCollectionParams.value.sort = props.sort;
   }
 }
 
@@ -185,6 +239,8 @@ function handleEdit(todo: Todo) {
 async function load(params?: LoadResourceCollectionOptions) {
   try {
     await loadResourceCollection(params);
+
+    emit('load', { rows: data.value, meta: meta.value });
   } catch (err) {}
 }
 
@@ -210,23 +266,31 @@ function handleRefresh() {
     loadResourceCollectionParams.value.filter.done_at_to = null;
     loadResourceCollectionParams.value.filter.is_late = null;
 
-    setFilterFromProps();
+    setParamsFromProps();
   }
 
-  loadResourceCollectionParams.value.sort = '-created_at';
+  loadResourceCollectionParams.value.sort = props.sort ?? '-created_at';
 
   load({
     resetPage: true,
   });
 }
 
-setFilterFromProps();
+emitter.on('todo-created', () => handleRefresh());
+emitter.on('todo-updated', () => handleRefresh());
+emitter.on('todo-deleted', () => handleRefresh());
+
+setParamsFromProps();
 load();
 </script>
 
 <template>
   <n-space vertical size="large">
-    <n-page-header v-if="withHeader" :title="title" :subtitle="subtitle">
+    <n-page-header
+      v-if="withHeader"
+      :title="`${title} (${meta.total})`"
+      :subtitle="subtitle"
+    >
       <template #extra>
         <todo-list-filter
           v-if="withHeaderExtra"
@@ -239,7 +303,6 @@ load();
           v-model:sort="loadResourceCollectionParams.sort as string"
           v-on:filter="handleReload"
           v-on:sort="handleReload"
-          v-on:created="handleRefresh"
         />
       </template>
     </n-page-header>
@@ -253,9 +316,5 @@ load();
     />
     <todo-quick-create-dropdown v-if="withQuickCreate" />
   </n-space>
-  <todo-edit-modal
-    :todo="editModal.data"
-    v-model:visible="editModal.visible"
-    v-on:updated="handleRefresh"
-  />
+  <todo-edit-modal :todo="editModal.data" v-model:visible="editModal.visible" />
 </template>

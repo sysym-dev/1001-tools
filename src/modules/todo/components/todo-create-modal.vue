@@ -15,8 +15,10 @@ import { ref } from 'vue';
 import { computed, reactive } from 'vue';
 import { useCreateResource } from 'src/common/resource/composes/create-resource.compose';
 import { Todo } from '../todo.entity';
-import { fromTimestamp } from 'src/utils/date';
+import { parseDate } from 'src/utils/date';
 import { useValidation } from 'src/common/form/composes/validation.compose';
+import { inject } from 'vue';
+import { Emitter } from 'mitt';
 
 const props = defineProps<{
   visible: boolean;
@@ -26,6 +28,9 @@ const emit = defineEmits<{
   created: [];
 }>();
 
+const emitter = inject('emitter') as Emitter<{
+  'todo-created': any;
+}>;
 const message = useMessage();
 const { loading, save } = useCreateResource<Todo>('todos');
 const { validate } = useValidation();
@@ -70,7 +75,7 @@ async function handleSave() {
     await validate(formRef.value as FormInst);
     await save({
       name: form.name as string,
-      due_at: fromTimestamp(form.due_at as number)
+      due_at: parseDate(form.due_at as number)
         .endOf('d')
         .toISOString(),
     });
@@ -86,6 +91,8 @@ function handleSuccess() {
   visible.value = false;
 
   emit('created');
+
+  emitter.emit('todo-created', []);
 }
 </script>
 
