@@ -27,6 +27,8 @@ import { useResourceCollection } from 'src/common/resource/composes/resource-col
 import { isLate } from '../todo.util';
 import { hasOwnProperty } from 'src/utils/object';
 import TodoStatusQuickAction from './todo-status-quick-action.vue';
+import { inject } from 'vue';
+import { Emitter } from 'mitt';
 
 const props = defineProps<{
   title?: string;
@@ -55,6 +57,12 @@ const props = defineProps<{
     number?: number;
   };
 }>();
+
+const emitter = inject('emitter') as Emitter<{
+  'todo-created': any;
+  'todo-updated': any;
+  'todo-deleted': any;
+}>;
 
 const loadResourceCollectionParams = ref<LoadResourceCollectionParams>({
   page: {
@@ -153,7 +161,6 @@ const columns: DataTableColumn[] = [
     render: (rowData: Record<string, any>) =>
       h(TodoStatusTag, {
         todo: rowData as Todo,
-        onUpdated: () => handleRefresh(),
       }),
   }),
   {
@@ -169,12 +176,10 @@ const columns: DataTableColumn[] = [
             props.withStatusQuickAction &&
               h(TodoStatusQuickAction, {
                 todo: rowData as Todo,
-                onUpdated: () => handleRefresh(),
               }),
             h(TodoActionDropdown, {
               todo: rowData as Todo,
               onEdit: () => handleEdit(rowData as Todo),
-              onDeleted: () => handleRefresh(),
             }),
           ],
         },
@@ -265,6 +270,10 @@ function handleRefresh() {
   });
 }
 
+emitter.on('todo-created', () => handleRefresh());
+emitter.on('todo-updated', () => handleRefresh());
+emitter.on('todo-deleted', () => handleRefresh());
+
 setParamsFromProps();
 load();
 </script>
@@ -284,7 +293,6 @@ load();
           v-model:sort="loadResourceCollectionParams.sort as string"
           v-on:filter="handleReload"
           v-on:sort="handleReload"
-          v-on:created="handleRefresh"
         />
       </template>
     </n-page-header>
@@ -296,14 +304,7 @@ load();
       :pagination="withPagination ? pagination : false"
       @update-page="handleChangePage"
     />
-    <todo-quick-create-dropdown
-      v-if="withQuickCreate"
-      v-on:created="handleRefresh"
-    />
+    <todo-quick-create-dropdown v-if="withQuickCreate" />
   </n-space>
-  <todo-edit-modal
-    :todo="editModal.data"
-    v-model:visible="editModal.visible"
-    v-on:updated="handleRefresh"
-  />
+  <todo-edit-modal :todo="editModal.data" v-model:visible="editModal.visible" />
 </template>

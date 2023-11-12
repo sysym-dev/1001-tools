@@ -17,11 +17,16 @@ import { useValidation } from 'src/common/form/composes/validation.compose';
 import { useCreateResource } from 'src/common/resource/composes/create-resource.compose';
 import { Todo } from '../todo.entity';
 import { parseDate } from 'src/utils/date';
+import { inject } from 'vue';
+import { Emitter } from 'mitt';
 
 const emit = defineEmits<{
   created: [];
 }>();
 
+const emitter = inject('emitter') as Emitter<{
+  'todo-created': any;
+}>;
 const { validate } = useValidation();
 const { loading, save } = useCreateResource<Todo>('todos');
 const message = useMessage();
@@ -92,6 +97,7 @@ function handleSuccess() {
   visible.value = false;
 
   emit('created');
+  emitter.emit('todo-created', null);
 }
 function handleKeydown(e: KeyboardEvent) {
   if (e.code === 'Enter') {

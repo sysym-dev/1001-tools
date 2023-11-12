@@ -17,6 +17,8 @@ import { useCreateResource } from 'src/common/resource/composes/create-resource.
 import { Todo } from '../todo.entity';
 import { fromTimestamp } from 'src/utils/date';
 import { useValidation } from 'src/common/form/composes/validation.compose';
+import { inject } from 'vue';
+import { Emitter } from 'mitt';
 
 const props = defineProps<{
   visible: boolean;
@@ -26,6 +28,9 @@ const emit = defineEmits<{
   created: [];
 }>();
 
+const emitter = inject('emitter') as Emitter<{
+  'todo-created': any;
+}>;
 const message = useMessage();
 const { loading, save } = useCreateResource<Todo>('todos');
 const { validate } = useValidation();
@@ -86,6 +91,8 @@ function handleSuccess() {
   visible.value = false;
 
   emit('created');
+
+  emitter.emit('todo-created', []);
 }
 </script>
 

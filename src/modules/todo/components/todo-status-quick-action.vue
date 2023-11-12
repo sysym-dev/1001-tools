@@ -2,6 +2,8 @@
 import { NButton } from 'naive-ui';
 import { Todo } from 'src/modules/todo/todo.entity';
 import { useUpdateResource } from 'src/common/resource/composes/update-resource.compose';
+import { inject } from 'vue';
+import { Emitter } from 'mitt';
 
 const props = defineProps<{
   todo: Todo;
@@ -10,6 +12,9 @@ const emit = defineEmits<{
   updated: [];
 }>();
 
+const emitter = inject('emitter') as Emitter<{
+  'todo-updated': any;
+}>;
 const { loading, save } = useUpdateResource<Todo>('todos');
 
 async function handleClick() {
@@ -19,6 +24,7 @@ async function handleClick() {
     });
 
     emit('updated');
+    emitter.emit('todo-updated', null);
   } catch (err) {}
 }
 </script>

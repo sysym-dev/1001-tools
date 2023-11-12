@@ -10,6 +10,8 @@ import {
 import { MoreHorizontal16Regular } from '@vicons/fluent';
 import { Todo } from '../todo.entity';
 import { useDeleteResource } from 'src/common/resource/composes/delete-resource.compose';
+import { inject } from 'vue';
+import { Emitter } from 'mitt';
 
 const props = defineProps<{
   todo: Todo;
@@ -19,6 +21,9 @@ const emit = defineEmits<{
   deleted: [];
 }>();
 
+const emitter = inject('emitter') as Emitter<{
+  'todo-deleted': any;
+}>;
 const dialog = useDialog();
 const message = useMessage();
 const { del } = useDeleteResource('todos');
@@ -61,6 +66,7 @@ function handleSuccess() {
   message.success('Todo deleted');
 
   emit('deleted');
+  emitter.emit('todo-deleted', null);
 }
 </script>
 
