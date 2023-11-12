@@ -1,7 +1,16 @@
 <script setup lang="ts">
 import { NSpace, NCollapse, NCollapseItem, NPageHeader } from 'naive-ui';
+import { ref } from 'vue';
 import TodoListTable from 'src/modules/todo/components/todo-list-table.vue';
 import { parseDate } from 'src/utils/date';
+import { ResourceCollection } from 'src/common/resource/collection';
+import { Todo } from '../todo.entity';
+
+const numberDone = ref<number>(0);
+
+function handleDoneLoaded(resource: ResourceCollection<Todo>) {
+  numberDone.value = resource.meta.total;
+}
 </script>
 
 <template>
@@ -23,10 +32,10 @@ import { parseDate } from 'src/utils/date';
       }"
     />
 
-    <n-collapse display-directive="show">
-      <n-collapse-item title="Done">
+    <n-collapse display-directive="show" :default-expanded-names="['done']">
+      <n-collapse-item title="Done" name="done">
         <template #header>
-          <n-page-header title="Done" />
+          <n-page-header :title="`Done (${numberDone})`" />
         </template>
         <todo-list-table
           :with-quick-create="false"
@@ -44,6 +53,7 @@ import { parseDate } from 'src/utils/date';
           :page="{
             size: 100,
           }"
+          v-on:load="handleDoneLoaded"
         />
       </n-collapse-item>
     </n-collapse>

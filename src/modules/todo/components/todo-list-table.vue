@@ -22,6 +22,7 @@ import { computed } from 'vue';
 import {
   LoadResourceCollectionOptions,
   LoadResourceCollectionParams,
+  ResourceCollection,
 } from 'src/common/resource/collection';
 import { useResourceCollection } from 'src/common/resource/composes/resource-collection.compose';
 import { isLate } from '../todo.util';
@@ -57,6 +58,9 @@ const props = defineProps<{
     number?: number;
   };
 }>();
+const emit = defineEmits<{
+  load: [resource: ResourceCollection<Todo>];
+}>();
 
 const emitter = inject('emitter') as Emitter<{
   'todo-created': any;
@@ -86,7 +90,7 @@ const {
   data,
   meta,
   load: loadResourceCollection,
-} = useResourceCollection('todos', loadResourceCollectionParams);
+} = useResourceCollection<Todo>('todos', loadResourceCollectionParams);
 
 const pagination = computed<PaginationProps>(() => {
   return {
@@ -235,6 +239,8 @@ function handleEdit(todo: Todo) {
 async function load(params?: LoadResourceCollectionOptions) {
   try {
     await loadResourceCollection(params);
+
+    emit('load', { rows: data.value, meta: meta.value });
   } catch (err) {}
 }
 
@@ -280,7 +286,11 @@ load();
 
 <template>
   <n-space vertical size="large">
-    <n-page-header v-if="withHeader" :title="title" :subtitle="subtitle">
+    <n-page-header
+      v-if="withHeader"
+      :title="`${title} (${meta.total})`"
+      :subtitle="subtitle"
+    >
       <template #extra>
         <todo-list-filter
           v-if="withHeaderExtra"
