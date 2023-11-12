@@ -14,6 +14,7 @@ import {
   MailInbox16Regular,
   Archive16Regular,
   Folder16Regular,
+  Home16Regular,
 } from '@vicons/fluent';
 import { ref } from 'vue';
 import { useRoute } from 'vue-router';
@@ -21,6 +22,18 @@ import { useRoute } from 'vue-router';
 const route = useRoute();
 
 const menuOptions: MenuOption[] = [
+  {
+    label: () =>
+      h(
+        RouterLink,
+        {
+          to: { name: 'dashboard' },
+        },
+        { default: () => 'Dashboard' },
+      ),
+    key: 'dashboard',
+    icon: renderIcon(Home16Regular),
+  },
   {
     label: () =>
       h(
@@ -80,8 +93,10 @@ function renderIcon(icon: Component) {
         :value="active"
       ></n-menu>
     </n-layout-sider>
-    <n-layout content-style="padding: 24px" :embedded="true">
-      <n-layout-content content-style="padding: 24px">
+    <n-layout
+      content-style="padding: 24px; background-color: rgb(250, 250, 252)"
+    >
+      <n-layout-content content-style="background-color: rgb(250, 250, 252)">
         <slot />
       </n-layout-content>
     </n-layout>
