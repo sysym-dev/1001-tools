@@ -17,7 +17,7 @@ import TodoListFilter from 'src/modules/todo/components/todo-list-filter.vue';
 import TodoStatusTag from './todo-status-tag.vue';
 import { Todo } from 'src/modules/todo/todo.entity';
 import { optionalElement } from 'src/utils/array';
-import { fromDate, parseDate } from 'src/utils/date';
+import { parseDate } from 'src/utils/date';
 import { computed } from 'vue';
 import {
   LoadResourceCollectionOptions,
@@ -148,7 +148,7 @@ const columns: DataTableColumn[] = [
     title: 'Done At',
     render: (rowData: Record<string, any>) =>
       h(NText, null, {
-        default: () => fromDate((rowData as Todo).done_at as string),
+        default: () => parseDate((rowData as Todo).done_at as string).fromNow(),
       }),
   }),
   ...optionalElement(props.withColumns?.due_at, {
@@ -156,7 +156,7 @@ const columns: DataTableColumn[] = [
     title: 'Due At',
     render: (rowData: Record<string, any>) =>
       h(NText, null, {
-        default: () => fromDate((rowData as Todo).due_at),
+        default: () => parseDate((rowData as Todo).due_at).fromNow(),
       }),
   }),
   ...optionalElement(props.withColumns?.status, {
