@@ -89,6 +89,9 @@ function handleCloseTodoDropdown() {
 function handleSelectTodoDropdown(key: string) {
   router.push({ name: key });
 }
+function handleSelectProfileDropdown(key: string) {
+  router.push({ name: key });
+}
 </script>
 
 <template>
@@ -146,6 +149,7 @@ function handleSelectTodoDropdown(key: string) {
             :options="profileDropdown"
             trigger="click"
             placement="bottom-end"
+            @select="handleSelectProfileDropdown"
           >
             <n-button quaternary circle>
               <template #icon>

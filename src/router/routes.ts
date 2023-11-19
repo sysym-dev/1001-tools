@@ -24,4 +24,9 @@ export const routes: RouteRecordSingleView[] = [
     name: 'all',
     component: () => import('src/modules/todo/views/todo-all-page.vue'),
   },
+  {
+    path: '/profile',
+    name: 'profile',
+    component: () => import('src/modules/profile/views/profile-page.vue'),
+  },
 ];
