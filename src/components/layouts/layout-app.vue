@@ -8,6 +8,8 @@ import {
   NButton,
   NDropdown,
   DropdownOption,
+  NDivider,
+  NText,
 } from 'naive-ui';
 import { RouterLink } from 'vue-router';
 import {
@@ -15,7 +17,7 @@ import {
   ChevronDown16Regular,
   ChevronUp16Regular,
 } from '@vicons/fluent';
-import { ref } from 'vue';
+import { h, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 const route = useRoute();
@@ -33,6 +35,38 @@ const todoDropdown: DropdownOption[] = [
   {
     key: 'all',
     label: 'All Todo',
+  },
+];
+const profileDropdown: DropdownOption[] = [
+  {
+    key: 'header',
+    type: 'render',
+    render: () =>
+      h(
+        'div',
+        { style: 'padding: 8px 14px; display: flex; flex-direction: column' },
+        [
+          h(NText, {}, () => 'Ibrahim'),
+          h(NText, { depth: 3 }, () => 'ibrahimalanshor6@gmail.com'),
+        ],
+      ),
+  },
+  {
+    key: 'divider',
+    type: 'render',
+    render: () => h(NDivider, { style: 'margin: 0; margin-bottom: 4px' }),
+  },
+  {
+    key: 'profile',
+    label: 'Profile',
+  },
+  {
+    key: 'setting',
+    label: 'Setting',
+  },
+  {
+    key: 'logout',
+    label: 'Logout',
   },
 ];
 
@@ -108,13 +142,19 @@ function handleSelectTodoDropdown(key: string) {
               </n-button>
             </n-dropdown>
           </n-space>
-          <n-button quaternary>
-            <template #icon>
-              <n-icon>
-                <PersonCircle24Regular />
-              </n-icon>
-            </template>
-          </n-button>
+          <n-dropdown
+            :options="profileDropdown"
+            trigger="click"
+            placement="bottom-end"
+          >
+            <n-button quaternary circle>
+              <template #icon>
+                <n-icon>
+                  <PersonCircle24Regular />
+                </n-icon>
+              </template>
+            </n-button>
+          </n-dropdown>
         </n-space>
       </n-layout-content>
     </n-layout-header>
