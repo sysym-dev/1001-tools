@@ -33,7 +33,7 @@ const taskCategories = [
   <div class="px-4 py-8 space-y-4">
     <div class="flex items-center justify-between">
       <h1 class="font-bold leading-6 text-xl text-gray-900">Categories</h1>
-      <base-button>New</base-button>
+      <base-button color="sky">New</base-button>
     </div>
     <div class="grid grid-cols-1 gap-4">
       <div
