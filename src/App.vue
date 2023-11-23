@@ -30,16 +30,17 @@ const taskCategories = [
 </script>
 
 <template>
-  <div class="px-4 py-8 space-y-4">
+  <div class="px-4 py-8 sm:py-12 space-y-4 container">
     <div class="flex items-center justify-between">
       <h1 class="font-bold leading-6 text-xl text-gray-900">Categories</h1>
       <base-button color="sky">New</base-button>
     </div>
-    <div class="grid grid-cols-1 gap-4">
-      <div
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <a
         v-for="category in taskCategories"
         :key="category.id"
-        class="flex flex-col ring-1 ring-inset ring-gray-300 rounded-md px-4 py-3"
+        href="#"
+        class="flex flex-col ring-1 ring-inset ring-gray-300 rounded-md px-4 py-3 hover:bg-gray-50"
       >
         <span class="text-base font-semibold text-gray-900 leading-7">{{
           category.name
@@ -48,7 +49,7 @@ const taskCategories = [
           >{{ category.tasksDoneCount }} /
           {{ category.tasksCount }} completed</span
         >
-      </div>
+      </a>
     </div>
     <base-button fullwidth>See All</base-button>
   </div>
