@@ -1,30 +1,55 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
+import BaseButton from './components/base/base-button.vue';
+
+const taskCategories = [
+  {
+    id: 1,
+    name: 'Shopping List',
+    tasksCount: 10,
+    tasksDoneCount: 2,
+  },
+  {
+    id: 2,
+    name: 'College Task',
+    tasksCount: 4,
+    tasksDoneCount: 4,
+  },
+  {
+    id: 3,
+    name: 'Project Ideas',
+    tasksCount: 5,
+    tasksDoneCount: 3,
+  },
+  {
+    id: 4,
+    name: 'Article Ideas',
+    tasksCount: 15,
+    tasksDoneCount: 8,
+  },
+];
 </script>
 
 <template>
-  <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
+  <div class="px-4 py-8 space-y-4">
+    <div class="flex items-center justify-between">
+      <h1 class="font-bold leading-6 text-xl text-gray-900">Categories</h1>
+      <base-button>New</base-button>
+    </div>
+    <div class="grid grid-cols-1 gap-4">
+      <div
+        v-for="category in taskCategories"
+        :key="category.id"
+        class="flex flex-col ring-1 ring-inset ring-gray-300 rounded-md px-4 py-3"
+      >
+        <span class="text-base font-semibold text-gray-900 leading-7">{{
+          category.name
+        }}</span>
+        <span class="text-sm leading-6 text-gray-500"
+          >{{ category.tasksDoneCount }} /
+          {{ category.tasksCount }} completed</span
+        >
+      </div>
+    </div>
+    <base-button fullwidth>See All</base-button>
   </div>
-  <HelloWorld msg="Vite + Vue" />
 </template>
-
-<style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
-}
-</style>
