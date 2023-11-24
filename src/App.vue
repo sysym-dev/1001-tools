@@ -1,7 +1,7 @@
 <script setup>
 import BaseButton from './components/base/base-button.vue';
 import BaseWidget from './components/base/base-widget.vue';
-import BaseTitle from './components/base/base-title.vue';
+import BaseHeading from './components/base/base-heading.vue';
 
 const taskCategories = [
   {
@@ -33,10 +33,12 @@ const taskCategories = [
 
 <template>
   <div class="px-4 py-8 sm:py-12 space-y-4 container">
-    <div class="flex items-center justify-between">
-      <base-title>Categories</base-title>
-      <base-button color="sky">New</base-button>
-    </div>
+    <base-heading title="Categories">
+      <template #actions>
+        <base-button color="sky">New</base-button>
+      </template>
+    </base-heading>
+
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
       <base-widget
         v-for="category in taskCategories"
