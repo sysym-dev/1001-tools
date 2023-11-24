@@ -1,6 +1,7 @@
 <script setup>
 import BaseButton from './components/base/base-button.vue';
 import BaseWidget from './components/base/base-widget.vue';
+import BaseTitle from './components/base/base-title.vue';
 
 const taskCategories = [
   {
@@ -33,7 +34,7 @@ const taskCategories = [
 <template>
   <div class="px-4 py-8 sm:py-12 space-y-4 container">
     <div class="flex items-center justify-between">
-      <h1 class="font-bold leading-6 text-xl text-gray-900">Categories</h1>
+      <base-title>Categories</base-title>
       <base-button color="sky">New</base-button>
     </div>
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
