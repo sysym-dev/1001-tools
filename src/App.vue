@@ -1,5 +1,6 @@
 <script setup>
 import BaseButton from './components/base/base-button.vue';
+import BaseWidget from './components/base/base-widget.vue';
 
 const taskCategories = [
   {
@@ -36,20 +37,14 @@ const taskCategories = [
       <base-button color="sky">New</base-button>
     </div>
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-      <a
+      <base-widget
         v-for="category in taskCategories"
         :key="category.id"
+        tag="a"
         href="#"
-        class="flex flex-col ring-1 ring-inset ring-gray-300 rounded-md px-4 py-3 hover:bg-gray-50"
-      >
-        <span class="text-base font-semibold text-gray-900 leading-7">{{
-          category.name
-        }}</span>
-        <span class="text-sm leading-6 text-gray-500"
-          >{{ category.tasksDoneCount }} /
-          {{ category.tasksCount }} completed</span
-        >
-      </a>
+        :title="category.name"
+        :value="`${category.tasksDoneCount} / ${category.tasksCount} completed`"
+      />
     </div>
     <base-button fullwidth>See All</base-button>
   </div>
