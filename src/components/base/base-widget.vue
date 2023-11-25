@@ -18,11 +18,9 @@ const props = defineProps({
 <template>
   <component
     :is="tag"
-    class="flex flex-col ring-1 ring-inset ring-gray-300 rounded-md px-4 py-3 hover:bg-gray-50"
+    class="relative flex flex-col space-3 rounded-lg border border-gray-300 bg-white px-4 py-3 focus-within:ring-2 focus-within:ring-sky-600 focus-within:ring-offset-2 hover:border-gray-400"
   >
-    <span class="text-base font-semibold text-gray-900 leading-7">{{
-      title
-    }}</span>
-    <span class="text-sm leading-6 text-gray-500">{{ value }}</span>
+    <span class="text-sm font-medium text-gray-900">{{ title }}</span>
+    <span class="truncate text-sm text-gray-500">{{ value }}</span>
   </component>
 </template>

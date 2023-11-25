@@ -10,6 +10,10 @@ const props = defineProps({
     type: String,
     default: 'white',
   },
+  size: {
+    type: String,
+    default: 'md',
+  },
 });
 
 const color = computed(() => {
@@ -21,16 +25,29 @@ const color = computed(() => {
 
   return colors[props.color];
 });
+const size = computed(() => {
+  const sizes = {
+    xs: 'px-2 py-1 text-xs rounded gap-x-1.5',
+    sm: 'px-2 py-1 text-sm rounded gap-x-1.5',
+    md: 'px-2.5 py-1.5 text-sm rounded-md gap-x-1.5',
+    lg: 'px-3 py-2 text-sm rounded-md gap-x-2',
+    xl: 'px-3.5 py-2.5 text-sm rounded-md gap-x-2',
+  };
+
+  return sizes[props.size];
+});
 </script>
 <template>
   <button
     type="button"
     :class="[
-      'rounded-md px-2.5 py-1.5 text-sm font-semibold',
+      'font-semibold inline-flex items-center justify-center',
       fullwidth ? 'w-full' : '',
       color,
+      size,
     ]"
   >
     <slot />
+    <slot name="append" />
   </button>
 </template>
