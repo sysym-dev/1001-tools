@@ -29,11 +29,7 @@ const tasks = [
 
 <template>
   <div>
-    <base-heading title="Today Todo">
-      <template #actions>
-        <base-button color="sky">New</base-button>
-      </template>
-    </base-heading>
+    <base-heading title="Today Todo" />
 
     <ul class="divide-y divide-gray-100">
       <li

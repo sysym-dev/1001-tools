@@ -33,11 +33,7 @@ const taskCategories = [
 
 <template>
   <div class="space-y-4">
-    <base-heading title="Categories">
-      <template #actions>
-        <base-button color="sky">New</base-button>
-      </template>
-    </base-heading>
+    <base-heading title="Categories" />
 
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
       <base-widget
