@@ -1,32 +1,35 @@
 <script setup>
 import BaseHeading from 'src/components/base/base-heading.vue';
 import BaseButton from 'src/components/base/base-button.vue';
-import BaseDropdown from 'src/components/base/base-dropdown.vue';
-import { ChevronDownIcon } from '@heroicons/vue/24/outline';
 import TaskStatusDropdown from './task-status-dropdown.vue';
+import { ref } from 'vue';
 
-const tasks = [
+const tasks = ref([
   {
     id: 1,
     name: 'Cek KHS UTS',
     date: new Date(),
+    status: 'done',
   },
   {
     id: 2,
     name: 'Tidur Setelar Asar',
     date: new Date(),
+    status: 'in-progress',
   },
   {
     id: 3,
     name: 'Play DLS',
     date: new Date(),
+    status: 'todo',
   },
   {
     id: 4,
     name: 'Nonton Siti',
     date: new Date(),
+    status: 'todo',
   },
-];
+]);
 </script>
 
 <template>
@@ -35,7 +38,7 @@ const tasks = [
 
     <ul class="divide-y divide-gray-100">
       <li
-        v-for="task in tasks"
+        v-for="(task, index) in tasks"
         :key="task.id"
         class="flex items-center justify-between gap-x-6 py-5"
       >
@@ -51,7 +54,7 @@ const tasks = [
             </p>
           </div>
         </div>
-        <task-status-dropdown />
+        <task-status-dropdown v-model="tasks[index].status" />
       </li>
     </ul>
 

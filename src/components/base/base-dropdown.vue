@@ -11,6 +11,17 @@ const props = defineProps({
     type: String,
     default: 'md',
   },
+  modelValue: null,
+});
+const emit = defineEmits(['update:modelValue']);
+
+const active = computed({
+  get() {
+    return props.modelValue;
+  },
+  set(value) {
+    emit('update:modelValue', value);
+  },
 });
 
 const visible = ref(false);
@@ -29,6 +40,11 @@ function handleVisible() {
 }
 function handleClose() {
   visible.value = false;
+}
+function handleClickOption(option) {
+  active.value = option.id;
+
+  handleClose();
 }
 </script>
 
@@ -55,8 +71,10 @@ function handleClose() {
           :class="[
             'text-gray-700 block hover:bg-gray-100 hover:text-gray-900',
             size,
+            option.id === active && 'bg-gray-100 text-gray-900',
           ]"
           tabindex="-1"
+          v-on:click.prevent="handleClickOption(option)"
           >{{ option.name }}</a
         >
       </div>
