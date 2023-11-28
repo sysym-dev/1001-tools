@@ -1,10 +1,34 @@
 <script setup>
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
+
+const props = defineProps({
+  options: {
+    type: Array,
+    required: true,
+    default: () => [],
+  },
+  size: {
+    type: String,
+    default: 'md',
+  },
+});
 
 const visible = ref(false);
 
+const size = computed(() => {
+  const sizes = {
+    md: 'px-4 py-2 text-sm',
+    sm: 'px-2 py-1 text-sm',
+  };
+
+  return sizes[props.size];
+});
+
 function handleVisible() {
   visible.value = !visible.value;
+}
+function handleClose() {
+  visible.value = false;
 }
 </script>
 
@@ -15,49 +39,26 @@ function handleVisible() {
     </div>
     <div
       v-if="visible"
-      class="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+      class="absolute right-0 z-10 mt-2 w-fit whitespace-nowrap origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
       role="menu"
       aria-orientation="vertical"
       aria-labelledby="menu-button"
       tabindex="-1"
+      v-click-outside="handleClose"
     >
       <div class="py-1" role="none">
         <!-- Active: "bg-gray-100 text-gray-900", Not Active: "text-gray-700" -->
         <a
+          v-for="option in options"
+          :key="option.id"
           href="#"
-          class="text-gray-700 block px-4 py-2 text-sm"
-          role="menuitem"
+          :class="[
+            'text-gray-700 block hover:bg-gray-100 hover:text-gray-900',
+            size,
+          ]"
           tabindex="-1"
-          id="menu-item-0"
-          >Account settings</a
+          >{{ option.name }}</a
         >
-        <a
-          href="#"
-          class="text-gray-700 block px-4 py-2 text-sm"
-          role="menuitem"
-          tabindex="-1"
-          id="menu-item-1"
-          >Support</a
-        >
-        <a
-          href="#"
-          class="text-gray-700 block px-4 py-2 text-sm"
-          role="menuitem"
-          tabindex="-1"
-          id="menu-item-2"
-          >License</a
-        >
-        <form method="POST" action="#" role="none">
-          <button
-            type="submit"
-            class="text-gray-700 block w-full px-4 py-2 text-left text-sm"
-            role="menuitem"
-            tabindex="-1"
-            id="menu-item-3"
-          >
-            Sign out
-          </button>
-        </form>
       </div>
     </div>
   </div>
