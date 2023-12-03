@@ -24,6 +24,10 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  type: {
+    type: String,
+    default: 'button',
+  },
 });
 
 const color = computed(() => {
@@ -53,7 +57,7 @@ const size = computed(() => {
 </script>
 <template>
   <button
-    type="button"
+    :type="type"
     :class="[
       'font-semibold inline-flex items-center justify-center',
       classes.base,

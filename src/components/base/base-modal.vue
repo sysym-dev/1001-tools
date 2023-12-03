@@ -1,5 +1,5 @@
 <script setup>
-import { computed } from 'vue';
+import { computed, watch } from 'vue';
 
 const props = defineProps({
   visible: {
@@ -7,7 +7,7 @@ const props = defineProps({
     default: false,
   },
 });
-const emit = defineEmits(['update:visible']);
+const emit = defineEmits(['update:visible', 'open']);
 
 const visible = computed({
   get() {
@@ -16,6 +16,12 @@ const visible = computed({
   set(value) {
     emit('update:visible', value);
   },
+});
+
+watch(visible, (value) => {
+  if (value) {
+    emit('open');
+  }
 });
 </script>
 
