@@ -9,8 +9,18 @@ const props = defineProps({
     default: 'normal',
   },
   message: String,
+  modelValue: null,
 });
+const emit = defineEmits(['update:modelValue']);
 
+const value = computed({
+  get() {
+    return props.modelValue;
+  },
+  set(value) {
+    emit('update:modelValue', value);
+  },
+});
 const inputEl = ref();
 
 const state = computed(() => {
@@ -37,6 +47,7 @@ defineExpose({ inputEl });
       state,
     ]"
     :placeholder="placeholder"
+    v-model="value"
   />
   <p v-if="message" class="mt-2 text-sm text-red-600">{{ message }}</p>
 </template>
