@@ -4,6 +4,7 @@ import BaseHeading from 'src/components/base/base-heading.vue';
 import BaseButton from 'src/components/base/base-button.vue';
 import BaseTabs from 'src/components/base/base-tabs.vue';
 import TaskList from 'src/modules/task/components/task-list.vue';
+import TaskCreateModal from 'src/modules/task/components/task-create-modal.vue';
 import { h, ref } from 'vue';
 
 const tabs = [
@@ -20,6 +21,10 @@ const tabs = [
             default: () => 'Load More',
           },
         ),
+        h(TaskCreateModal, {
+          visible: visibleTaskCreateModal.value,
+          'onUpdate:visible': (value) => (visibleTaskCreateModal.value = value),
+        }),
       ]),
   },
   {
@@ -29,6 +34,11 @@ const tabs = [
 ];
 
 const activeTab = ref('tasks');
+const visibleTaskCreateModal = ref(false);
+
+function handleCreateTask() {
+  visibleTaskCreateModal.value = true;
+}
 </script>
 
 <template>
@@ -39,7 +49,10 @@ const activeTab = ref('tasks');
       with-description
     >
       <template #actions>
-        <base-button :classes="{ base: 'hidden sm:block' }" color="sky"
+        <base-button
+          :classes="{ base: 'hidden sm:block' }"
+          color="sky"
+          v-on:click="handleCreateTask"
           >New Task</base-button
         >
         <base-button
@@ -47,6 +60,7 @@ const activeTab = ref('tasks');
           color="sky"
           size="xl"
           circle
+          v-on:click="handleCreateTask"
         >
           <plus-icon class="w-5 h-5" />
         </base-button>
