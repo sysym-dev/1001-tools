@@ -32,19 +32,15 @@ const taskCategories = [
 </script>
 
 <template>
-  <div class="space-y-4">
-    <base-heading title="Categories" />
-
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-      <base-widget
-        v-for="category in taskCategories"
-        :key="category.id"
-        tag="a"
-        href="#"
-        :title="category.name"
-        :value="`${category.tasksDoneCount} / ${category.tasksCount} completed`"
-      />
-    </div>
-    <base-button fullwidth>See All</base-button>
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+    <base-widget
+      v-for="category in taskCategories"
+      :key="category.id"
+      tag="router-link"
+      :to="{ name: 'task-categories.show', params: { id: category.id } }"
+      :title="category.name"
+      :value="`${category.tasksDoneCount} / ${category.tasksCount} completed`"
+    />
   </div>
+  <base-button fullwidth>See All</base-button>
 </template>

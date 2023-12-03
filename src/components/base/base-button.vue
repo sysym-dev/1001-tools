@@ -14,6 +14,16 @@ const props = defineProps({
     type: String,
     default: 'md',
   },
+  classes: {
+    type: Object,
+    default: () => ({
+      base: '',
+    }),
+  },
+  circle: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const color = computed(() => {
@@ -33,7 +43,9 @@ const size = computed(() => {
     sm: 'px-2 py-1 text-sm rounded gap-x-1.5',
     md: 'px-2.5 py-1.5 text-sm rounded-md gap-x-1.5',
     lg: 'px-3 py-2 text-sm rounded-md gap-x-2',
-    xl: 'px-3.5 py-2.5 text-sm rounded-md gap-x-2',
+    xl: props.circle
+      ? 'p-3 text-sm rounded-full'
+      : 'px-3.5 py-2.5 text-sm rounded-md gap-x-2',
   };
 
   return sizes[props.size];
@@ -44,6 +56,7 @@ const size = computed(() => {
     type="button"
     :class="[
       'font-semibold inline-flex items-center justify-center',
+      classes.base,
       fullwidth ? 'w-full' : '',
       color,
       size,
