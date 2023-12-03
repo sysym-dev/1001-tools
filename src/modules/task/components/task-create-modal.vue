@@ -3,7 +3,7 @@ import BaseModal from 'src/components/base/base-modal.vue';
 import BaseCard from 'src/components/base/base-card.vue';
 import BaseInput from 'src/components/base/base-input.vue';
 import BaseButton from 'src/components/base/base-button.vue';
-import { computed } from 'vue';
+import { computed, nextTick, ref } from 'vue';
 
 const props = defineProps({
   visible: {
@@ -22,15 +22,23 @@ const visible = computed({
   },
 });
 
+const inputEl = ref();
+
 function handleClose() {
   visible.value = false;
+}
+
+async function handleOpenModal() {
+  await nextTick();
+
+  inputEl.value.inputEl.focus();
 }
 </script>
 
 <template>
-  <base-modal v-model:visible="visible">
+  <base-modal v-model:visible="visible" v-on:open="handleOpenModal">
     <base-card title="New Task" v-on:click-outside="handleClose">
-      <base-input label="Name" placeholder="Name" />
+      <base-input ref="inputEl" label="Name" placeholder="Name" />
 
       <template #footer>
         <div class="flex gap-x-2 items-center justify-end">
