@@ -6,6 +6,10 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  size: {
+    type: String,
+    default: 'sm',
+  },
 });
 const emit = defineEmits(['update:visible', 'open']);
 
@@ -16,6 +20,13 @@ const visible = computed({
   set(value) {
     emit('update:visible', value);
   },
+});
+
+const size = computed(() => {
+  return {
+    sm: 'max-w-sm',
+    md: 'max-w-md',
+  }[props.size];
 });
 
 watch(visible, (value) => {
@@ -53,7 +64,7 @@ watch(visible, (value) => {
           From: "opacity-100 translate-y-0 sm:scale-100"
           To: "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
       -->
-        <div class="transform transition-all shadow-xl w-full max-w-sm">
+        <div :class="['transform transition-all shadow-xl w-full', size]">
           <slot />
         </div>
       </div>
