@@ -11,7 +11,7 @@ const props = defineProps({
     default: 'sm',
   },
 });
-const emit = defineEmits(['update:visible', 'open']);
+const emit = defineEmits(['update:visible', 'open', 'close']);
 
 const visible = computed({
   get() {
@@ -32,6 +32,8 @@ const size = computed(() => {
 watch(visible, (value) => {
   if (value) {
     emit('open');
+  } else {
+    emit('close');
   }
 });
 </script>
