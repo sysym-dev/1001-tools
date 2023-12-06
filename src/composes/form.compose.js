@@ -14,6 +14,10 @@ export function useForm({ schema, validationSchema }) {
     form.value = { ...schema };
   }
 
+  function setForm(value) {
+    form.value = value;
+  }
+
   async function submit() {
     try {
       resetError();
@@ -27,6 +31,7 @@ export function useForm({ schema, validationSchema }) {
   return {
     form,
     errors,
+    setForm,
     resetForm,
     hasError,
     resetError,
