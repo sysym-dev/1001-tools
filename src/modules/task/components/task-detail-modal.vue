@@ -4,6 +4,7 @@ import BaseCard from 'src/components/base/base-card.vue';
 import BaseButton from 'src/components/base/base-button.vue';
 import BaseDescriptionColumn from 'src/components/base/base-description-column.vue';
 import TaskStatusDropdown from './task-status-dropdown.vue';
+import TaskEditModal from './task-edit-modal.vue';
 import { computed, h, ref } from 'vue';
 
 const props = defineProps({
@@ -23,6 +24,7 @@ const visible = computed({
   },
 });
 
+const visibleEditModal = ref(false);
 const status = ref('todo');
 const columns = [
   {
@@ -44,6 +46,13 @@ const columns = [
 
 function handleClose() {
   visible.value = false;
+}
+function handleEdit() {
+  visibleEditModal.value = true;
+  visible.value = false;
+}
+function handleCloseEditModal() {
+  visible.value = true;
 }
 </script>
 
@@ -67,10 +76,15 @@ function handleClose() {
 
       <template #footer>
         <div class="flex items-center justify-end gap-x-2">
-          <base-button color="sky">Edit</base-button>
+          <base-button color="sky" v-on:click="handleEdit">Edit</base-button>
           <base-button v-on:click="handleClose">Close</base-button>
         </div>
       </template>
     </base-card>
   </base-modal>
+
+  <task-edit-modal
+    v-model:visible="visibleEditModal"
+    v-on:close="handleCloseEditModal"
+  />
 </template>
