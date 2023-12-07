@@ -5,6 +5,7 @@ import BaseButton from 'src/components/base/base-button.vue';
 import BaseDescriptionColumn from 'src/components/base/base-description-column.vue';
 import TaskStatusDropdown from './task-status-dropdown.vue';
 import TaskEditModal from './task-edit-modal.vue';
+import TaskDeleteConfirm from './task-delete-confirm.vue';
 import { computed, h, ref } from 'vue';
 
 const props = defineProps({
@@ -25,6 +26,7 @@ const visible = computed({
 });
 
 const visibleEditModal = ref(false);
+const visibleDeleteConfirm = ref(false);
 const status = ref('todo');
 const columns = [
   {
@@ -51,7 +53,14 @@ function handleEdit() {
   visibleEditModal.value = true;
   visible.value = false;
 }
+function handleDelete() {
+  visibleDeleteConfirm.value = true;
+  visible.value = false;
+}
 function handleCloseEditModal() {
+  visible.value = true;
+}
+function handleCloseDeleteConfirm() {
   visible.value = true;
 }
 </script>
@@ -75,8 +84,13 @@ function handleCloseEditModal() {
       ></base-description-column>
 
       <template #footer>
-        <div class="flex items-center justify-end gap-x-2">
-          <base-button color="sky" v-on:click="handleEdit">Edit</base-button>
+        <div class="flex items-center justify-between gap-x-2">
+          <div class="flex items-center gap-x-2">
+            <base-button color="sky" v-on:click="handleEdit">Edit</base-button>
+            <base-button color="red" v-on:click="handleDelete"
+              >Delete</base-button
+            >
+          </div>
           <base-button v-on:click="handleClose">Close</base-button>
         </div>
       </template>
@@ -86,5 +100,9 @@ function handleCloseEditModal() {
   <task-edit-modal
     v-model:visible="visibleEditModal"
     v-on:close="handleCloseEditModal"
+  />
+  <task-delete-confirm
+    v-model:visible="visibleDeleteConfirm"
+    v-on:close="handleCloseDeleteConfirm"
   />
 </template>
