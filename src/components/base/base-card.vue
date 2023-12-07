@@ -13,6 +13,14 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  withHeader: {
+    type: Boolean,
+    default: true,
+  },
+  withFooter: {
+    type: Boolean,
+    default: true,
+  },
 });
 const emit = defineEmits(['click-outside']);
 
@@ -24,6 +32,7 @@ function handleClickOutside() {
 <template>
   <div v-click-outside="handleClickOutside">
     <div
+      v-if="withHeader"
       class="border-b border-gray-200 bg-white px-4 py-5 sm:px-6 rounded-t-lg"
     >
       <base-title size="xs">{{ title }}</base-title>
@@ -33,11 +42,16 @@ function handleClickOutside() {
         'bg-white text-sm text-gray-500',
         classes.body,
         bodyNoPadding ? 'p-0' : 'px-4 py-5 sm:px-6',
+        withHeader ? '' : 'rounded-t-lg',
+        withFooter ? '' : 'rounded-b-lg',
       ]"
     >
       <slot />
     </div>
-    <div class="border-t bg-white px-4 py-5 sm:px-6 rounded-b-lg">
+    <div
+      v-if="withFooter"
+      class="border-t bg-white px-4 py-5 sm:px-6 rounded-b-lg"
+    >
       <slot name="footer" />
     </div>
   </div>
