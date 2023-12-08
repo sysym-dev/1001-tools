@@ -2,12 +2,17 @@
 import BaseDescriptionList from 'src/components/base/base-description-list.vue';
 import BaseButton from 'src/components/base/base-button.vue';
 import TaskCategoryEditModal from './task-category-edit-modal.vue';
+import TaskCategoryDeleteConfirm from './task-category-delete-confirm.vue';
 import { h, ref } from 'vue';
 
 const visibleEditModal = ref(false);
+const visibleDeleteConfirm = ref(false);
 
 function handleEdit() {
   visibleEditModal.value = true;
+}
+function handleDelete() {
+  visibleDeleteConfirm.value = true;
 }
 </script>
 
@@ -40,7 +45,10 @@ function handleEdit() {
             ),
             h(
               BaseButton,
-              { color: 'red' },
+              {
+                color: 'red',
+                onClick: handleDelete,
+              },
               {
                 default: () => 'Delete',
               },
@@ -55,4 +63,5 @@ function handleEdit() {
     }"
   />
   <task-category-edit-modal v-model:visible="visibleEditModal" />
+  <task-category-delete-confirm v-model:visible="visibleDeleteConfirm" />
 </template>
