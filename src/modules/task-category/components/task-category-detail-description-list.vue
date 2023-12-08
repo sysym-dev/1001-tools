@@ -1,7 +1,19 @@
 <script setup>
 import BaseDescriptionList from 'src/components/base/base-description-list.vue';
 import BaseButton from 'src/components/base/base-button.vue';
-import { h } from 'vue';
+import TaskCategoryEditModal from './task-category-edit-modal.vue';
+import TaskCategoryDeleteConfirm from './task-category-delete-confirm.vue';
+import { h, ref } from 'vue';
+
+const visibleEditModal = ref(false);
+const visibleDeleteConfirm = ref(false);
+
+function handleEdit() {
+  visibleEditModal.value = true;
+}
+function handleDelete() {
+  visibleDeleteConfirm.value = true;
+}
 </script>
 
 <template>
@@ -20,13 +32,28 @@ import { h } from 'vue';
         id: 'actions',
         name: 'Actions',
         render: () =>
-          h(
-            BaseButton,
-            { color: 'red' },
-            {
-              default: () => 'Delete',
-            },
-          ),
+          h('div', { class: 'flex gap-x-2' }, [
+            h(
+              BaseButton,
+              {
+                color: 'sky',
+                onClick: handleEdit,
+              },
+              {
+                default: () => 'Edit',
+              },
+            ),
+            h(
+              BaseButton,
+              {
+                color: 'red',
+                onClick: handleDelete,
+              },
+              {
+                default: () => 'Delete',
+              },
+            ),
+          ]),
       },
     ]"
     :data="{
@@ -35,4 +62,6 @@ import { h } from 'vue';
         'Fugiat ipsum ipsum deserunt culpa aute sint do nostrud anim incididunt cillum culpa consequat. Excepteur qui ipsum aliquip consequat sint. Sit id mollit nulla mollit nostrud in ea officia proident. Irure nostrud pariatur mollit ad adipisicing reprehenderit deserunt qui eu.',
     }"
   />
+  <task-category-edit-modal v-model:visible="visibleEditModal" />
+  <task-category-delete-confirm v-model:visible="visibleDeleteConfirm" />
 </template>
