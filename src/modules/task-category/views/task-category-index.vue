@@ -5,6 +5,7 @@ import BaseButton from 'src/components/base/base-button.vue';
 import BaseTabs from 'src/components/base/base-tabs.vue';
 import TaskList from 'src/modules/task/components/task-list.vue';
 import TaskCreateModal from 'src/modules/task/components/task-create-modal.vue';
+import TaskCategoryDetailDescriptionList from 'src/modules/task-category/components/task-category-detail-description-list.vue';
 import { h, ref } from 'vue';
 
 const tabs = [
@@ -30,6 +31,7 @@ const tabs = [
   {
     id: 'setting',
     name: 'Setting',
+    component: () => h(TaskCategoryDetailDescriptionList),
   },
 ];
 
