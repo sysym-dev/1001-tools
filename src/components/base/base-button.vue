@@ -29,6 +29,7 @@ const props = defineProps({
     default: 'button',
   },
 });
+const emit = defineEmits(['click']);
 
 const color = computed(() => {
   const colors = {
@@ -55,6 +56,10 @@ const size = computed(() => {
 
   return sizes[props.size];
 });
+
+function handleClick() {
+  emit('click');
+}
 </script>
 <template>
   <button
@@ -66,6 +71,7 @@ const size = computed(() => {
       color,
       size,
     ]"
+    v-on:click="handleClick"
   >
     <slot name="prepend" />
     <slot />
