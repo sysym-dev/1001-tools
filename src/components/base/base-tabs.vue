@@ -21,6 +21,10 @@ const active = computed({
 const activeTab = computed(() => {
   return props.tabs.find((tab) => tab.id === active.value);
 });
+
+function handleClickTab(tab) {
+  active.value = tab.id;
+}
 </script>
 
 <template>
@@ -52,6 +56,7 @@ const activeTab = computed(() => {
               ? 'border-sky-500 text-sky-600'
               : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700',
           ]"
+          v-on:click="handleClickTab(tab)"
           >{{ tab.name }}</a
         >
       </nav>
