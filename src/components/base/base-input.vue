@@ -22,6 +22,10 @@ const props = defineProps({
     type: String,
     default: 'md',
   },
+  textarea: {
+    type: Boolean,
+    default: false,
+  },
 });
 const emit = defineEmits(['update:modelValue']);
 
@@ -58,26 +62,33 @@ const size = computed(() => {
   return sizes[props.size];
 });
 
+const params = computed(() => ({
+  class: [
+    'block border-0 ring-1 ring-inset focus:ring-2 focus:ring-inset leading-6',
+    state.value,
+    width.value,
+    size.value,
+  ],
+  placeholder: props.placeholder,
+}));
+
 defineExpose({ inputEl });
 </script>
 
 <template>
-  <label
-    v-if="withLabel"
-    class="block text-sm font-medium leading-6 text-gray-900 mb-2"
-    >{{ label }}</label
-  >
-  <input
-    ref="inputEl"
-    type="text"
-    :class="[
-      'block border-0 ring-1 ring-inset focus:ring-2 focus:ring-inset leading-6',
-      state,
-      width,
-      size,
-    ]"
-    :placeholder="placeholder"
-    v-model="value"
-  />
-  <p v-if="message" class="mt-2 text-sm text-red-600">{{ message }}</p>
+  <div>
+    <label
+      v-if="withLabel"
+      class="block text-sm font-medium leading-6 text-gray-900 mb-2"
+      >{{ label }}</label
+    >
+    <textarea
+      v-if="textarea"
+      ref="inputEl"
+      v-bind="params"
+      v-model="value"
+    ></textarea>
+    <input v-else ref="inputEl" type="text" v-bind="params" v-model="value" />
+    <p v-if="message" class="mt-2 text-sm text-red-600">{{ message }}</p>
+  </div>
 </template>
