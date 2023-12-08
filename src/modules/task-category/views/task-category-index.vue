@@ -12,7 +12,7 @@ const tabs = [
     id: 'tasks',
     name: 'Task',
     component: () =>
-      h('div', {}, [
+      h('div', { class: 'py-5' }, [
         h(TaskList),
         h(
           BaseButton,

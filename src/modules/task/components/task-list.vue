@@ -1,8 +1,14 @@
 <script setup>
+import BaseInput from 'src/components/base/base-input.vue';
+import BaseSelect from 'src/components/base/base-select.vue';
 import TaskStatusDropdown from './task-status-dropdown.vue';
 import TaskDetailModal from './task-detail-modal.vue';
 import { ref } from 'vue';
+import { availableStatus } from 'src/modules/task/task-status';
 
+const filter = ref({
+  status: null,
+});
 const tasks = ref([
   {
     id: 1,
@@ -38,6 +44,21 @@ function handleClickDetail() {
 </script>
 
 <template>
+  <div class="flex items-center gap-x-2 justify-between">
+    <base-select
+      size="sm"
+      placeholder="Filter Status"
+      width="fit"
+      :options="availableStatus"
+      v-model="filter.status"
+    />
+    <base-input
+      :with-label="false"
+      placeholder="Search"
+      width="fit"
+      size="sm"
+    />
+  </div>
   <ul class="divide-y divide-gray-100">
     <li
       v-for="(task, index) in tasks"
