@@ -3,6 +3,7 @@ import BaseButton from 'src/components/base/base-button.vue';
 import BaseDropdown from 'src/components/base/base-dropdown.vue';
 import { ChevronDownIcon } from '@heroicons/vue/24/outline';
 import { computed } from 'vue';
+import { availableStatus } from 'src/modules/task/task-status';
 
 const props = defineProps({
   modelValue: null,
@@ -18,7 +19,7 @@ const selected = computed({
   },
 });
 const selectedName = computed(
-  () => statusOptions.find((option) => option.id === selected.value).name,
+  () => availableStatus.find((option) => option.id === selected.value).name,
 );
 const indicatorColor = computed(() => {
   const colors = {
@@ -29,25 +30,10 @@ const indicatorColor = computed(() => {
 
   return colors[selected.value];
 });
-
-const statusOptions = [
-  {
-    id: 'todo',
-    name: 'Todo',
-  },
-  {
-    id: 'in-progress',
-    name: 'In Progress',
-  },
-  {
-    id: 'done',
-    name: 'Done',
-  },
-];
 </script>
 
 <template>
-  <base-dropdown :options="statusOptions" size="sm" v-model="selected">
+  <base-dropdown :options="availableStatus" size="sm" v-model="selected">
     <template #toggle="{ toggle }">
       <base-button size="sm" v-on:click="toggle">
         <template #prepend>

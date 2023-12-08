@@ -2,18 +2,12 @@
 import { computed, ref } from 'vue';
 
 const props = defineProps({
-  label: String,
   placeholder: String,
   state: {
     type: String,
     default: 'normal',
   },
-  message: String,
   modelValue: null,
-  withLabel: {
-    type: Boolean,
-    default: true,
-  },
   width: {
     type: String,
     default: 'full',
@@ -21,6 +15,10 @@ const props = defineProps({
   size: {
     type: String,
     default: 'md',
+  },
+  options: {
+    type: Array,
+    required: true,
   },
 });
 const emit = defineEmits(['update:modelValue']);
@@ -62,22 +60,20 @@ defineExpose({ inputEl });
 </script>
 
 <template>
-  <label
-    v-if="withLabel"
-    class="block text-sm font-medium leading-6 text-gray-900 mb-2"
-    >{{ label }}</label
-  >
-  <input
+  <select
     ref="inputEl"
-    type="text"
     :class="[
       'block border-0 ring-1 ring-inset focus:ring-2 focus:ring-inset leading-6',
       state,
-      width,
       size,
+      width,
     ]"
     :placeholder="placeholder"
     v-model="value"
-  />
-  <p v-if="message" class="mt-2 text-sm text-red-600">{{ message }}</p>
+  >
+    <option :value="null">{{ placeholder }}</option>
+    <option v-for="option in options" :key="option.id" :value="option.id">
+      {{ option.name }}
+    </option>
+  </select>
 </template>
