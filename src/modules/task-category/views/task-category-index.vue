@@ -27,5 +27,7 @@ function handleCreateTaskCategory() {}
       </base-button>
     </template>
   </base-heading>
-  <task-category-list />
+  <div class="py-5">
+    <task-category-list />
+  </div>
 </template>

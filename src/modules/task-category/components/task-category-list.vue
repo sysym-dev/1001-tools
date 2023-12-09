@@ -2,6 +2,7 @@
 import { EllipsisHorizontalIcon } from '@heroicons/vue/20/solid';
 import BaseButton from 'src/components/base/base-button.vue';
 import BaseDropdown from 'src/components/base/base-dropdown.vue';
+import BaseInput from 'src/components/base/base-input.vue';
 import BaseStackedList from 'src/components/base/base-stacked-list.vue';
 
 const taskCategories = [
@@ -43,6 +44,7 @@ const actionOptions = [
 </script>
 
 <template>
+  <base-input :with-label="false" placeholder="Search" width="full" />
   <base-stacked-list :data="taskCategories">
     <template #description="{ item }">
       {{ item.tasksDoneCount }} / {{ item.tasksCount }} Completed
