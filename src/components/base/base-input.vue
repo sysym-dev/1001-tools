@@ -55,7 +55,7 @@ const width = computed(() => {
 });
 const size = computed(() => {
   const sizes = {
-    sm: 'py-1 pl-2.5 pr-8 text-sm rounded',
+    sm: 'py-1 pl-2.5 pr-8 text-sm rounded-md',
     md: 'py-1.5 pl-3 pr-10 text-sm rounded-md',
   };
 
