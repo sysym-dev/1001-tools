@@ -6,6 +6,13 @@ import TaskDetailModal from './task-detail-modal.vue';
 import { ref } from 'vue';
 import { availableStatus } from 'src/modules/task/task-status';
 
+defineProps({
+  filterable: {
+    type: Boolean,
+    default: true,
+  },
+});
+
 const filter = ref({
   status: null,
 });
@@ -44,7 +51,7 @@ function handleClickDetail() {
 </script>
 
 <template>
-  <div class="flex items-center gap-x-2 justify-between">
+  <div v-if="filterable" class="flex items-center gap-x-2 justify-between">
     <base-select
       size="sm"
       placeholder="Filter Status"
