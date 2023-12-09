@@ -42,8 +42,8 @@ function handleToggleMobileMenu() {
       </div>
       <div class="sm:hidden">
         <base-button
-          custom-color="text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-sky-500"
-          custom-size="p-2 rounded-md"
+          color="transparent-white"
+          size="square-md"
           v-on:click="handleToggleMobileMenu"
         >
           <component
@@ -55,10 +55,10 @@ function handleToggleMobileMenu() {
     </div>
     <div v-if="visibleMobileMenu" class="sm:hidden">
       <div class="space-y-1 pb-2">
-        <a
+        <router-link
           v-for="menu in menus"
           :key="menu.id"
-          href="#"
+          :to="menu.to"
           :class="[
             'block border-l-4 py-2 pl-3 pr-4 text-base font-medium',
             checkIsActive(menu)
@@ -67,7 +67,7 @@ function handleToggleMobileMenu() {
           ]"
         >
           {{ menu.name }}
-        </a>
+        </router-link>
       </div>
     </div>
   </div>

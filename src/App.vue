@@ -12,10 +12,10 @@ const menus = [
     },
   },
   {
-    id: 'task-categories',
+    id: 'task-categories.index',
     name: 'Category',
     to: {
-      name: 'home',
+      name: 'task-categories.index',
     },
   },
   {

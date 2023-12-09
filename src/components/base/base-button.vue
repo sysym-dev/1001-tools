@@ -41,6 +41,8 @@ const color = computed(() => {
     green:
       'bg-green-600 text-white hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600',
     red: 'bg-red-600 text-white hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600',
+    'transparent-white':
+      'text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-sky-500',
   };
 
   return colors[props.color];
@@ -54,6 +56,7 @@ const size = computed(() => {
     xl: props.circle
       ? 'p-3 text-sm rounded-full'
       : 'px-3.5 py-2.5 text-sm rounded-md gap-x-2',
+    'square-md': 'p-2 rounded-md',
   };
 
   return sizes[props.size];
