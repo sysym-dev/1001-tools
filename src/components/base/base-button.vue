@@ -28,6 +28,8 @@ const props = defineProps({
     type: String,
     default: 'button',
   },
+  customColor: String,
+  customSize: String,
 });
 const emit = defineEmits(['click']);
 
@@ -68,8 +70,8 @@ function handleClick() {
       'font-semibold inline-flex items-center justify-center',
       classes.base,
       fullwidth ? 'w-full' : '',
-      color,
-      size,
+      customColor ?? color,
+      customSize ?? size,
     ]"
     v-on:click="handleClick"
   >
