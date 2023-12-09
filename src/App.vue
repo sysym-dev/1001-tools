@@ -12,10 +12,10 @@ const menus = [
     },
   },
   {
-    id: 'task-categories',
+    id: 'task-categories.index',
     name: 'Category',
     to: {
-      name: 'home',
+      name: 'task-categories.index',
     },
   },
   {
@@ -30,7 +30,7 @@ const menus = [
 
 <template>
   <base-navbar :menus="menus" :active="route.name" />
-  <div class="px-4 py-8 sm:py-12 container">
+  <div class="px-4 py-8 container">
     <router-view />
   </div>
 </template>

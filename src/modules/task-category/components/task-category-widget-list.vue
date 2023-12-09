@@ -1,7 +1,6 @@
 <script setup>
 import BaseButton from 'src/components/base/base-button.vue';
 import BaseWidget from 'src/components/base/base-widget.vue';
-import BaseHeading from 'src/components/base/base-heading.vue';
 
 const taskCategories = [
   {
