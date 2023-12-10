@@ -13,7 +13,7 @@ const props = defineProps({
   },
   modelValue: null,
 });
-const emit = defineEmits(['update:modelValue']);
+const emit = defineEmits(['update:modelValue', 'click-option']);
 
 const active = computed({
   get() {
@@ -45,6 +45,8 @@ function handleClickOption(option) {
   active.value = option.id;
 
   handleClose();
+
+  emit('click-option', option);
 }
 </script>
 

@@ -4,6 +4,13 @@ import BaseButton from 'src/components/base/base-button.vue';
 import BaseDropdown from 'src/components/base/base-dropdown.vue';
 import BaseInput from 'src/components/base/base-input.vue';
 import BaseStackedList from 'src/components/base/base-stacked-list.vue';
+import TaskCategoryDeleteConfirm from './task-category-delete-confirm.vue';
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+
+const visibleDeleteConfirm = ref(false);
 
 const taskCategories = [
   {
@@ -41,16 +48,37 @@ const actionOptions = [
     name: 'Delete',
   },
 ];
+
+function handleClickOption(option) {
+  if (option.id === 'setting') {
+    router.push({
+      name: 'task-categories.detail',
+      params: { id: '1' },
+      query: { tab: 'setting' },
+    });
+  } else if (option.id === 'delete') {
+    visibleDeleteConfirm.value = true;
+  }
+}
+function handleClickItem(item) {
+  router.push({
+    name: 'task-categories.detail',
+    params: { id: item.id },
+  });
+}
 </script>
 
 <template>
   <base-input :with-label="false" placeholder="Search" width="full" />
-  <base-stacked-list :data="taskCategories">
+  <base-stacked-list :data="taskCategories" v-on:click-detail="handleClickItem">
     <template #description="{ item }">
       {{ item.tasksDoneCount }} / {{ item.tasksCount }} Completed
     </template>
     <template #actions>
-      <base-dropdown :options="actionOptions">
+      <base-dropdown
+        :options="actionOptions"
+        v-on:click-option="handleClickOption"
+      >
         <template #toggle="{ toggle }">
           <base-button
             color="transparent-white"
@@ -63,4 +91,5 @@ const actionOptions = [
       </base-dropdown>
     </template>
   </base-stacked-list>
+  <task-category-delete-confirm v-model:visible="visibleDeleteConfirm" />
 </template>

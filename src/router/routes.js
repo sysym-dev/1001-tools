@@ -16,7 +16,7 @@ export const routes = [
       },
       {
         path: ':id',
-        name: 'task-categories.show',
+        name: 'task-categories.detail',
         component: () =>
           import('src/modules/task-category/views/task-category-detail.vue'),
       },

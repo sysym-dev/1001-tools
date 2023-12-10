@@ -7,8 +7,8 @@ defineProps({
 });
 const emit = defineEmits(['click-detail']);
 
-function handleClickDetail() {
-  emit('click-detail');
+function handleClickDetail(item) {
+  emit('click-detail', item);
 }
 </script>
 
@@ -22,7 +22,7 @@ function handleClickDetail() {
       <div class="min-w-0">
         <p
           class="text-sm font-semibold leading-6 text-gray-900 cursor-pointer"
-          v-on:click="handleClickDetail"
+          v-on:click="handleClickDetail(item)"
         >
           {{ item.name }}
         </p>
