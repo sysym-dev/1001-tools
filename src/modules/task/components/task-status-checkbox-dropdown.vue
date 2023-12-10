@@ -34,7 +34,7 @@ const label = computed(() => {
 <template>
   <base-dropdown :options="availableStatus" size="sm" width="full">
     <template #toggle="{ toggle }">
-      <base-button :font-bold="false" v-on:click="toggle"
+      <base-button :font-bold="false" fullwidth v-on:click="toggle"
         >Status: {{ label }}</base-button
       >
     </template>

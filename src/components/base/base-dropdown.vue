@@ -71,7 +71,7 @@ function handleClickOption(option) {
 </script>
 
 <template>
-  <div class="relative inline-block text-left">
+  <div :class="['relative inline-block text-left', width]">
     <div>
       <slot name="toggle" :toggle="handleVisible" />
     </div>

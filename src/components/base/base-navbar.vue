@@ -2,6 +2,7 @@
 import BaseButton from './base-button.vue';
 import { Bars3Icon, XMarkIcon } from '@heroicons/vue/24/outline';
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 
 const props = defineProps({
   menus: {
@@ -11,6 +12,7 @@ const props = defineProps({
   active: String,
 });
 
+const router = useRouter();
 const visibleMobileMenu = ref(false);
 
 function checkIsActive(menu) {
@@ -20,6 +22,10 @@ function checkIsActive(menu) {
 function handleToggleMobileMenu() {
   visibleMobileMenu.value = !visibleMobileMenu.value;
 }
+
+router.afterEach(() => {
+  visibleMobileMenu.value = false;
+});
 </script>
 
 <template>

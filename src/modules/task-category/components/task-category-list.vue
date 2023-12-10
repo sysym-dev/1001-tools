@@ -77,6 +77,7 @@ function handleClickItem(item) {
     <template #actions>
       <base-dropdown
         :options="actionOptions"
+        position="right"
         v-on:click-option="handleClickOption"
       >
         <template #toggle="{ toggle }">
