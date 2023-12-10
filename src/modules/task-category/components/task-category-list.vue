@@ -60,11 +60,17 @@ function handleClickOption(option) {
     visibleDeleteConfirm.value = true;
   }
 }
+function handleClickItem(item) {
+  router.push({
+    name: 'task-categories.detail',
+    params: { id: item.id },
+  });
+}
 </script>
 
 <template>
   <base-input :with-label="false" placeholder="Search" width="full" />
-  <base-stacked-list :data="taskCategories">
+  <base-stacked-list :data="taskCategories" v-on:click-detail="handleClickItem">
     <template #description="{ item }">
       {{ item.tasksDoneCount }} / {{ item.tasksCount }} Completed
     </template>
