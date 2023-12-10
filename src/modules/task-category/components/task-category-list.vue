@@ -6,6 +6,9 @@ import BaseInput from 'src/components/base/base-input.vue';
 import BaseStackedList from 'src/components/base/base-stacked-list.vue';
 import TaskCategoryDeleteConfirm from './task-category-delete-confirm.vue';
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
 
 const visibleDeleteConfirm = ref(false);
 
@@ -47,7 +50,13 @@ const actionOptions = [
 ];
 
 function handleClickOption(option) {
-  if (option.id === 'delete') {
+  if (option.id === 'setting') {
+    router.push({
+      name: 'task-categories.detail',
+      params: { id: '1' },
+      query: { tab: 'setting' },
+    });
+  } else if (option.id === 'delete') {
     visibleDeleteConfirm.value = true;
   }
 }

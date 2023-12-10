@@ -36,7 +36,7 @@ const taskCategories = [
       v-for="category in taskCategories"
       :key="category.id"
       tag="router-link"
-      :to="{ name: 'task-categories.show', params: { id: category.id } }"
+      :to="{ name: 'task-categories.detail', params: { id: category.id } }"
       :title="category.name"
       :value="`${category.tasksDoneCount} / ${category.tasksCount} completed`"
     />
