@@ -6,7 +6,11 @@ import BaseTabs from 'src/components/base/base-tabs.vue';
 import TaskList from 'src/modules/task/components/task-list.vue';
 import TaskCreateModal from 'src/modules/task/components/task-create-modal.vue';
 import TaskCategoryDetailDescriptionList from 'src/modules/task-category/components/task-category-detail-description-list.vue';
-import { h, ref } from 'vue';
+import { h, ref, watch } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+
+const route = useRoute();
+const router = useRouter();
 
 const tabs = [
   {
@@ -35,12 +39,16 @@ const tabs = [
   },
 ];
 
-const activeTab = ref('tasks');
+const activeTab = ref(route.query.tab ?? 'tasks');
 const visibleTaskCreateModal = ref(false);
 
 function handleCreateTask() {
   visibleTaskCreateModal.value = true;
 }
+
+watch(activeTab, (value) => {
+  router.push({ query: { tab: value } });
+});
 </script>
 
 <template>
