@@ -51,21 +51,30 @@ function handleClickDetail() {
 </script>
 
 <template>
-  <div v-if="filterable" class="flex items-center gap-x-2 justify-between">
-    <task-status-checkbox-dropdown v-model="filter.statuses" />
-    <base-input
-      :with-label="false"
-      placeholder="Search"
-      width="fit"
-      size="sm"
-    />
+  <div
+    v-if="filterable"
+    class="flex flex-col items-start gap-2 justify-between sm:flex-row"
+  >
+    <div class="w-full sm:w-auto">
+      <task-status-checkbox-dropdown v-model="filter.statuses" />
+    </div>
+    <div class="w-full sm:w-auto">
+      <base-input
+        :with-label="false"
+        placeholder="Search"
+        width="full"
+        size="sm"
+      />
+    </div>
   </div>
   <base-stacked-list :data="tasks" v-on:click-detail="handleClickDetail">
     <template #description>
       Due on <time datetime="2023-03-17T00:00Z">today</time>
     </template>
     <template #actions="{ index }">
-      <task-status-dropdown v-model="tasks[index].status" />
+      <div>
+        <task-status-dropdown v-model="tasks[index].status" />
+      </div>
     </template>
   </base-stacked-list>
   <task-detail-modal v-model:visible="visibleDetailModal" />
