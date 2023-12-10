@@ -22,4 +22,15 @@ export const routes = [
       },
     ],
   },
+  {
+    path: '/tasks/',
+    name: 'tasks',
+    children: [
+      {
+        path: '',
+        name: 'tasks.index',
+        component: () => import('src/modules/task/views/task-index.vue'),
+      },
+    ],
+  },
 ];

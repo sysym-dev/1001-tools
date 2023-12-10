@@ -24,6 +24,10 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  fontBold: {
+    type: Boolean,
+    default: true,
+  },
   type: {
     type: String,
     default: 'button',
@@ -70,7 +74,8 @@ function handleClick() {
   <button
     :type="type"
     :class="[
-      'font-semibold inline-flex items-center justify-center',
+      'inline-flex items-center justify-center',
+      fontBold && 'font-semibold',
       classes.base,
       fullwidth ? 'w-full' : '',
       customColor ?? color,

@@ -1,11 +1,10 @@
 <script setup>
 import BaseInput from 'src/components/base/base-input.vue';
-import BaseSelect from 'src/components/base/base-select.vue';
 import BaseStackedList from 'src/components/base/base-stacked-list.vue';
 import TaskStatusDropdown from './task-status-dropdown.vue';
 import TaskDetailModal from './task-detail-modal.vue';
+import TaskStatusCheckboxDropdown from './task-status-checkbox-dropdown.vue';
 import { ref } from 'vue';
-import { availableStatus } from 'src/modules/task/task-status';
 
 defineProps({
   filterable: {
@@ -15,7 +14,7 @@ defineProps({
 });
 
 const filter = ref({
-  status: null,
+  statuses: ['todo', 'in-progress'],
 });
 const tasks = ref([
   {
@@ -53,13 +52,7 @@ function handleClickDetail() {
 
 <template>
   <div v-if="filterable" class="flex items-center gap-x-2 justify-between">
-    <base-select
-      size="sm"
-      placeholder="Filter Status"
-      width="fit"
-      :options="availableStatus"
-      v-model="filter.status"
-    />
+    <task-status-checkbox-dropdown v-model="filter.statuses" />
     <base-input
       :with-label="false"
       placeholder="Search"
