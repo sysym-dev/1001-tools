@@ -19,10 +19,10 @@ const menus = [
     },
   },
   {
-    id: 'tasks',
+    id: 'tasks.index',
     name: 'Task',
     to: {
-      name: 'home',
+      name: 'tasks.index',
     },
   },
 ];
