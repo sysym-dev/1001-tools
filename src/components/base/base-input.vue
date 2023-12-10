@@ -76,7 +76,7 @@ defineExpose({ inputEl });
 </script>
 
 <template>
-  <div>
+  <div class="w-full">
     <label
       v-if="withLabel"
       class="block text-sm font-medium leading-6 text-gray-900 mb-2"
