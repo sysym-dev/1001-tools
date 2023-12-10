@@ -12,3 +12,7 @@ export const availableStatus = [
     name: 'Done',
   },
 ];
+
+export function getStatusById(id) {
+  return availableStatus.find((status) => status.id === id);
+}

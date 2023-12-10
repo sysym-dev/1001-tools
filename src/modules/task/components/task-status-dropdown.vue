@@ -33,7 +33,12 @@ const indicatorColor = computed(() => {
 </script>
 
 <template>
-  <base-dropdown :options="availableStatus" size="sm" v-model="selected">
+  <base-dropdown
+    :options="availableStatus"
+    size="sm"
+    width="full"
+    v-model="selected"
+  >
     <template #toggle="{ toggle }">
       <base-button size="sm" v-on:click="toggle">
         <template #prepend>
