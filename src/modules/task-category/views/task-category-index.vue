@@ -3,8 +3,14 @@ import { PlusIcon } from '@heroicons/vue/24/outline';
 import BaseHeading from 'src/components/base/base-heading.vue';
 import BaseButton from 'src/components/base/base-button.vue';
 import TaskCategoryList from 'src/modules/task-category/components/task-category-list.vue';
+import TaskCategoryCreateModal from 'src/modules/task-category/components/task-category-create-modal.vue';
+import { ref } from 'vue';
 
-function handleCreateTaskCategory() {}
+const visibleCreateModal = ref();
+
+function handleCreateTaskCategory() {
+  visibleCreateModal.value = true;
+}
 </script>
 
 <template>
@@ -29,5 +35,6 @@ function handleCreateTaskCategory() {}
   </base-heading>
   <div class="py-5">
     <task-category-list />
+    <task-category-create-modal v-model:visible="visibleCreateModal" />
   </div>
 </template>

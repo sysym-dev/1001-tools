@@ -15,17 +15,16 @@ const props = defineProps({
 });
 const emit = defineEmits(['update:visible', 'close']);
 
-const { form, errors, hasError, setForm, resetError, resetForm, submit } =
-  useForm({
-    schema: {
-      name: null,
-      description: null,
-    },
-    validationSchema: object({
-      name: string().required(),
-      description: string().optional(),
-    }),
-  });
+const { form, errors, hasError, resetError, resetForm, submit } = useForm({
+  schema: {
+    name: null,
+    description: null,
+  },
+  validationSchema: object({
+    name: string().required(),
+    description: string().optional(),
+  }),
+});
 
 const visible = computed({
   get() {
@@ -45,11 +44,6 @@ function handleClose() {
 async function handleOpenModal() {
   resetForm();
   resetError();
-
-  setForm({
-    name: 'Shopping List',
-    description: 'Lorem Inpus',
-  });
 
   await nextTick();
 
@@ -74,7 +68,7 @@ function handleCloseModal() {
     v-on:close="handleCloseModal"
   >
     <form v-on:submit.prevent="handleSubmit">
-      <base-card title="Edit Category" v-on:click-outside="handleClose">
+      <base-card title="New Category" v-on:click-outside="handleClose">
         <div class="space-y-4">
           <base-input
             ref="inputNameEl"
