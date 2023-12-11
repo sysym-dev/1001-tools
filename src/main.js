@@ -1,5 +1,15 @@
-import { createApp } from 'vue'
-import './style.css'
-import App from './App.vue'
+import { createApp } from 'vue';
+import './style.css';
+import App from './App.vue';
+import { useClickOutsideEvent } from './plugins/click-outside-event';
+import { useProgressBar } from './plugins/progress-bar';
+import { setupRouter } from './router/setup';
 
-createApp(App).mount('#app')
+const app = createApp(App);
+
+useClickOutsideEvent(app);
+useProgressBar(app);
+
+setupRouter(app);
+
+app.mount('#app');
