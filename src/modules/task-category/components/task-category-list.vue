@@ -92,5 +92,8 @@ function handleClickItem(item) {
       </base-dropdown>
     </template>
   </base-stacked-list>
+  <base-button fullwidth :loading="false" :disabled="false" block-loading
+    >Load More (+25)</base-button
+  >
   <task-category-delete-confirm v-model:visible="visibleDeleteConfirm" />
 </template>
