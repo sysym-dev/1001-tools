@@ -14,8 +14,7 @@ import TaskList from 'src/modules/task/components/task-list.vue';
 
     <div>
       <base-heading title="Today Todo" />
-      <task-list :filterable="false" />
-      <base-button fullwidth>See All</base-button>
+      <task-list :filterable="false" with-see-all />
     </div>
   </div>
 </template>

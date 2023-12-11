@@ -47,6 +47,8 @@ const taskCategories = [
         :value="`${category.tasksDoneCount} / ${category.tasksCount} completed`"
       />
     </div>
-    <base-button fullwidth>See All</base-button>
+    <base-button fullwidth router-link :to="{ name: 'task-categories.index' }"
+      >See All</base-button
+    >
   </with-state>
 </template>

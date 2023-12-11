@@ -1,4 +1,5 @@
 <script setup>
+import BaseButton from 'src/components/base/base-button.vue';
 import BaseInput from 'src/components/base/base-input.vue';
 import BaseStackedList from 'src/components/base/base-stacked-list.vue';
 import TaskStatusDropdown from './task-status-dropdown.vue';
@@ -10,6 +11,10 @@ defineProps({
   filterable: {
     type: Boolean,
     default: true,
+  },
+  withSeeAll: {
+    type: Boolean,
+    default: false,
   },
 });
 
@@ -77,5 +82,12 @@ function handleClickDetail() {
       </div>
     </template>
   </base-stacked-list>
+  <base-button
+    v-if="withSeeAll"
+    fullwidth
+    router-link
+    :to="{ name: 'tasks.index' }"
+    >See All</base-button
+  >
   <task-detail-modal v-model:visible="visibleDetailModal" />
 </template>
