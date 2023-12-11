@@ -33,4 +33,9 @@ export const routes = [
       },
     ],
   },
+  {
+    path: '/:pathMatch(.*)*',
+    name: 'not-found',
+    component: () => import('src/modules/not-found/views/not-found-page.vue'),
+  },
 ];
