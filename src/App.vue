@@ -1,5 +1,6 @@
 <script setup>
 import BaseNavbar from './components/base/base-navbar.vue';
+import AppProgressBar from './components/app/app-progress-bar.vue';
 import { useRoute } from 'vue-router';
 
 const route = useRoute();
@@ -29,6 +30,7 @@ const menus = [
 </script>
 
 <template>
+  <app-progress-bar />
   <base-navbar :menus="menus" :active="route.name" />
   <div class="px-4 py-8 container">
     <router-view />
