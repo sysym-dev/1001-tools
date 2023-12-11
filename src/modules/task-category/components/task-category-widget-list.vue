@@ -1,6 +1,11 @@
 <script setup>
 import BaseButton from 'src/components/base/base-button.vue';
 import BaseWidget from 'src/components/base/base-widget.vue';
+import WithState from 'src/components/composes/with-state.vue';
+import { ref } from 'vue';
+
+const loading = ref(false);
+const error = ref(false);
 
 const taskCategories = [
   {
@@ -31,15 +36,19 @@ const taskCategories = [
 </script>
 
 <template>
-  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-    <base-widget
-      v-for="category in taskCategories"
-      :key="category.id"
-      tag="router-link"
-      :to="{ name: 'task-categories.detail', params: { id: category.id } }"
-      :title="category.name"
-      :value="`${category.tasksDoneCount} / ${category.tasksCount} completed`"
-    />
-  </div>
-  <base-button fullwidth>See All</base-button>
+  <with-state :error="error" error-message="Something Error" :loading="loading">
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <base-widget
+        v-for="category in taskCategories"
+        :key="category.id"
+        tag="router-link"
+        :to="{ name: 'task-categories.detail', params: { id: category.id } }"
+        :title="category.name"
+        :value="`${category.tasksDoneCount} / ${category.tasksCount} completed`"
+      />
+    </div>
+    <base-button fullwidth router-link :to="{ name: 'task-categories.index' }"
+      >See All</base-button
+    >
+  </with-state>
 </template>

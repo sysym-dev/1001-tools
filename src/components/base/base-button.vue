@@ -1,5 +1,6 @@
 <script setup>
 import { computed } from 'vue';
+import BaseSpinner from './base-spinner.vue';
 
 const props = defineProps({
   fullwidth: {
@@ -34,6 +35,23 @@ const props = defineProps({
   },
   customColor: String,
   customSize: String,
+  routerLink: {
+    type: Boolean,
+    default: false,
+  },
+  to: null,
+  loading: {
+    type: Boolean,
+    default: false,
+  },
+  disabled: {
+    type: Boolean,
+    default: false,
+  },
+  blockLoading: {
+    type: Boolean,
+    default: false,
+  },
 });
 const emit = defineEmits(['click']);
 
@@ -65,26 +83,37 @@ const size = computed(() => {
 
   return sizes[props.size];
 });
+const params = computed(() => ({
+  disabled: props.disabled,
+  class: [
+    'inline-flex items-center justify-center disabled:opacity-50',
+    props.fontBold && 'font-semibold',
+    props.classes.base,
+    props.fullwidth ? 'w-full' : '',
+    props.customColor ?? color.value,
+    props.customSize ?? size.value,
+  ],
+}));
 
 function handleClick() {
   emit('click');
 }
 </script>
 <template>
-  <button
-    :type="type"
-    :class="[
-      'inline-flex items-center justify-center',
-      fontBold && 'font-semibold',
-      classes.base,
-      fullwidth ? 'w-full' : '',
-      customColor ?? color,
-      customSize ?? size,
-    ]"
-    v-on:click="handleClick"
-  >
+  <router-link v-if="routerLink" :to="to" v-bind="params">
     <slot name="prepend" />
     <slot />
     <slot name="append" />
+  </router-link>
+  <button v-else :type="type" v-bind="params" v-on:click="handleClick">
+    <base-spinner v-if="loading && blockLoading" size="sm" class="mr-1"
+      >Loading</base-spinner
+    >
+    <template v-else>
+      <slot name="prepend" />
+      <base-spinner v-if="loading" size="sm" class="mr-1" />
+      <slot />
+      <slot name="append" />
+    </template>
   </button>
 </template>
