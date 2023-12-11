@@ -1,8 +1,15 @@
 <script setup>
+import BaseAlert from './base-alert.vue';
+import BaseSpinner from './base-spinner.vue';
+
 defineProps({
   data: {
     type: Array,
     required: true,
+  },
+  loading: {
+    type: Boolean,
+    default: false,
   },
 });
 const emit = defineEmits(['click-detail']);
@@ -13,6 +20,12 @@ function handleClickDetail(item) {
 </script>
 
 <template>
+  <base-alert v-if="loading" type="info">
+    <template #icon>
+      <base-spinner size="sm" />
+    </template>
+    {{ 'Loading' }}
+  </base-alert>
   <ul class="divide-y divide-gray-100">
     <li
       v-for="(item, index) in data"

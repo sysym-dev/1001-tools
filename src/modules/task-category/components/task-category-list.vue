@@ -5,12 +5,14 @@ import BaseDropdown from 'src/components/base/base-dropdown.vue';
 import BaseInput from 'src/components/base/base-input.vue';
 import BaseStackedList from 'src/components/base/base-stacked-list.vue';
 import TaskCategoryDeleteConfirm from './task-category-delete-confirm.vue';
+import WithState from 'src/components/composes/with-state.vue';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
 
 const visibleDeleteConfirm = ref(false);
+const loading = ref(false);
 
 const taskCategories = [
   {
@@ -69,31 +71,41 @@ function handleClickItem(item) {
 </script>
 
 <template>
-  <base-input :with-label="false" placeholder="Search" width="full" />
-  <base-stacked-list :data="taskCategories" v-on:click-detail="handleClickItem">
-    <template #description="{ item }">
-      {{ item.tasksDoneCount }} / {{ item.tasksCount }} Completed
-    </template>
-    <template #actions>
-      <base-dropdown
-        :options="actionOptions"
-        position="right"
-        v-on:click-option="handleClickOption"
+  <with-state>
+    <div :class="[loading && 'space-y-5']">
+      <base-input :with-label="false" placeholder="Search" width="full" />
+      <div>
+        <base-stacked-list
+          :data="taskCategories"
+          :loading="loading"
+          v-on:click-detail="handleClickItem"
+        >
+          <template #description="{ item }">
+            {{ item.tasksDoneCount }} / {{ item.tasksCount }} Completed
+          </template>
+          <template #actions>
+            <base-dropdown
+              :options="actionOptions"
+              position="right"
+              v-on:click-option="handleClickOption"
+            >
+              <template #toggle="{ toggle }">
+                <base-button
+                  color="transparent-white"
+                  size="square-md"
+                  v-on:click="toggle"
+                >
+                  <EllipsisHorizontalIcon class="w-5 h-5" />
+                </base-button>
+              </template>
+            </base-dropdown>
+          </template>
+        </base-stacked-list>
+      </div>
+      <base-button fullwidth :loading="false" :disabled="false" block-loading
+        >Load More (+25)</base-button
       >
-        <template #toggle="{ toggle }">
-          <base-button
-            color="transparent-white"
-            size="square-md"
-            v-on:click="toggle"
-          >
-            <EllipsisHorizontalIcon class="w-5 h-5" />
-          </base-button>
-        </template>
-      </base-dropdown>
-    </template>
-  </base-stacked-list>
-  <base-button fullwidth :loading="false" :disabled="false" block-loading
-    >Load More (+25)</base-button
-  >
-  <task-category-delete-confirm v-model:visible="visibleDeleteConfirm" />
+    </div>
+    <task-category-delete-confirm v-model:visible="visibleDeleteConfirm" />
+  </with-state>
 </template>
