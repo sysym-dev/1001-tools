@@ -34,6 +34,11 @@ const props = defineProps({
   },
   customColor: String,
   customSize: String,
+  routerLink: {
+    type: Boolean,
+    default: false,
+  },
+  to: null,
 });
 const emit = defineEmits(['click']);
 
@@ -65,24 +70,28 @@ const size = computed(() => {
 
   return sizes[props.size];
 });
+const params = computed(() => ({
+  class: [
+    'inline-flex items-center justify-center',
+    props.fontBold && 'font-semibold',
+    props.classes.base,
+    props.fullwidth ? 'w-full' : '',
+    props.customColor ?? color.value,
+    props.customSize ?? size.value,
+  ],
+}));
 
 function handleClick() {
   emit('click');
 }
 </script>
 <template>
-  <button
-    :type="type"
-    :class="[
-      'inline-flex items-center justify-center',
-      fontBold && 'font-semibold',
-      classes.base,
-      fullwidth ? 'w-full' : '',
-      customColor ?? color,
-      customSize ?? size,
-    ]"
-    v-on:click="handleClick"
-  >
+  <router-link v-if="routerLink" :to="to" v-bind="params">
+    <slot name="prepend" />
+    <slot />
+    <slot name="append" />
+  </router-link>
+  <button v-else :type="type" v-bind="params" v-on:click="handleClick">
     <slot name="prepend" />
     <slot />
     <slot name="append" />
