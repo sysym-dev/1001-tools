@@ -12,13 +12,17 @@ export const routes = [
         path: '',
         name: 'task-categories.index',
         component: () =>
-          import('src/modules/task-category/views/task-category-index.vue'),
+          import(
+            'src/modules/task-category/views/task-category-index-page.vue'
+          ),
       },
       {
         path: ':id',
         name: 'task-categories.detail',
         component: () =>
-          import('src/modules/task-category/views/task-category-detail.vue'),
+          import(
+            'src/modules/task-category/views/task-category-detail-page.vue'
+          ),
       },
     ],
   },
@@ -29,7 +33,7 @@ export const routes = [
       {
         path: '',
         name: 'tasks.index',
-        component: () => import('src/modules/task/views/task-index.vue'),
+        component: () => import('src/modules/task/views/task-index-page.vue'),
       },
     ],
   },
