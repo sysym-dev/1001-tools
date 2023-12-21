@@ -12,6 +12,7 @@
   "dependencies": {
     "@aacassandra/vue3-progressbar": "^1.0.3",
     "@heroicons/vue": "^2.0.18",
+    "axios": "^1.6.2",
     "click-outside-vue3": "^4.0.1",
     "install": "^0.13.0",
     "npm": "^10.2.4",
