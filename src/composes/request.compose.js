@@ -6,6 +6,7 @@ export function useRequest(url, options = {}) {
   const isLoading = ref(false);
   const isError = ref(false);
   const error = ref();
+  const data = ref();
 
   function startLoading() {
     isLoading.value = true;
@@ -15,14 +16,17 @@ export function useRequest(url, options = {}) {
     isLoading.value = false;
   }
 
-  async function request() {
+  async function request(config) {
     try {
       startLoading();
 
-      await http({
+      const res = await http({
         url,
         method: options.method ?? 'get',
+        ...config,
       });
+
+      data.value = res.data;
     } catch (err) {
       isError.value = true;
       error.value = new RequestError(err);
@@ -33,5 +37,5 @@ export function useRequest(url, options = {}) {
     }
   }
 
-  return { error, isLoading, isError, request };
+  return { data, error, isLoading, isError, request };
 }
