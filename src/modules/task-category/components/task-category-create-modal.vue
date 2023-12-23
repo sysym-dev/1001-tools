@@ -3,9 +3,11 @@ import BaseModal from 'src/components/base/base-modal.vue';
 import BaseCard from 'src/components/base/base-card.vue';
 import BaseInput from 'src/components/base/base-input.vue';
 import BaseButton from 'src/components/base/base-button.vue';
+import WithState from 'src/components/composes/with-state.vue';
 import { computed, nextTick, ref } from 'vue';
 import { object, string } from 'yup';
 import { useForm } from 'src/composes/form.compose';
+import { useRequest } from 'src/composes/request.compose';
 
 const props = defineProps({
   visible: {
@@ -17,13 +19,22 @@ const emit = defineEmits(['update:visible', 'close']);
 
 const { form, errors, hasError, resetError, resetForm, submit } = useForm({
   schema: {
-    name: null,
-    description: null,
+    description: '',
+    name: '',
   },
   validationSchema: object({
-    name: string().required(),
     description: string().optional(),
+    name: string().required(),
   }),
+});
+const {
+  isError,
+  error,
+  request,
+  resetError: resetRequestError,
+  isLoading,
+} = useRequest('/task-categories', {
+  method: 'post',
 });
 
 const visible = computed({
@@ -44,6 +55,7 @@ function handleClose() {
 async function handleOpenModal() {
   resetForm();
   resetError();
+  resetRequestError();
 
   await nextTick();
 
@@ -52,6 +64,9 @@ async function handleOpenModal() {
 async function handleSubmit() {
   try {
     await submit();
+    await request({
+      data: form.value,
+    });
   } catch (err) {
     //
   }
@@ -69,7 +84,11 @@ function handleCloseModal() {
   >
     <form v-on:submit.prevent="handleSubmit">
       <base-card title="New Category" v-on:click-outside="handleClose">
-        <div class="space-y-4">
+        <with-state
+          class="space-y-4"
+          :error="isError"
+          :error-message="isError ? error.message : null"
+        >
           <base-input
             ref="inputNameEl"
             label="Name"
@@ -87,11 +106,17 @@ function handleCloseModal() {
             textarea
             v-model="form.description"
           />
-        </div>
+        </with-state>
 
         <template #footer>
           <div class="flex gap-x-2 items-center justify-end">
-            <base-button type="submit" color="sky">Save</base-button>
+            <base-button
+              type="submit"
+              :loading="isLoading"
+              :disabled="isLoading"
+              color="sky"
+              >Save</base-button
+            >
             <base-button v-on:click="handleClose">Cancel</base-button>
           </div>
         </template>
