@@ -16,9 +16,15 @@ export function useRequest(url, options = {}) {
     isLoading.value = false;
   }
 
+  function resetError() {
+    isError.value = false;
+    error.value = null;
+  }
+
   async function request(config) {
     try {
       startLoading();
+      resetError();
 
       const res = await http({
         url,
@@ -37,5 +43,5 @@ export function useRequest(url, options = {}) {
     }
   }
 
-  return { data, error, isLoading, isError, request };
+  return { data, error, isLoading, isError, request, resetError };
 }
