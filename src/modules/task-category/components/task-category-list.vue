@@ -19,18 +19,23 @@ const props = defineProps({
 
 const router = useRouter();
 const {
-  isLoading,
   isError,
   error,
   request,
   data: taskCategories,
 } = useRequest('/task-categories');
 
-const isLoadingPage = ref(true);
+const loading = reactive({
+  type: 'page',
+  visible: false,
+});
 const visibleDeleteConfirm = ref(false);
 const page = reactive({
   number: 1,
   size: props.pageSize,
+});
+const filter = reactive({
+  search: null,
 });
 
 const actionOptions = [
@@ -44,11 +49,20 @@ const actionOptions = [
   },
 ];
 
+function startLoading(type) {
+  loading.type = type;
+  loading.visible = true;
+}
+function stopLoading() {
+  loading.type = null;
+  loading.visible = false;
+}
 async function loadTaskCategories() {
   try {
     await request({
       params: {
         page,
+        filter,
       },
     });
   } catch (err) {
@@ -57,11 +71,11 @@ async function loadTaskCategories() {
 }
 async function init() {
   try {
-    isLoadingPage.value = true;
+    startLoading('page');
 
     await loadTaskCategories();
   } finally {
-    isLoadingPage.value = false;
+    stopLoading();
   }
 }
 
@@ -82,10 +96,27 @@ function handleClickItem(item) {
     params: { id: item.id },
   });
 }
-function handleLoadMore() {
-  page.size += props.pageSize;
+async function handleLoadMore() {
+  try {
+    startLoading('load-more');
 
-  loadTaskCategories();
+    page.size += props.pageSize;
+
+    await loadTaskCategories();
+  } finally {
+    stopLoading();
+  }
+}
+async function handleSearch() {
+  try {
+    startLoading('filter');
+
+    page.size = props.pageSize;
+
+    await loadTaskCategories();
+  } finally {
+    stopLoading();
+  }
 }
 
 init();
@@ -94,15 +125,21 @@ init();
 <template>
   <with-state
     class="space-y-5"
-    :loading="isLoadingPage"
+    :loading="loading.type === 'page' && loading.visible"
     :error="isError"
     :error-message="isError ? error.message : null"
   >
-    <base-input :with-label="false" placeholder="Search" width="full" />
+    <base-input
+      :with-label="false"
+      placeholder="Search"
+      width="full"
+      v-model="filter.search"
+      v-on:debounce-input="handleSearch"
+    />
     <base-stacked-list
       :data="taskCategories.data.rows"
-      :loading="isLoading"
-      loading-position="bottom"
+      :loading="loading.type !== 'page' && loading.visible"
+      :loading-position="loading.type === 'filter' ? 'top' : 'bottom'"
       v-on:click-detail="handleClickItem"
     >
       <template #description="{ item }">
@@ -127,7 +164,7 @@ init();
       </template>
     </base-stacked-list>
     <base-button
-      v-if="page.size < taskCategories.data.meta.count && !isLoading"
+      v-if="page.size < taskCategories.data.meta.count && !loading.visible"
       fullwidth
       v-on:click="handleLoadMore"
       >Load More</base-button
