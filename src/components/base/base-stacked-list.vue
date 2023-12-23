@@ -61,7 +61,7 @@ function handleClickDetail(item) {
           </p>
         </div>
       </div>
-      <slot name="actions" :index="index" />
+      <slot name="actions" :index="index" :item="item" />
     </li>
   </ul>
   <base-alert v-if="loadingPosition === 'bottom' && loading" type="info">
