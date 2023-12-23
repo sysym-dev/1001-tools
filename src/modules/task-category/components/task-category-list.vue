@@ -38,7 +38,10 @@ const loading = reactive({
   type: 'page',
   visible: false,
 });
-const visibleDeleteConfirm = ref(false);
+const deleteConfirm = reactive({
+  id: null,
+  visible: false,
+});
 const page = reactive({
   number: 1,
   size: props.pageSize,
@@ -92,7 +95,7 @@ async function init() {
   }
 }
 
-function handleClickOption(option) {
+function handleClickOption(item, option) {
   if (option.id === 'setting') {
     router.push({
       name: 'task-categories.detail',
@@ -100,7 +103,8 @@ function handleClickOption(option) {
       query: { tab: 'setting' },
     });
   } else if (option.id === 'delete') {
-    visibleDeleteConfirm.value = true;
+    deleteConfirm.visible = true;
+    deleteConfirm.id = item.id;
   }
 }
 function handleClickItem(item) {
@@ -145,6 +149,7 @@ async function handleRefresh() {
 }
 
 emitter.on('task-categories-created', () => handleRefresh());
+emitter.on('task-categories-deleted', () => handleRefresh());
 
 init();
 </script>
@@ -172,11 +177,11 @@ init();
       <template #description="{ item }">
         {{ item.tasks_done_count }} / {{ item.tasks_count }} Completed
       </template>
-      <template #actions>
+      <template #actions="{ item }">
         <base-dropdown
           :options="actionOptions"
           position="right"
-          v-on:click-option="handleClickOption"
+          v-on:click-option="(option) => handleClickOption(item, option)"
         >
           <template #toggle="{ toggle }">
             <base-button
@@ -196,6 +201,9 @@ init();
       v-on:click="handleLoadMore"
       >Load More</base-button
     >
-    <task-category-delete-confirm v-model:visible="visibleDeleteConfirm" />
+    <task-category-delete-confirm
+      :task-category-id="deleteConfirm.id"
+      v-model:visible="deleteConfirm.visible"
+    />
   </with-state>
 </template>
