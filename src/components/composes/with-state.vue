@@ -16,10 +16,12 @@ defineProps({
 </script>
 
 <template>
-  <base-alert v-if="error" type="error">{{ errorMessage }}</base-alert>
-  <template v-else>
-    <with-loading :loading="loading">
-      <slot />
-    </with-loading>
-  </template>
+  <div>
+    <base-alert v-if="error" type="error">{{ errorMessage }}</base-alert>
+    <template v-else>
+      <with-loading :loading="loading">
+        <slot />
+      </with-loading>
+    </template>
+  </div>
 </template>

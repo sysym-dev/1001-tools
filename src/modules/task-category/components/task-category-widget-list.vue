@@ -31,6 +31,7 @@ loadTaskCategories();
 
 <template>
   <with-state
+    class="space-y-4"
     :error="isError"
     :error-message="isError ? error.message : null"
     :loading="isLoading"
