@@ -34,7 +34,7 @@ function handleCreateTaskCategory() {
     </template>
   </base-heading>
   <div class="py-5">
-    <task-category-list />
+    <task-category-list sort-direction="desc" />
     <task-category-create-modal v-model:visible="visibleCreateModal" />
   </div>
 </template>

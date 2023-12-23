@@ -6,7 +6,7 @@ import BaseInput from 'src/components/base/base-input.vue';
 import BaseStackedList from 'src/components/base/base-stacked-list.vue';
 import TaskCategoryDeleteConfirm from './task-category-delete-confirm.vue';
 import WithState from 'src/components/composes/with-state.vue';
-import { reactive, ref } from 'vue';
+import { inject, reactive, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useRequest } from 'src/composes/request.compose';
 
@@ -15,7 +15,16 @@ const props = defineProps({
     type: Number,
     default: 5,
   },
+  sortColumn: {
+    type: String,
+    default: 'id',
+  },
+  sortDirection: {
+    type: String,
+    default: 'asc',
+  },
 });
+const emitter = inject('emitter');
 
 const router = useRouter();
 const {
@@ -63,6 +72,10 @@ async function loadTaskCategories() {
       params: {
         page,
         filter,
+        sort: {
+          column: props.sortColumn,
+          direction: props.sortDirection,
+        },
       },
     });
   } catch (err) {
@@ -118,6 +131,20 @@ async function handleSearch() {
     stopLoading();
   }
 }
+async function handleRefresh() {
+  try {
+    startLoading('filter');
+
+    filter.search = null;
+    page.size = props.pageSize;
+
+    await loadTaskCategories();
+  } finally {
+    stopLoading();
+  }
+}
+
+emitter.on('task-categories-created', () => handleRefresh());
 
 init();
 </script>
