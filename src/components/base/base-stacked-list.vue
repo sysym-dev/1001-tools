@@ -1,6 +1,7 @@
 <script setup>
 import BaseAlert from './base-alert.vue';
 import BaseSpinner from './base-spinner.vue';
+import BaseEmpty from './base-empty.vue';
 
 defineProps({
   data: {
@@ -30,7 +31,8 @@ function handleClickDetail(item) {
     </template>
     {{ 'Loading' }}
   </base-alert>
-  <ul class="divide-y divide-gray-100">
+  <base-empty v-if="!data.length && !loading" />
+  <ul v-else class="divide-y divide-gray-100">
     <li
       v-for="(item, index) in data"
       :key="item.id"
