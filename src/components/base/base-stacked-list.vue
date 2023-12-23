@@ -11,6 +11,10 @@ defineProps({
     type: Boolean,
     default: false,
   },
+  loadingPosition: {
+    type: String,
+    default: 'top',
+  },
 });
 const emit = defineEmits(['click-detail']);
 
@@ -20,7 +24,7 @@ function handleClickDetail(item) {
 </script>
 
 <template>
-  <base-alert v-if="loading" type="info">
+  <base-alert v-if="loadingPosition === 'top' && loading" type="info">
     <template #icon>
       <base-spinner size="sm" />
     </template>
@@ -30,7 +34,13 @@ function handleClickDetail(item) {
     <li
       v-for="(item, index) in data"
       :key="item.id"
-      class="flex items-center justify-between gap-x-6 py-5"
+      :class="[
+        'flex items-center justify-between gap-x-6',
+        data.length === 1 && 'p-0',
+        data.length > 1 && index === 0 && 'pb-5',
+        data.length > 1 && index === data.length - 1 && 'pt-5',
+        data.length > 1 && index !== 0 && index !== data.length - 1 && 'py-5',
+      ]"
     >
       <div class="min-w-0">
         <p
@@ -52,4 +62,10 @@ function handleClickDetail(item) {
       <slot name="actions" :index="index" />
     </li>
   </ul>
+  <base-alert v-if="loadingPosition === 'bottom' && loading" type="info">
+    <template #icon>
+      <base-spinner size="sm" />
+    </template>
+    {{ 'Loading' }}
+  </base-alert>
 </template>
