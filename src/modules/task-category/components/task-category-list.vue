@@ -8,38 +8,20 @@ import TaskCategoryDeleteConfirm from './task-category-delete-confirm.vue';
 import WithState from 'src/components/composes/with-state.vue';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+import { useRequest } from 'src/composes/request.compose';
 
 const router = useRouter();
+const {
+  isLoading,
+  isError,
+  error,
+  request,
+  data: taskCategories,
+} = useRequest('/task-categories');
 
 const visibleDeleteConfirm = ref(false);
 const loading = ref(false);
 
-const taskCategories = [
-  {
-    id: 1,
-    name: 'Shopping List',
-    tasksCount: 10,
-    tasksDoneCount: 2,
-  },
-  {
-    id: 2,
-    name: 'College Task',
-    tasksCount: 4,
-    tasksDoneCount: 4,
-  },
-  {
-    id: 3,
-    name: 'Project Ideas',
-    tasksCount: 5,
-    tasksDoneCount: 3,
-  },
-  {
-    id: 4,
-    name: 'Article Ideas',
-    tasksCount: 15,
-    tasksDoneCount: 8,
-  },
-];
 const actionOptions = [
   {
     id: 'setting',
@@ -50,6 +32,20 @@ const actionOptions = [
     name: 'Delete',
   },
 ];
+
+async function loadTaskCategories() {
+  try {
+    await request({
+      params: {
+        page: {
+          size: 4,
+        },
+      },
+    });
+  } catch (err) {
+    //
+  }
+}
 
 function handleClickOption(option) {
   if (option.id === 'setting') {
@@ -68,20 +64,26 @@ function handleClickItem(item) {
     params: { id: item.id },
   });
 }
+
+loadTaskCategories();
 </script>
 
 <template>
-  <with-state>
+  <with-state
+    :loading="isLoading"
+    :error="isError"
+    :error-message="isError ? error.message : null"
+  >
     <div :class="[loading && 'space-y-5']">
       <base-input :with-label="false" placeholder="Search" width="full" />
       <div>
         <base-stacked-list
-          :data="taskCategories"
+          :data="taskCategories.data.rows"
           :loading="loading"
           v-on:click-detail="handleClickItem"
         >
           <template #description="{ item }">
-            {{ item.tasksDoneCount }} / {{ item.tasksCount }} Completed
+            {{ item.tasks_done_count }} / {{ item.tasks_count }} Completed
           </template>
           <template #actions>
             <base-dropdown
