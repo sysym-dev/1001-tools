@@ -11,6 +11,10 @@ defineProps({
     type: Boolean,
     default: false,
   },
+  blockError: {
+    type: Boolean,
+    default: false,
+  },
   errorMessage: String,
 });
 </script>
@@ -18,7 +22,7 @@ defineProps({
 <template>
   <div>
     <base-alert v-if="error" type="error">{{ errorMessage }}</base-alert>
-    <with-loading :loading="loading">
+    <with-loading v-if="!blockError || !error" :loading="loading">
       <slot />
     </with-loading>
   </div>
