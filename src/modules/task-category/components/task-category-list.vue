@@ -6,9 +6,16 @@ import BaseInput from 'src/components/base/base-input.vue';
 import BaseStackedList from 'src/components/base/base-stacked-list.vue';
 import TaskCategoryDeleteConfirm from './task-category-delete-confirm.vue';
 import WithState from 'src/components/composes/with-state.vue';
-import { ref } from 'vue';
+import { reactive, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useRequest } from 'src/composes/request.compose';
+
+const props = defineProps({
+  pageSize: {
+    type: Number,
+    default: 5,
+  },
+});
 
 const router = useRouter();
 const {
@@ -19,8 +26,12 @@ const {
   data: taskCategories,
 } = useRequest('/task-categories');
 
+const isLoadingPage = ref(true);
 const visibleDeleteConfirm = ref(false);
-const loading = ref(false);
+const page = reactive({
+  number: 1,
+  size: props.pageSize,
+});
 
 const actionOptions = [
   {
@@ -37,13 +48,20 @@ async function loadTaskCategories() {
   try {
     await request({
       params: {
-        page: {
-          size: 4,
-        },
+        page,
       },
     });
   } catch (err) {
     //
+  }
+}
+async function init() {
+  try {
+    isLoadingPage.value = true;
+
+    await loadTaskCategories();
+  } finally {
+    isLoadingPage.value = false;
   }
 }
 
@@ -64,50 +82,56 @@ function handleClickItem(item) {
     params: { id: item.id },
   });
 }
+function handleLoadMore() {
+  page.size += props.pageSize;
 
-loadTaskCategories();
+  loadTaskCategories();
+}
+
+init();
 </script>
 
 <template>
   <with-state
-    :loading="isLoading"
+    class="space-y-5"
+    :loading="isLoadingPage"
     :error="isError"
     :error-message="isError ? error.message : null"
   >
-    <div :class="[loading && 'space-y-5']">
-      <base-input :with-label="false" placeholder="Search" width="full" />
-      <div>
-        <base-stacked-list
-          :data="taskCategories.data.rows"
-          :loading="loading"
-          v-on:click-detail="handleClickItem"
+    <base-input :with-label="false" placeholder="Search" width="full" />
+    <base-stacked-list
+      :data="taskCategories.data.rows"
+      :loading="isLoading"
+      loading-position="bottom"
+      v-on:click-detail="handleClickItem"
+    >
+      <template #description="{ item }">
+        {{ item.tasks_done_count }} / {{ item.tasks_count }} Completed
+      </template>
+      <template #actions>
+        <base-dropdown
+          :options="actionOptions"
+          position="right"
+          v-on:click-option="handleClickOption"
         >
-          <template #description="{ item }">
-            {{ item.tasks_done_count }} / {{ item.tasks_count }} Completed
-          </template>
-          <template #actions>
-            <base-dropdown
-              :options="actionOptions"
-              position="right"
-              v-on:click-option="handleClickOption"
+          <template #toggle="{ toggle }">
+            <base-button
+              color="transparent-white"
+              size="square-md"
+              v-on:click="toggle"
             >
-              <template #toggle="{ toggle }">
-                <base-button
-                  color="transparent-white"
-                  size="square-md"
-                  v-on:click="toggle"
-                >
-                  <EllipsisHorizontalIcon class="w-5 h-5" />
-                </base-button>
-              </template>
-            </base-dropdown>
+              <EllipsisHorizontalIcon class="w-5 h-5" />
+            </base-button>
           </template>
-        </base-stacked-list>
-      </div>
-      <base-button fullwidth :loading="false" :disabled="false" block-loading
-        >Load More (+25)</base-button
-      >
-    </div>
+        </base-dropdown>
+      </template>
+    </base-stacked-list>
+    <base-button
+      v-if="page.size < taskCategories.data.meta.count && !isLoading"
+      fullwidth
+      v-on:click="handleLoadMore"
+      >Load More</base-button
+    >
     <task-category-delete-confirm v-model:visible="visibleDeleteConfirm" />
   </with-state>
 </template>
