@@ -1,6 +1,4 @@
 <script setup>
-import BaseAlert from './base-alert.vue';
-import BaseSpinner from './base-spinner.vue';
 import BaseEmpty from './base-empty.vue';
 
 defineProps({
@@ -25,14 +23,7 @@ function handleClickDetail(item) {
 </script>
 
 <template>
-  <base-alert v-if="loadingPosition === 'top' && loading" type="info">
-    <template #icon>
-      <base-spinner size="sm" />
-    </template>
-    {{ 'Loading' }}
-  </base-alert>
-  <base-empty v-if="!data.length && !loading" />
-  <ul v-else class="divide-y divide-gray-100">
+  <ul class="divide-y divide-gray-100">
     <li
       v-for="(item, index) in data"
       :key="item.id"
@@ -64,10 +55,4 @@ function handleClickDetail(item) {
       <slot name="actions" :index="index" :item="item" />
     </li>
   </ul>
-  <base-alert v-if="loadingPosition === 'bottom' && loading" type="info">
-    <template #icon>
-      <base-spinner size="sm" />
-    </template>
-    {{ 'Loading' }}
-  </base-alert>
 </template>

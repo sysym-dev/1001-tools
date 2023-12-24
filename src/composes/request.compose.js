@@ -6,7 +6,7 @@ export function useRequest(url, options = {}) {
   const isLoading = ref(false);
   const isError = ref(false);
   const error = ref();
-  const data = ref();
+  const data = ref({ ...options.initData });
 
   function startLoading() {
     isLoading.value = true;
