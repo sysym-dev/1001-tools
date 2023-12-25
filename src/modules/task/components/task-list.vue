@@ -6,10 +6,11 @@ import TaskStatusDropdown from './task-status-dropdown.vue';
 import TaskDetailModal from './task-detail-modal.vue';
 import TaskStatusCheckboxDropdown from './task-status-checkbox-dropdown.vue';
 import WithState from 'src/components/composes/with-state.vue';
-import { ref } from 'vue';
+import { ref, reactive } from 'vue';
 import { useRequest } from 'src/composes/request.compose';
+import { useLoading } from 'src/composes/loading.compose';
 
-defineProps({
+const props = defineProps({
   filterable: {
     type: Boolean,
     default: true,
@@ -18,17 +19,47 @@ defineProps({
     type: Boolean,
     default: false,
   },
+  pageSize: {
+    type: Number,
+    default: 5,
+  },
+  sortColumn: {
+    type: String,
+    default: 'id',
+  },
+  sortDirection: {
+    type: String,
+    default: 'asc',
+  },
 });
 
 const {
-  isLoading,
   isError,
   error,
   request,
   data: tasks,
-} = useRequest('/tasks');
-const filter = ref({
-  statuses: ['todo', 'in-progress'],
+} = useRequest('/tasks', {
+  initData: {
+    data: {
+      rows: [],
+      meta: {
+        count: 0,
+      },
+    },
+  },
+});
+const { loading, startLoading, stopLoading } = useLoading({
+  initType: 'skeleton',
+  initVisible: false,
+});
+
+const page = reactive({
+  number: 1,
+  size: props.pageSize,
+});
+const filter = reactive({
+  search: null,
+  status_in: ['todo', 'in-progress'],
 });
 
 const visibleDetailModal = ref(false);
@@ -37,8 +68,11 @@ async function loadTasks() {
   try {
     await request({
       params: {
-        page: {
-          size: 5,
+        page,
+        filter,
+        sort: {
+          column: props.sortColumn,
+          direction: props.sortDirection,
         },
       },
     });
@@ -46,27 +80,68 @@ async function loadTasks() {
     //
   }
 }
+async function init() {
+  try {
+    startLoading('skeleton');
 
+    await loadTasks();
+  } finally {
+    stopLoading();
+  }
+}
+
+async function handleLoadMore() {
+  try {
+    startLoading('alert-after-content');
+
+    page.size += props.pageSize;
+
+    await loadTasks();
+  } finally {
+    stopLoading();
+  }
+}
+async function handleFilter() {
+  try {
+    startLoading('alert-before-content');
+
+    page.size = props.pageSize;
+
+    await loadTasks();
+  } finally {
+    stopLoading();
+  }
+}
+async function handleRefresh() {
+  try {
+    startLoading('alert-before-content');
+
+    filter.search = null;
+    page.size = props.pageSize;
+
+    await loadTasks();
+  } finally {
+    stopLoading();
+  }
+}
 function handleClickDetail() {
   visibleDetailModal.value = true;
 }
 
-loadTasks();
+init();
 </script>
 
 <template>
-  <with-state
-    :class="[isLoading && 'mt-4']"
-    :error="isError"
-    :error-message="isError ? error.message : null"
-    :loading="isLoading"
-  >
+  <div class="space-y-5">
     <div
       v-if="filterable"
       class="flex flex-col items-start gap-2 justify-between sm:flex-row"
     >
       <div class="w-full sm:w-auto">
-        <task-status-checkbox-dropdown v-model="filter.statuses" />
+        <task-status-checkbox-dropdown
+          v-model="filter.status_in"
+          v-on:change="handleFilter"
+        />
       </div>
       <div class="w-full sm:w-auto">
         <base-input
@@ -74,29 +149,40 @@ loadTasks();
           placeholder="Search"
           width="full"
           size="sm"
+          v-model="filter.search"
+          v-on:debounce-input="handleFilter"
         />
       </div>
     </div>
-    <base-stacked-list
-      :data="tasks.data.rows"
-      v-on:click-detail="handleClickDetail"
+    <with-state
+      :loading-type="loading.type"
+      :is-loading="loading.visible"
+      :is-loading-blocking="loading.type === 'skeleton'"
+      :is-error="isError"
+      :is-empty="tasks.data.meta.count < 1"
+      :error-message="isError ? error.message : null"
     >
-      <template #description>
-        Due on <time datetime="2023-03-17T00:00Z">today</time>
-      </template>
-      <template #actions="{ index }">
-        <div>
-          <task-status-dropdown v-model="tasks.data.rows[index].status" />
-        </div>
-      </template>
-    </base-stacked-list>
-    <base-button
-      v-if="withSeeAll"
-      fullwidth
-      router-link
-      :to="{ name: 'tasks.index' }"
-      >See All</base-button
-    >
-    <task-detail-modal v-model:visible="visibleDetailModal" />
-  </with-state>
+      <base-stacked-list
+        :data="tasks.data.rows"
+        v-on:click-detail="handleClickDetail"
+      >
+        <template #description>
+          Due on <time datetime="2023-03-17T00:00Z">today</time>
+        </template>
+        <template #actions="{ index }">
+          <div>
+            <task-status-dropdown v-model="tasks.data.rows[index].status" />
+          </div>
+        </template>
+      </base-stacked-list>
+      <base-button
+        v-if="withSeeAll"
+        fullwidth
+        router-link
+        :to="{ name: 'tasks.index' }"
+        >See All</base-button
+      >
+      <task-detail-modal v-model:visible="visibleDetailModal" />
+    </with-state>
+  </div>
 </template>

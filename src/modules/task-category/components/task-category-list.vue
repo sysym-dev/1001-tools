@@ -9,6 +9,7 @@ import WithState from 'src/components/composes/with-state.vue';
 import { inject, reactive, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useRequest } from 'src/composes/request.compose';
+import { useLoading } from 'src/composes/loading.compose';
 
 const props = defineProps({
   pageSize: {
@@ -42,11 +43,11 @@ const {
     },
   },
 });
-
-const loading = reactive({
-  type: 'skeleton',
-  visible: false,
+const { loading, startLoading, stopLoading } = useLoading({
+  initType: 'skeleton',
+  initVisible: false,
 });
+
 const deleteConfirm = reactive({
   id: null,
   visible: false,
@@ -70,14 +71,6 @@ const actionOptions = [
   },
 ];
 
-function startLoading(type) {
-  loading.type = type;
-  loading.visible = true;
-}
-function stopLoading() {
-  loading.type = null;
-  loading.visible = false;
-}
 async function loadTaskCategories() {
   try {
     await request({
