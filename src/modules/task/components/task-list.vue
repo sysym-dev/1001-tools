@@ -19,17 +19,21 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
-  pageSize: {
-    type: Number,
-    default: 5,
+  withLoadMore: {
+    type: Boolean,
+    default: true,
   },
-  sortColumn: {
-    type: String,
-    default: 'id',
+  sort: {
+    type: Object,
+    default: () => ({}),
   },
-  sortDirection: {
-    type: String,
-    default: 'asc',
+  filter: {
+    type: Object,
+    default: () => ({}),
+  },
+  page: {
+    type: Object,
+    default: () => ({}),
   },
 });
 const emitter = inject('emitter');
@@ -55,12 +59,13 @@ const { loading, startLoading, stopLoading } = useLoading({
 });
 
 const page = reactive({
-  number: 1,
-  size: props.pageSize,
+  number: props.page.number ?? 1,
+  size: props.page.size ?? 5,
 });
 const filter = reactive({
   search: null,
-  status_in: ['todo', 'in-progress'],
+  status_in: props.filter.status_in ?? ['todo', 'in-progress'],
+  status: props.filter.status ?? null,
 });
 
 const visibleDetailModal = ref(false);
@@ -72,8 +77,8 @@ async function loadTasks() {
         page,
         filter,
         sort: {
-          column: props.sortColumn,
-          direction: props.sortDirection,
+          column: props.sortColumn ?? 'id',
+          direction: props.sortDirection ?? 'desc',
         },
       },
     });
@@ -183,7 +188,7 @@ init();
         </template>
       </base-stacked-list>
       <base-button
-        v-if="page.size < tasks.data.meta.count"
+        v-if="withLoadMore && page.size < tasks.data.meta.count"
         v-on:click="handleLoadMore"
         fullwidth
         >Load More</base-button
