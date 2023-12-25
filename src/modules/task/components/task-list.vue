@@ -175,7 +175,10 @@ init();
         </template>
         <template #actions="{ index }">
           <div>
-            <task-status-dropdown v-model="tasks.data.rows[index].status" />
+            <task-status-dropdown
+              :task-id="tasks.data.rows[index].id"
+              v-model="tasks.data.rows[index].status"
+            />
           </div>
         </template>
       </base-stacked-list>
