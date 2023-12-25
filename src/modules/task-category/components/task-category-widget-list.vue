@@ -10,7 +10,16 @@ const {
   error,
   request,
   data: taskCategories,
-} = useRequest('/task-categories');
+} = useRequest('/task-categories', {
+  initData: {
+    data: {
+      rows: [],
+      meta: {
+        count: 0,
+      },
+    },
+  },
+});
 
 async function loadTaskCategories() {
   try {
@@ -31,10 +40,12 @@ loadTaskCategories();
 
 <template>
   <with-state
-    class="space-y-4"
-    :error="isError"
+    :is-error="isError"
     :error-message="isError ? error.message : null"
-    :loading="isLoading"
+    :is-loading="isLoading"
+    loading-type="skeleton"
+    is-error-blocking
+    is-loading-blocking
   >
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
       <div
