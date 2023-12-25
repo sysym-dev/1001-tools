@@ -176,6 +176,12 @@ init();
         </template>
       </base-stacked-list>
       <base-button
+        v-if="page.size < tasks.data.meta.count"
+        v-on:click="handleLoadMore"
+        fullwidth
+        >Load More</base-button
+      >
+      <base-button
         v-if="withSeeAll"
         fullwidth
         router-link
