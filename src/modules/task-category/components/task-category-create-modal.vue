@@ -64,6 +64,8 @@ async function handleOpenModal() {
 }
 async function handleSubmit() {
   try {
+    resetRequestError();
+
     await submit();
     await request({
       data: form.value,
@@ -88,29 +90,30 @@ function handleCloseModal() {
   >
     <form v-on:submit.prevent="handleSubmit">
       <base-card title="New Category" v-on:click-outside="handleClose">
-        <with-state
-          class="space-y-4"
-          :error="isError"
-          :error-message="isError ? error.message : null"
-        >
-          <base-input
-            ref="inputNameEl"
-            label="Name"
-            placeholder="Name"
-            :state="hasError('name') ? 'error' : 'normal'"
-            :message="hasError('name') ? errors.name : ''"
-            v-model="form.name"
-          />
+        <div class="space-y-4">
+          <with-state
+            :is-error="isError"
+            :error-message="isError ? error.message : null"
+          >
+            <base-input
+              ref="inputNameEl"
+              label="Name"
+              placeholder="Name"
+              :state="hasError('name') ? 'error' : 'normal'"
+              :message="hasError('name') ? errors.name : ''"
+              v-model="form.name"
+            />
 
-          <base-input
-            label="Description"
-            placeholder="Description"
-            :state="hasError('description') ? 'error' : 'normal'"
-            :message="hasError('description') ? errors.description : ''"
-            textarea
-            v-model="form.description"
-          />
-        </with-state>
+            <base-input
+              label="Description"
+              placeholder="Description"
+              :state="hasError('description') ? 'error' : 'normal'"
+              :message="hasError('description') ? errors.description : ''"
+              textarea
+              v-model="form.description"
+            />
+          </with-state>
+        </div>
 
         <template #footer>
           <div class="flex gap-x-2 items-center justify-end">

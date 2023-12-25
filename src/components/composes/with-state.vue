@@ -47,9 +47,10 @@ defineProps({
   </base-alert>
   <template
     v-if="(!isError || !isErrorBlocking) && (!isLoading || !isLoadingBlocking)"
-  />
-  <base-empty v-if="isEmpty" />
-  <slot v-else> </slot>
+  >
+    <base-empty v-if="isEmpty" />
+    <slot v-else> </slot>
+  </template>
   <base-alert
     v-if="loadingType === 'alert-after-content' && isLoading"
     type="info"

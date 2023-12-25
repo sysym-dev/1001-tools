@@ -105,24 +105,25 @@ function handleConfirm() {
             aria-hidden="true"
           />
         </div>
-        <with-state
-          :error="isError"
-          :error-message="errorMessage"
-          class="mt-3 sm:mt-5"
-          block-error
-        >
-          <div class="mt-3 text-center sm:mt-5">
-            <h3
-              class="text-base font-semibold leading-6 text-gray-900"
-              id="modal-title"
-            >
-              {{ title }}
-            </h3>
-            <div class="mt-2">
-              <p class="text-sm text-gray-500">{{ description }}</p>
+        <div class="mt-3 sm:mt-5">
+          <with-state
+            :is-error="isError"
+            :error-message="errorMessage"
+            is-error-blocking
+          >
+            <div class="text-center">
+              <h3
+                class="text-base font-semibold leading-6 text-gray-900"
+                id="modal-title"
+              >
+                {{ title }}
+              </h3>
+              <div class="mt-2">
+                <p class="text-sm text-gray-500">{{ description }}</p>
+              </div>
             </div>
-          </div>
-        </with-state>
+          </with-state>
+        </div>
       </div>
       <div
         :class="[
