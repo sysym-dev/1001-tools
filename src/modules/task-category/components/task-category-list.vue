@@ -12,17 +12,13 @@ import { useRequest } from 'src/composes/request.compose';
 import { useLoading } from 'src/composes/loading.compose';
 
 const props = defineProps({
-  pageSize: {
-    type: Number,
-    default: 5,
+  page: {
+    type: Object,
+    default: () => ({}),
   },
-  sortColumn: {
-    type: String,
-    default: 'id',
-  },
-  sortDirection: {
-    type: String,
-    default: 'asc',
+  sort: {
+    type: Object,
+    default: () => ({}),
   },
 });
 const emitter = inject('emitter');
@@ -53,8 +49,8 @@ const deleteConfirm = reactive({
   visible: false,
 });
 const page = reactive({
-  number: 1,
-  size: props.pageSize,
+  number: props.page.number ?? 1,
+  size: props.page.size ?? 5,
 });
 const filter = reactive({
   search: null,
@@ -78,8 +74,8 @@ async function loadTaskCategories() {
         page,
         filter,
         sort: {
-          column: props.sortColumn,
-          direction: props.sortDirection,
+          column: props.sort.dolumn ?? 'id',
+          direction: props.sort.direction ?? 'desc',
         },
       },
     });
@@ -119,7 +115,7 @@ async function handleLoadMore() {
   try {
     startLoading('alert-after-content');
 
-    page.size += props.pageSize;
+    page.size += props.page.size ?? 5;
 
     await loadTaskCategories();
   } finally {
@@ -130,7 +126,7 @@ async function handleSearch() {
   try {
     startLoading('alert-before-content');
 
-    page.size = props.pageSize;
+    page.size = props.page.size ?? 5;
 
     await loadTaskCategories();
   } finally {
@@ -142,7 +138,7 @@ async function handleRefresh() {
     startLoading('alert-before-content');
 
     filter.search = null;
-    page.size = props.pageSize;
+    page.size = props.page.size ?? 5;
 
     await loadTaskCategories();
   } finally {

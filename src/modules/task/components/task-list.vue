@@ -100,7 +100,7 @@ async function handleLoadMore() {
   try {
     startLoading('alert-after-content');
 
-    page.size += props.pageSize;
+    page.size += props.page.size ?? 5;
 
     await loadTasks();
   } finally {
@@ -111,7 +111,7 @@ async function handleFilter() {
   try {
     startLoading('alert-before-content');
 
-    page.size = props.pageSize;
+    page.size = props.page.size ?? 5;
 
     await loadTasks();
   } finally {
@@ -123,7 +123,7 @@ async function handleRefresh() {
     startLoading('alert-before-content');
 
     filter.search = null;
-    page.size = props.pageSize;
+    page.size = props.page.size ?? 5;
 
     await loadTasks();
   } finally {
