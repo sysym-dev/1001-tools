@@ -6,7 +6,7 @@ import BaseInput from 'src/components/base/base-input.vue';
 import BaseStackedList from 'src/components/base/base-stacked-list.vue';
 import TaskCategoryDeleteConfirm from './task-category-delete-confirm.vue';
 import WithState from 'src/components/composes/with-state.vue';
-import { inject, reactive, ref } from 'vue';
+import { inject, reactive } from 'vue';
 import { useRouter } from 'vue-router';
 import { useRequest } from 'src/composes/request.compose';
 import { useLoading } from 'src/composes/loading.compose';

@@ -6,7 +6,7 @@ import TaskStatusDropdown from './task-status-dropdown.vue';
 import TaskDetailModal from './task-detail-modal.vue';
 import TaskStatusCheckboxDropdown from './task-status-checkbox-dropdown.vue';
 import WithState from 'src/components/composes/with-state.vue';
-import { ref, reactive } from 'vue';
+import { ref, reactive, inject } from 'vue';
 import { useRequest } from 'src/composes/request.compose';
 import { useLoading } from 'src/composes/loading.compose';
 
@@ -32,6 +32,7 @@ const props = defineProps({
     default: 'asc',
   },
 });
+const emitter = inject('emitter');
 
 const {
   isError,
@@ -127,6 +128,9 @@ async function handleRefresh() {
 function handleClickDetail() {
   visibleDetailModal.value = true;
 }
+
+emitter.on('tasks-created', () => handleRefresh());
+emitter.on('tasks-deleted', () => handleRefresh());
 
 init();
 </script>
