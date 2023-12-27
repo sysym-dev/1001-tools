@@ -6,7 +6,7 @@ import TaskStatusDropdown from './task-status-dropdown.vue';
 import TaskDetailModal from './task-detail-modal.vue';
 import TaskStatusCheckboxDropdown from './task-status-checkbox-dropdown.vue';
 import WithState from 'src/components/composes/with-state.vue';
-import { ref, reactive, inject } from 'vue';
+import { reactive, inject } from 'vue';
 import { useRequest } from 'src/composes/request.compose';
 import { useLoading } from 'src/composes/loading.compose';
 
@@ -68,7 +68,10 @@ const filter = reactive({
   status: props.filter.status ?? null,
 });
 
-const visibleDetailModal = ref(false);
+const detailModal = reactive({
+  visible: false,
+  id: null,
+});
 
 async function loadTasks() {
   try {
@@ -130,8 +133,9 @@ async function handleRefresh() {
     stopLoading();
   }
 }
-function handleClickDetail() {
-  visibleDetailModal.value = true;
+function handleClickDetail(task) {
+  detailModal.id = task.id;
+  detailModal.visible = true;
 }
 
 emitter.on('tasks-created', () => handleRefresh());
@@ -200,7 +204,10 @@ init();
         :to="{ name: 'tasks.index' }"
         >See All</base-button
       >
-      <task-detail-modal v-model:visible="visibleDetailModal" />
+      <task-detail-modal
+        :task-id="detailModal.id"
+        v-model:visible="detailModal.visible"
+      />
     </with-state>
   </div>
 </template>

@@ -59,7 +59,7 @@ function handleChange(option) {
   <base-dropdown
     :options="availableStatus"
     size="sm"
-    width="full"
+    width="fit"
     v-model="selected"
     v-on:click-option="handleChange"
   >
