@@ -42,7 +42,6 @@ const {
 
 const visibleEditModal = ref(false);
 const visibleDeleteConfirm = ref(false);
-const status = ref('todo');
 const columns = [
   {
     id: 'status',
@@ -110,7 +109,10 @@ function handleOpen() {
         >
           <template #render>
             <div>
-              <task-status-dropdown v-model="task.data.status" />
+              <task-status-dropdown
+                :task-id="task.data.id"
+                v-model="task.data.status"
+              />
             </div>
           </template>
         </base-description-column>
@@ -135,6 +137,7 @@ function handleOpen() {
   </base-modal>
 
   <task-edit-modal
+    :task="task.data"
     v-model:visible="visibleEditModal"
     v-on:close="handleCloseEditModal"
   />
