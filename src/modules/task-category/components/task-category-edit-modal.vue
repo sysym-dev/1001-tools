@@ -12,6 +12,10 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  taskCategory: {
+    type: Object,
+    default: () => ({}),
+  },
 });
 const emit = defineEmits(['update:visible', 'close']);
 
@@ -47,8 +51,8 @@ async function handleOpenModal() {
   resetError();
 
   setForm({
-    name: 'Shopping List',
-    description: 'Lorem Inpus',
+    name: props.taskCategory.name,
+    description: props.taskCategory.description,
   });
 
   await nextTick();

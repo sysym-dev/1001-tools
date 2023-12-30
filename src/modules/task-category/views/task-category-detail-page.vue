@@ -7,7 +7,7 @@ import TaskList from 'src/modules/task/components/task-list.vue';
 import TaskCreateModal from 'src/modules/task/components/task-create-modal.vue';
 import WithState from 'src/components/composes/with-state.vue';
 import TaskCategoryDetailDescriptionList from 'src/modules/task-category/components/task-category-detail-description-list.vue';
-import { h, ref, watch } from 'vue';
+import { computed, h, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useRequest } from 'src/composes/request.compose';
 
@@ -20,30 +20,6 @@ const {
   request,
   data: taskCategory,
 } = useRequest('/task-categories');
-
-const tabs = [
-  {
-    id: 'tasks',
-    name: 'Task',
-    component: () =>
-      h('div', { class: 'py-5' }, [
-        h(TaskList, {
-          filter: {
-            task_category_id: route.params.id,
-          },
-        }),
-        h(TaskCreateModal, {
-          visible: visibleTaskCreateModal.value,
-          'onUpdate:visible': (value) => (visibleTaskCreateModal.value = value),
-        }),
-      ]),
-  },
-  {
-    id: 'setting',
-    name: 'Setting',
-    component: () => h(TaskCategoryDetailDescriptionList),
-  },
-];
 
 const activeTab = ref(route.query.tab ?? 'tasks');
 const visibleTaskCreateModal = ref(false);
@@ -101,7 +77,36 @@ loadTask();
           </base-button>
         </template>
       </base-heading>
-      <base-tabs :tabs="tabs" v-model:active="activeTab" />
+      <base-tabs
+        :tabs="[
+          {
+            id: 'tasks',
+            name: 'Task',
+            component: () =>
+              h('div', { class: 'py-5' }, [
+                h(TaskList, {
+                  filter: {
+                    task_category_id: route.params.id,
+                  },
+                }),
+                h(TaskCreateModal, {
+                  visible: visibleTaskCreateModal.value,
+                  'onUpdate:visible': (value) =>
+                    (visibleTaskCreateModal.value = value),
+                }),
+              ]),
+          },
+          {
+            id: 'setting',
+            name: 'Setting',
+            component: () =>
+              h(TaskCategoryDetailDescriptionList, {
+                taskCategory: taskCategory.data,
+              }),
+          },
+        ]"
+        v-model:active="activeTab"
+      />
     </div>
   </with-state>
 </template>
