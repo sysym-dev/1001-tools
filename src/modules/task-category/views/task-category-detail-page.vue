@@ -10,9 +10,11 @@ import TaskCategoryDetailDescriptionList from 'src/modules/task-category/compone
 import { inject, h, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useRequest } from 'src/composes/request.compose';
+import { useTitle } from 'src/composes/title.compose';
 
 const route = useRoute();
 const router = useRouter();
+const { setTitle } = useTitle();
 const {
   isLoading,
   isError,
@@ -30,6 +32,8 @@ async function loadTask() {
     await request({
       url: `/task-categories/${route.params.id}`,
     });
+
+    setTitle(taskCategory.value.data.name);
   } catch (err) {
     //
   }
