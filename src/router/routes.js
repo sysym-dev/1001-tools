@@ -3,6 +3,9 @@ export const routes = [
     path: '/',
     name: 'home',
     component: () => import('src/modules/home/views/home-page.vue'),
+    meta: {
+      title: 'Home',
+    },
   },
   {
     path: '/task-categories/',
@@ -15,6 +18,9 @@ export const routes = [
           import(
             'src/modules/task-category/views/task-category-index-page.vue'
           ),
+        meta: {
+          title: 'Categories',
+        },
       },
       {
         path: ':id',
@@ -23,6 +29,9 @@ export const routes = [
           import(
             'src/modules/task-category/views/task-category-detail-page.vue'
           ),
+        meta: {
+          title: 'Category Detail',
+        },
       },
     ],
   },
@@ -34,6 +43,9 @@ export const routes = [
         path: '',
         name: 'tasks.index',
         component: () => import('src/modules/task/views/task-index-page.vue'),
+        meta: {
+          title: 'Tasks',
+        },
       },
     ],
   },
@@ -41,5 +53,8 @@ export const routes = [
     path: '/:pathMatch(.*)*',
     name: 'not-found',
     component: () => import('src/modules/not-found/views/not-found-page.vue'),
+    meta: {
+      title: 'Not Found',
+    },
   },
 ];

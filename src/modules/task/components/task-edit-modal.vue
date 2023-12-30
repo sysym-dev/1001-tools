@@ -3,24 +3,41 @@ import BaseModal from 'src/components/base/base-modal.vue';
 import BaseCard from 'src/components/base/base-card.vue';
 import BaseInput from 'src/components/base/base-input.vue';
 import BaseButton from 'src/components/base/base-button.vue';
+import WithState from 'src/components/composes/with-state.vue';
 import { computed, nextTick, ref } from 'vue';
 import { object, string } from 'yup';
 import { useForm } from 'src/composes/form.compose';
+import { useRequest } from 'src/composes/request.compose';
 
 const props = defineProps({
   visible: {
     type: Boolean,
     default: false,
   },
+  task: {
+    type: Object,
+    default: () => ({}),
+  },
 });
 const emit = defineEmits(['update:visible', 'close']);
 
+const {
+  isLoading,
+  isError,
+  error,
+  resetError: resetRequestError,
+  request,
+} = useRequest('/tasks', {
+  method: 'patch',
+});
 const { form, errors, hasError, setForm, resetError, resetForm, submit } =
   useForm({
     schema: {
-      name: null,
+      description: '',
+      name: '',
     },
     validationSchema: object({
+      description: string().nullable().optional(),
       name: string().required(),
     }),
   });
@@ -41,11 +58,13 @@ function handleClose() {
 }
 
 async function handleOpenModal() {
+  resetRequestError();
   resetForm();
   resetError();
 
   setForm({
-    name: 'Turu Bang',
+    name: props.task.name,
+    description: props.task.description,
   });
 
   await nextTick();
@@ -55,6 +74,10 @@ async function handleOpenModal() {
 async function handleSubmit() {
   try {
     await submit();
+    await request({
+      url: `/tasks/${props.task.id}`,
+      data: form.value,
+    });
   } catch (err) {
     //
   }
@@ -72,18 +95,40 @@ function handleCloseModal() {
   >
     <form v-on:submit.prevent="handleSubmit">
       <base-card title="Edit Task" v-on:click-outside="handleClose">
-        <base-input
-          ref="inputEl"
-          label="Name"
-          placeholder="Name"
-          :state="hasError('name') ? 'error' : 'normal'"
-          :message="hasError('name') ? errors.name : ''"
-          v-model="form.name"
-        />
+        <div class="space-y-4">
+          <with-state
+            :is-error="isError"
+            :error-message="isError ? error.message : null"
+          >
+            <base-input
+              ref="inputEl"
+              label="Name"
+              placeholder="Name"
+              :state="hasError('name') ? 'error' : 'normal'"
+              :message="hasError('name') ? errors.name : ''"
+              v-model="form.name"
+            />
+
+            <base-input
+              label="Description"
+              placeholder="Description"
+              :state="hasError('description') ? 'error' : 'normal'"
+              :message="hasError('description') ? errors.description : ''"
+              textarea
+              v-model="form.description"
+            />
+          </with-state>
+        </div>
 
         <template #footer>
           <div class="flex gap-x-2 items-center justify-end">
-            <base-button type="submit" color="sky">Save</base-button>
+            <base-button
+              type="submit"
+              color="sky"
+              :disabled="isLoading"
+              :loading="isLoading"
+              >Save</base-button
+            >
             <base-button v-on:click="handleClose">Cancel</base-button>
           </div>
         </template>

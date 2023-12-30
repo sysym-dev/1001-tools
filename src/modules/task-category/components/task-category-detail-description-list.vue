@@ -5,6 +5,13 @@ import TaskCategoryEditModal from './task-category-edit-modal.vue';
 import TaskCategoryDeleteConfirm from './task-category-delete-confirm.vue';
 import { h, ref } from 'vue';
 
+defineProps({
+  taskCategory: {
+    type: Object,
+    default: () => ({}),
+  },
+});
+
 const visibleEditModal = ref(false);
 const visibleDeleteConfirm = ref(false);
 
@@ -27,6 +34,7 @@ function handleDelete() {
       {
         id: 'description',
         name: 'Description',
+        value: (item) => item.description ?? '-',
       },
       {
         id: 'actions',
@@ -56,12 +64,14 @@ function handleDelete() {
           ]),
       },
     ]"
-    :data="{
-      name: 'Shopping List',
-      description:
-        'Fugiat ipsum ipsum deserunt culpa aute sint do nostrud anim incididunt cillum culpa consequat. Excepteur qui ipsum aliquip consequat sint. Sit id mollit nulla mollit nostrud in ea officia proident. Irure nostrud pariatur mollit ad adipisicing reprehenderit deserunt qui eu.',
-    }"
+    :data="taskCategory"
   />
-  <task-category-edit-modal v-model:visible="visibleEditModal" />
-  <task-category-delete-confirm v-model:visible="visibleDeleteConfirm" />
+  <task-category-edit-modal
+    :task-category="taskCategory"
+    v-model:visible="visibleEditModal"
+  />
+  <task-category-delete-confirm
+    :task-category-id="taskCategory.id"
+    v-model:visible="visibleDeleteConfirm"
+  />
 </template>

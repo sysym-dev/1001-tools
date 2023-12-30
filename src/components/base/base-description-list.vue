@@ -27,7 +27,9 @@ defineProps({
       </dt>
       <dd class="mt-1 sm:col-span-2 sm:mt-0">
         <component v-if="item.render" :is="item.render" />
-        <span class="text-sm leading-6 text-gray-700">{{ data[item.id] }}</span>
+        <span class="text-sm leading-6 text-gray-700">{{
+          item.value ? item.value(data) : data[item.id]
+        }}</span>
       </dd>
     </div>
   </dl>
