@@ -46,6 +46,7 @@ loadTaskCategories();
     loading-type="skeleton"
     is-error-blocking
     is-loading-blocking
+    :is-empty="taskCategories.data.meta.count < 1"
   >
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
       <div
