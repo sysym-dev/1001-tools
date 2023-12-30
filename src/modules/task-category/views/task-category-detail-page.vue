@@ -7,7 +7,7 @@ import TaskList from 'src/modules/task/components/task-list.vue';
 import TaskCreateModal from 'src/modules/task/components/task-create-modal.vue';
 import WithState from 'src/components/composes/with-state.vue';
 import TaskCategoryDetailDescriptionList from 'src/modules/task-category/components/task-category-detail-description-list.vue';
-import { computed, h, ref, watch } from 'vue';
+import { inject, h, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useRequest } from 'src/composes/request.compose';
 
@@ -20,6 +20,7 @@ const {
   request,
   data: taskCategory,
 } = useRequest('/task-categories');
+const emitter = inject('emitter');
 
 const activeTab = ref(route.query.tab ?? 'tasks');
 const visibleTaskCreateModal = ref(false);
@@ -41,6 +42,8 @@ function handleCreateTask() {
 watch(activeTab, (value) => {
   router.push({ query: { tab: value } });
 });
+
+emitter.on('task-categories-edited', () => loadTask());
 
 loadTask();
 </script>
