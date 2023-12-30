@@ -44,6 +44,9 @@ watch(activeTab, (value) => {
 });
 
 emitter.on('task-categories-edited', () => loadTask());
+emitter.on('task-categories-deleted', () =>
+  router.push({ name: 'task-categories.index' }),
+);
 
 loadTask();
 </script>

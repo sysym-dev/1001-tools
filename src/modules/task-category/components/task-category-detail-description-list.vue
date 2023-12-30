@@ -70,5 +70,8 @@ function handleDelete() {
     :task-category="taskCategory"
     v-model:visible="visibleEditModal"
   />
-  <task-category-delete-confirm v-model:visible="visibleDeleteConfirm" />
+  <task-category-delete-confirm
+    :task-category-id="taskCategory.id"
+    v-model:visible="visibleDeleteConfirm"
+  />
 </template>
