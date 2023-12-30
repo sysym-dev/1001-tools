@@ -97,7 +97,7 @@ function handleClickOption(item, option) {
   if (option.id === 'setting') {
     router.push({
       name: 'task-categories.detail',
-      params: { id: '1' },
+      params: { id: item.id },
       query: { tab: 'setting' },
     });
   } else if (option.id === 'delete') {
