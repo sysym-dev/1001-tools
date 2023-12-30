@@ -66,6 +66,7 @@ const filter = reactive({
   search: null,
   status_in: props.filter.status_in ?? ['todo', 'in-progress'],
   status: props.filter.status ?? null,
+  task_category_id: props.filter.task_category_id ?? null,
 });
 
 const detailModal = reactive({
