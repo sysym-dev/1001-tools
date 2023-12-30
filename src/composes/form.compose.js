@@ -24,7 +24,7 @@ export function useForm({ schema, validationSchema }) {
 
       await validate(form.value);
     } catch (err) {
-      //
+      throw err;
     }
   }
 

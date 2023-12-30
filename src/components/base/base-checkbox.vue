@@ -7,7 +7,7 @@ const props = defineProps({
   value: null,
   modelValue: null,
 });
-const emit = defineEmits(['update:modelValue']);
+const emit = defineEmits(['update:modelValue', 'change']);
 
 const checked = computed({
   get() {
@@ -17,6 +17,10 @@ const checked = computed({
     emit('update:modelValue', value);
   },
 });
+
+function handleChange() {
+  emit('change');
+}
 </script>
 
 <template>
@@ -28,6 +32,7 @@ const checked = computed({
         class="h-4 w-4 rounded border-gray-300 text-sky-600 focus:ring-sky-600"
         :value="value"
         v-model="checked"
+        v-on:change="handleChange"
       />
     </div>
     <div class="ml-3 text-sm leading-6">

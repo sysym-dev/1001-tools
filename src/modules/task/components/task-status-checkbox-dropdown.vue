@@ -11,7 +11,7 @@ const props = defineProps({
     default: () => [],
   },
 });
-const emit = defineEmits(['update:modelValue']);
+const emit = defineEmits(['update:modelValue', 'change']);
 
 const selectedStatus = computed({
   get() {
@@ -29,6 +29,10 @@ const label = computed(() => {
 
   return selectedStatus.value.map((id) => getStatusById(id).name).join(', ');
 });
+
+function handleChange() {
+  emit('change');
+}
 </script>
 
 <template>
@@ -45,6 +49,7 @@ const label = computed(() => {
         :label="status.name"
         :value="status.id"
         v-model="selectedStatus"
+        v-on:change="handleChange"
       />
     </div>
   </base-dropdown>

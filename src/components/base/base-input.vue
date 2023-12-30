@@ -1,5 +1,6 @@
 <script setup>
 import { computed, ref } from 'vue';
+import { debounce } from '../../utils/debounce';
 
 const props = defineProps({
   label: String,
@@ -27,8 +28,9 @@ const props = defineProps({
     default: false,
   },
 });
-const emit = defineEmits(['update:modelValue']);
+const emit = defineEmits(['update:modelValue', 'input', 'debounce-input']);
 
+const debounceEmitInput = debounce(() => emit('debounce-input'));
 const value = computed({
   get() {
     return props.modelValue;
@@ -70,7 +72,13 @@ const params = computed(() => ({
     size.value,
   ],
   placeholder: props.placeholder,
+  onInput: handleInput,
 }));
+
+function handleInput() {
+  emit('input');
+  debounceEmitInput();
+}
 
 defineExpose({ inputEl });
 </script>

@@ -1,9 +1,13 @@
 <script setup>
 import BaseNavbar from './components/base/base-navbar.vue';
 import AppProgressBar from './components/app/app-progress-bar.vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
+import { useTitle } from './composes/title.compose';
 
 const route = useRoute();
+const router = useRouter();
+const { setTitle } = useTitle();
+
 const menus = [
   {
     id: 'home',
@@ -27,6 +31,10 @@ const menus = [
     },
   },
 ];
+
+router.afterEach((to) => {
+  setTitle(to.meta.title);
+});
 </script>
 
 <template>

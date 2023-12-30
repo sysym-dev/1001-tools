@@ -27,10 +27,12 @@ const props = defineProps({
         {{ column.name }}
       </dt>
       <dd v-if="column.type === 'render'" class="mt-1 sm:mt-2">
-        <component :is="column.component" />
+        <slot name="render">
+          <component :is="column.component" :data="data" :index="index" />
+        </slot>
       </dd>
       <dd v-else class="mt-1 text-sm leading-6 text-gray-700 sm:mt-2">
-        {{ data[column.id] }}
+        {{ column.value ? column.value(data) : data[column.id] }}
       </dd>
     </div>
   </dl>

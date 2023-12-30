@@ -4,6 +4,7 @@ import BaseCard from './base-card.vue';
 import BaseButton from './base-button.vue';
 import { CheckIcon, ExclamationCircleIcon } from '@heroicons/vue/24/outline';
 import { computed } from 'vue';
+import WithState from 'src/components/composes/with-state.vue';
 
 const props = defineProps({
   title: String,
@@ -21,8 +22,17 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  loading: {
+    type: Boolean,
+    default: false,
+  },
+  isError: {
+    type: Boolean,
+    default: false,
+  },
+  errorMessage: String,
 });
-const emit = defineEmits(['update:visible', 'close', 'open']);
+const emit = defineEmits(['update:visible', 'close', 'open', 'confirm']);
 
 const visible = computed({
   get() {
@@ -66,6 +76,9 @@ function handleClosed() {
 function handleClose() {
   visible.value = false;
 }
+function handleConfirm() {
+  emit('confirm');
+}
 </script>
 
 <template>
@@ -92,16 +105,24 @@ function handleClose() {
             aria-hidden="true"
           />
         </div>
-        <div class="mt-3 text-center sm:mt-5">
-          <h3
-            class="text-base font-semibold leading-6 text-gray-900"
-            id="modal-title"
+        <div class="mt-3 sm:mt-5">
+          <with-state
+            :is-error="isError"
+            :error-message="errorMessage"
+            is-error-blocking
           >
-            {{ title }}
-          </h3>
-          <div class="mt-2">
-            <p class="text-sm text-gray-500">{{ description }}</p>
-          </div>
+            <div class="text-center">
+              <h3
+                class="text-base font-semibold leading-6 text-gray-900"
+                id="modal-title"
+              >
+                {{ title }}
+              </h3>
+              <div class="mt-2">
+                <p class="text-sm text-gray-500">{{ description }}</p>
+              </div>
+            </div>
+          </with-state>
         </div>
       </div>
       <div
@@ -118,9 +139,15 @@ function handleClose() {
           v-on:click="handleClose"
           >Cancel</base-button
         >
-        <base-button :color="buttonColor" size="lg" fullwidth>{{
-          action
-        }}</base-button>
+        <base-button
+          :color="buttonColor"
+          size="lg"
+          fullwidth
+          :loading="loading"
+          :disabled="loading"
+          v-on:click="handleConfirm"
+          >{{ action }}</base-button
+        >
       </div>
     </base-card>
   </base-modal>

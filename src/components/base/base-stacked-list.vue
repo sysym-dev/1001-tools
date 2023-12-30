@@ -1,6 +1,5 @@
 <script setup>
-import BaseAlert from './base-alert.vue';
-import BaseSpinner from './base-spinner.vue';
+import BaseEmpty from './base-empty.vue';
 
 defineProps({
   data: {
@@ -11,6 +10,10 @@ defineProps({
     type: Boolean,
     default: false,
   },
+  loadingPosition: {
+    type: String,
+    default: 'top',
+  },
 });
 const emit = defineEmits(['click-detail']);
 
@@ -20,17 +23,17 @@ function handleClickDetail(item) {
 </script>
 
 <template>
-  <base-alert v-if="loading" type="info">
-    <template #icon>
-      <base-spinner size="sm" />
-    </template>
-    {{ 'Loading' }}
-  </base-alert>
   <ul class="divide-y divide-gray-100">
     <li
       v-for="(item, index) in data"
       :key="item.id"
-      class="flex items-center justify-between gap-x-6 py-5"
+      :class="[
+        'flex items-center justify-between gap-x-6',
+        data.length === 1 && 'p-0',
+        data.length > 1 && index === 0 && 'pb-5',
+        data.length > 1 && index === data.length - 1 && 'pt-5',
+        data.length > 1 && index !== 0 && index !== data.length - 1 && 'py-5',
+      ]"
     >
       <div class="min-w-0">
         <p
@@ -49,7 +52,7 @@ function handleClickDetail(item) {
           </p>
         </div>
       </div>
-      <slot name="actions" :index="index" />
+      <slot name="actions" :index="index" :item="item" />
     </li>
   </ul>
 </template>

@@ -1,13 +1,31 @@
 <script setup>
+import BaseSkeleton from 'src/components/base/base-skeleton.vue';
 import BaseAlert from 'src/components/base/base-alert.vue';
-import WithLoading from './with-loading.vue';
+import BaseSpinner from 'src/components/base//base-spinner.vue';
+import BaseEmpty from 'src/components/base//base-empty.vue';
 
 defineProps({
-  error: {
+  loadingType: {
+    type: String,
+    default: 'skeleton',
+  },
+  isLoading: {
     type: Boolean,
     default: false,
   },
-  loading: {
+  isError: {
+    type: Boolean,
+    default: false,
+  },
+  isErrorBlocking: {
+    type: Boolean,
+    default: false,
+  },
+  isLoadingBlocking: {
+    type: Boolean,
+    default: false,
+  },
+  isEmpty: {
     type: Boolean,
     default: false,
   },
@@ -16,10 +34,30 @@ defineProps({
 </script>
 
 <template>
-  <base-alert v-if="error" type="error">{{ errorMessage }}</base-alert>
-  <template v-else>
-    <with-loading :loading="loading">
-      <slot />
-    </with-loading>
+  <base-skeleton v-if="loadingType === 'skeleton' && isLoading" />
+  <base-alert v-if="isError" type="error">{{ errorMessage }}</base-alert>
+  <base-alert
+    v-if="loadingType === 'alert-before-content' && isLoading"
+    type="info"
+  >
+    <template #icon>
+      <base-spinner size="sm" />
+    </template>
+    {{ 'Loading' }}
+  </base-alert>
+  <template
+    v-if="(!isError || !isErrorBlocking) && (!isLoading || !isLoadingBlocking)"
+  >
+    <base-empty v-if="isEmpty" />
+    <slot v-else> </slot>
   </template>
+  <base-alert
+    v-if="loadingType === 'alert-after-content' && isLoading"
+    type="info"
+  >
+    <template #icon>
+      <base-spinner size="sm" />
+    </template>
+    {{ 'Loading' }}
+  </base-alert>
 </template>

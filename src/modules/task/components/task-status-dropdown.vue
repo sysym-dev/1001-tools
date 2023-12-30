@@ -4,11 +4,17 @@ import BaseDropdown from 'src/components/base/base-dropdown.vue';
 import { ChevronDownIcon } from '@heroicons/vue/24/outline';
 import { computed } from 'vue';
 import { availableStatus } from 'src/modules/task/task-status';
+import { useRequest } from 'src/composes/request.compose';
 
 const props = defineProps({
   modelValue: null,
+  taskId: null,
 });
-const emit = defineEmits(['update:modelValue']);
+const emit = defineEmits(['update:modelValue', 'change']);
+
+const { isLoading, request } = useRequest('/tasks', {
+  method: 'patch',
+});
 
 const selected = computed({
   get() {
@@ -30,17 +36,41 @@ const indicatorColor = computed(() => {
 
   return colors[selected.value];
 });
+
+async function updateStatus(status) {
+  try {
+    await request({
+      url: `/tasks/${props.taskId}`,
+      data: {
+        status,
+      },
+    });
+  } catch {
+    //
+  }
+}
+
+function handleChange(option) {
+  updateStatus(option.id);
+}
 </script>
 
 <template>
   <base-dropdown
     :options="availableStatus"
     size="sm"
-    width="full"
+    width="fit"
     v-model="selected"
+    v-on:click-option="handleChange"
   >
     <template #toggle="{ toggle }">
-      <base-button size="sm" v-on:click="toggle">
+      <base-button
+        size="sm"
+        :loading="isLoading"
+        block-loading
+        :disabled="isLoading"
+        v-on:click="toggle"
+      >
         <template #prepend>
           <svg
             :class="['h-1.5 w-1.5', indicatorColor]"
