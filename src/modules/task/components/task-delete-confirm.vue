@@ -1,6 +1,6 @@
 <script setup>
 import BaseConfirm from 'src/components/base/base-confirm.vue';
-import { computed, inject } from 'vue';
+import { computed, inject, nextTick, ref } from 'vue';
 import { useRequest } from 'src/composes/request.compose';
 
 const props = defineProps({
@@ -25,6 +25,7 @@ const visible = computed({
     emit('update:visible', value);
   },
 });
+const dispatchCloseEvent = ref(true);
 
 function handleOpen() {
   resetError();
@@ -39,8 +40,14 @@ async function handleConfirm() {
     });
 
     emitter.emit('tasks-deleted');
-
     emit('deleted');
+
+    dispatchCloseEvent.value = false;
+    visible.value = false;
+
+    await nextTick();
+
+    dispatchCloseEvent.value = true;
   } catch (err) {}
 }
 </script>
@@ -55,6 +62,7 @@ async function handleConfirm() {
     :loading="isLoading"
     :is-error="isError"
     :error-message="isError ? error.message : null"
+    :dispatch-close-event="dispatchCloseEvent"
     v-model:visible="visible"
     v-on:open="handleOpen"
     v-on:close="handleCloseModal"

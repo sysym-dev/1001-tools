@@ -74,6 +74,12 @@ const detailModal = reactive({
   id: null,
 });
 
+function setFilterFromProps() {
+  filter.search = null;
+  filter.status_in = props.filter.status_in ?? ['todo', 'in-progress'];
+  filter.status = props.filter.status ?? null;
+  filter.task_category_id = props.filter.task_category_id ?? null;
+}
 async function loadTasks() {
   try {
     await request({
@@ -126,7 +132,7 @@ async function handleRefresh() {
   try {
     startLoading('alert-before-content');
 
-    filter.search = null;
+    setFilterFromProps();
     page.size = props.page.size ?? 5;
 
     await loadTasks();
@@ -140,8 +146,10 @@ function handleClickDetail(task) {
 }
 
 emitter.on('tasks-created', () => handleRefresh());
+emitter.on('tasks-edited', () => handleRefresh());
 emitter.on('tasks-deleted', () => handleRefresh());
 
+setFilterFromProps();
 init();
 </script>
 

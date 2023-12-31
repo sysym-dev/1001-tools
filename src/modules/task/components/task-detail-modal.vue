@@ -52,7 +52,7 @@ const columns = [
     id: 'description',
     name: 'Description',
     fullwidth: true,
-    value: (task) => task.description ?? '-',
+    value: (task) => task.description || '-',
   },
 ];
 
@@ -143,11 +143,11 @@ function handleDeleted() {
     :task="task.data"
     v-model:visible="visibleEditModal"
     v-on:close="handleCloseEditModal"
-    v-on:deleted="handleDeleted"
   />
   <task-delete-confirm
     :task-id="task.data.id"
     v-model:visible="visibleDeleteConfirm"
     v-on:close="handleCloseDeleteConfirm"
+    v-on:deleted="handleDeleted"
   />
 </template>
