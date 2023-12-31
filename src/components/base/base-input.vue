@@ -1,6 +1,7 @@
 <script setup>
 import { computed, ref } from 'vue';
 import { debounce } from '../../utils/debounce';
+import BaseSpinner from './base-spinner.vue';
 
 const props = defineProps({
   label: String,
@@ -24,6 +25,10 @@ const props = defineProps({
     default: 'md',
   },
   textarea: {
+    type: Boolean,
+    default: false,
+  },
+  loading: {
     type: Boolean,
     default: false,
   },
@@ -115,7 +120,10 @@ defineExpose({ inputEl });
           v-model="value"
         />
       </slot>
-      <slot name="append" />
+      <div class="absolute top-0 right-2 flex items-center h-full">
+        <base-spinner v-if="loading" size="sm" />
+        <slot v-else name="append" />
+      </div>
     </div>
     <p v-if="message" class="mt-2 text-sm text-red-600">{{ message }}</p>
   </div>

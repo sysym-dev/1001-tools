@@ -5,7 +5,11 @@ import { computed, onMounted, reactive, ref } from 'vue';
 import { useRequest } from 'src/composes/request.compose.js';
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/vue/24/outline';
 
-const { request, data: taskCategories } = useRequest('/task-categories', {
+const {
+  isLoading,
+  request,
+  data: taskCategories,
+} = useRequest('/task-categories', {
   initData: {
     data: {
       rows: [],
@@ -94,15 +98,14 @@ onMounted(() => {
         <base-input
           :with-label="false"
           placeholder="Select Category"
+          :loading="isLoading"
           v-model="filter.search"
           v-on:focus="open"
           v-on:debounce-input="handleSearch"
         >
           <template #append>
-            <div class="absolute top-0 right-2 flex items-center h-full">
-              <chevron-up-icon v-if="visible" class="w-4 h-4" />
-              <chevron-down-icon v-else class="w-4 h-4" />
-            </div>
+            <chevron-up-icon v-if="visible" class="w-4 h-4" />
+            <chevron-down-icon v-else class="w-4 h-4" />
           </template>
         </base-input>
       </template>
