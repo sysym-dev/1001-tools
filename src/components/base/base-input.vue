@@ -1,6 +1,7 @@
 <script setup>
 import { computed, ref } from 'vue';
 import { debounce } from '../../utils/debounce';
+import BaseSpinner from './base-spinner.vue';
 
 const props = defineProps({
   label: String,
@@ -27,8 +28,17 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  loading: {
+    type: Boolean,
+    default: false,
+  },
 });
-const emit = defineEmits(['update:modelValue', 'input', 'debounce-input']);
+const emit = defineEmits([
+  'update:modelValue',
+  'input',
+  'debounce-input',
+  'focus',
+]);
 
 const debounceEmitInput = debounce(() => emit('debounce-input'));
 const value = computed({
@@ -73,11 +83,15 @@ const params = computed(() => ({
   ],
   placeholder: props.placeholder,
   onInput: handleInput,
+  onFocus: handleFocus,
 }));
 
 function handleInput() {
   emit('input');
   debounceEmitInput();
+}
+function handleFocus() {
+  emit('focus');
 }
 
 defineExpose({ inputEl });
@@ -90,13 +104,27 @@ defineExpose({ inputEl });
       class="block text-sm font-medium leading-6 text-gray-900 mb-2"
       >{{ label }}</label
     >
-    <textarea
-      v-if="textarea"
-      ref="inputEl"
-      v-bind="params"
-      v-model="value"
-    ></textarea>
-    <input v-else ref="inputEl" type="text" v-bind="params" v-model="value" />
+    <div class="w-full relative">
+      <slot :params="params">
+        <textarea
+          v-if="textarea"
+          ref="inputEl"
+          v-bind="params"
+          v-model="value"
+        ></textarea>
+        <input
+          v-else
+          ref="inputEl"
+          type="text"
+          v-bind="params"
+          v-model="value"
+        />
+      </slot>
+      <div class="absolute top-0 right-2 flex items-center h-full">
+        <base-spinner v-if="loading" size="sm" />
+        <slot v-else name="append" />
+      </div>
+    </div>
     <p v-if="message" class="mt-2 text-sm text-red-600">{{ message }}</p>
   </div>
 </template>

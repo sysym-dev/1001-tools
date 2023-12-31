@@ -4,6 +4,7 @@ import BaseCard from 'src/components/base/base-card.vue';
 import BaseInput from 'src/components/base/base-input.vue';
 import BaseButton from 'src/components/base/base-button.vue';
 import WithState from 'src/components/composes/with-state.vue';
+import TaskCategorySelect from 'src/modules/task-category/components/task-category-select.vue';
 import { computed, nextTick, ref, inject } from 'vue';
 import { object, string } from 'yup';
 import { useForm } from 'src/composes/form.compose';
@@ -15,6 +16,10 @@ const props = defineProps({
     default: false,
   },
   values: {
+    type: Object,
+    default: () => ({}),
+  },
+  elements: {
     type: Object,
     default: () => ({}),
   },
@@ -117,6 +122,15 @@ async function handleSubmit() {
               :message="hasError('description') ? errors.description : ''"
               textarea
               v-model="form.description"
+            />
+
+            <task-category-select
+              v-if="elements.task_category_id !== false"
+              :state="hasError('task_category_id') ? 'error' : 'normal'"
+              :message="
+                hasError('task_category_id') ? errors.task_category_id : ''
+              "
+              v-model="form.task_category_id"
             />
           </with-state>
         </div>
