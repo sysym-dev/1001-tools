@@ -1,13 +1,7 @@
 <script setup>
-import BaseDropdown from 'src/components/base/base-dropdown.vue';
-import BaseInput from 'src/components/base/base-input.vue';
-import { computed, onMounted, reactive, ref } from 'vue';
+import BaseSelectSearch from 'src/components/base/base-select-search.vue';
+import { computed, reactive, ref } from 'vue';
 import { useRequest } from 'src/composes/request.compose.js';
-import {
-  ChevronDownIcon,
-  ChevronUpIcon,
-  XMarkIcon,
-} from '@heroicons/vue/24/outline';
 
 const {
   isLoading,
@@ -27,7 +21,6 @@ const page = reactive({
 const filter = reactive({
   search: null,
 });
-const dropdown = ref(null);
 const selected = ref(null);
 
 const options = computed(() => {
@@ -46,82 +39,42 @@ async function loadTaskCategories() {
     //
   }
 }
-function setInfiniteScroll() {
-  dropdown.value.contentEl.addEventListener('scroll', (e) => {
-    if (
-      page.size < taskCategories.value.data.meta.count &&
-      e.target.scrollTop >= e.target.scrollHeight - e.target.clientHeight
-    ) {
-      handleLoadMore();
-    }
-  });
-}
 
 function handleLoadMore() {
-  page.size += 1;
+  if (page.size < taskCategories.value.data.meta.count) {
+    page.size += 5;
 
-  loadTaskCategories();
+    loadTaskCategories();
+  }
 }
 function handleOpen() {
-  dropdown.value.contentEl.scrollTop = 0;
   page.size = 5;
 
   loadTaskCategories();
 }
-function handleSearch() {
-  dropdown.value.contentEl.scrollTop = 0;
+function handleSearch(q) {
+  filter.search = q;
   page.size = 5;
 
   loadTaskCategories();
-}
-function handleSelected() {
-  filter.search = options.value.find(
-    (option) => option.id === selected.value,
-  ).name;
 }
 function handleClear() {
-  selected.value = null;
   filter.search = null;
 
   loadTaskCategories();
 }
-
-onMounted(() => {
-  setInfiniteScroll();
-});
 </script>
 
 <template>
-  <base-input with-label label="Select Category">
-    <base-dropdown
-      ref="dropdown"
-      width="full"
-      :options="options"
-      :classes="{
-        contentWrapper: 'max-h-[150px] overflow-y-auto',
-      }"
-      v-on:open="handleOpen"
-      v-on:click-option="handleSelected"
-      v-model="selected"
-    >
-      <template #toggle="{ open, visible }">
-        <base-input
-          :with-label="false"
-          placeholder="Select Category"
-          :loading="isLoading"
-          v-model="filter.search"
-          v-on:focus="open"
-          v-on:debounce-input="handleSearch"
-        >
-          <template #append>
-            <button v-if="selected" type="button" v-on:click="handleClear">
-              <x-mark-icon class="w-4 h-4" />
-            </button>
-            <chevron-up-icon v-if="visible" class="w-4 h-4" />
-            <chevron-down-icon v-else class="w-4 h-4" />
-          </template>
-        </base-input>
-      </template>
-    </base-dropdown>
-  </base-input>
+  <base-select-search
+    label="Select Category"
+    placeholder="Select Category"
+    :loading="isLoading"
+    :options="options"
+    v-model="selected"
+    v-on:load-more="handleLoadMore"
+    v-on:open="handleOpen"
+    v-on:search="handleSearch"
+    v-on:clear="handleClear"
+  />
 </template>
