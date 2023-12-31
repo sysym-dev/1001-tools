@@ -21,9 +21,11 @@ const props = defineProps({
     required: true,
   },
   modelValue: null,
+  search: null,
 });
 const emit = defineEmits([
   'update:modelValue',
+  'update:search',
   'load-more',
   'open',
   'search',
@@ -38,10 +40,15 @@ const selected = computed({
     emit('update:modelValue', value);
   },
 });
-
-const filter = reactive({
-  search: null,
+const search = computed({
+  get() {
+    return props.search;
+  },
+  set(value) {
+    emit('update:search', value);
+  },
 });
+
 const dropdown = ref(null);
 
 function setInfiniteScroll() {
@@ -63,18 +70,18 @@ function handleOpen() {
 function handleSearch() {
   dropdown.value.contentEl.scrollTop = 0;
 
-  emit('search', filter.search);
+  emit('search', search.value);
 }
 async function handleSelected() {
   await nextTick();
 
-  filter.search = props.options.find(
+  search.value = props.options.find(
     (option) => option.id === selected.value,
   ).name;
 }
 function handleClear() {
   selected.value = null;
-  filter.search = null;
+  search.value = null;
 
   emit('clear');
 }
@@ -102,7 +109,7 @@ onMounted(() => {
           :with-label="false"
           :placeholder="placeholder"
           :loading="loading"
-          v-model="filter.search"
+          v-model="search"
           v-on:focus="open"
           v-on:debounce-input="handleSearch"
         >

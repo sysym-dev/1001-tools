@@ -72,6 +72,7 @@ function handleClear() {
     :loading="isLoading"
     :options="options"
     v-model="selected"
+    v-model:search="filter.search"
     v-on:load-more="handleLoadMore"
     v-on:open="handleOpen"
     v-on:search="handleSearch"
