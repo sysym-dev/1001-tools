@@ -7,7 +7,7 @@ import TaskList from 'src/modules/task/components/task-list.vue';
 import TaskCreateModal from 'src/modules/task/components/task-create-modal.vue';
 import WithState from 'src/components/composes/with-state.vue';
 import TaskCategoryDetailDescriptionList from 'src/modules/task-category/components/task-category-detail-description-list.vue';
-import { inject, h, ref, watch } from 'vue';
+import { inject, h, ref, watch, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useRequest } from 'src/composes/request.compose';
 import { useTitle } from 'src/composes/title.compose';
@@ -27,7 +27,32 @@ const emitter = inject('emitter');
 const activeTab = ref(route.query.tab ?? 'tasks');
 const visibleTaskCreateModal = ref(false);
 
-async function loadTask() {
+const tabs = computed(() => {
+  return [
+    {
+      id: 'tasks',
+      name: 'Task',
+      component: () =>
+        h('div', { class: 'py-5' }, [
+          h(TaskList, {
+            filter: {
+              task_category_id: route.params.id,
+            },
+          }),
+        ]),
+    },
+    {
+      id: 'setting',
+      name: 'Setting',
+      component: () =>
+        h(TaskCategoryDetailDescriptionList, {
+          taskCategory: taskCategory.value.data,
+        }),
+    },
+  ];
+});
+
+async function loadTaskCategory() {
   try {
     await request({
       url: `/task-categories/${route.params.id}`,
@@ -47,12 +72,12 @@ watch(activeTab, (value) => {
   router.push({ query: { tab: value } });
 });
 
-emitter.on('task-categories-edited', () => loadTask());
+emitter.on('task-categories-edited', () => loadTaskCategory());
 emitter.on('task-categories-deleted', () =>
   router.push({ name: 'task-categories.index' }),
 );
 
-loadTask();
+loadTaskCategory();
 </script>
 
 <template>
@@ -87,31 +112,7 @@ loadTask();
           </base-button>
         </template>
       </base-heading>
-      <base-tabs
-        :tabs="[
-          {
-            id: 'tasks',
-            name: 'Task',
-            component: () =>
-              h('div', { class: 'py-5' }, [
-                h(TaskList, {
-                  filter: {
-                    task_category_id: route.params.id,
-                  },
-                }),
-              ]),
-          },
-          {
-            id: 'setting',
-            name: 'Setting',
-            component: () =>
-              h(TaskCategoryDetailDescriptionList, {
-                taskCategory: taskCategory.data,
-              }),
-          },
-        ]"
-        v-model:active="activeTab"
-      />
+      <base-tabs :tabs="tabs" v-model:active="activeTab" />
     </div>
     <task-create-modal
       :values="{
