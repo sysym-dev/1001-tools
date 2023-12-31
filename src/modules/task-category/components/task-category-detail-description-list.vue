@@ -34,7 +34,7 @@ function handleDelete() {
       {
         id: 'description',
         name: 'Description',
-        value: (item) => item.description ?? '-',
+        value: (item) => item.description || '-',
       },
       {
         id: 'actions',
