@@ -48,8 +48,11 @@ const search = computed({
     emit('update:search', value);
   },
 });
+const isSelectedChanged = ref(false);
+const tempSearch = ref(null);
 
 const dropdown = ref(null);
+const input = ref(null);
 
 function setInfiniteScroll() {
   dropdown.value.contentEl.addEventListener('scroll', (e) => {
@@ -58,14 +61,27 @@ function setInfiniteScroll() {
     }
   });
 }
+function setSearchFromSelected() {
+  search.value = props.options.find(
+    (option) => option.id === selected.value,
+  ).name;
+}
 
 function handleLoadMore() {
   emit('load-more');
 }
 function handleOpen() {
   dropdown.value.contentEl.scrollTop = 0;
+  tempSearch.value = search.value;
 
   emit('open');
+}
+async function handleClose() {
+  if (!isSelectedChanged.value) {
+    search.value = tempSearch.value;
+  }
+
+  isSelectedChanged.value = false;
 }
 function handleSearch() {
   dropdown.value.contentEl.scrollTop = 0;
@@ -75,13 +91,14 @@ function handleSearch() {
 async function handleSelected() {
   await nextTick();
 
-  search.value = props.options.find(
-    (option) => option.id === selected.value,
-  ).name;
+  setSearchFromSelected();
 }
 function handleClear() {
   selected.value = null;
   search.value = null;
+  tempSearch.value = null;
+
+  input.value.inputEl.focus();
 
   emit('clear');
 }
@@ -101,11 +118,13 @@ onMounted(() => {
         contentWrapper: 'max-h-[150px] overflow-y-auto',
       }"
       v-on:open="handleOpen"
+      v-on:content-close="handleClose"
       v-on:click-option="handleSelected"
       v-model="selected"
     >
       <template #toggle="{ open, visible }">
         <base-input
+          ref="input"
           :with-label="false"
           :placeholder="placeholder"
           :loading="loading"
@@ -122,6 +141,8 @@ onMounted(() => {
           </template>
         </base-input>
       </template>
+
+      <p v-if="!options.length" class="px-4 py-3 text-sm">Empty Result</p>
     </base-dropdown>
   </base-input>
 </template>

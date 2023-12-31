@@ -52,8 +52,7 @@ function handleOpen() {
 
   loadTaskCategories();
 }
-function handleSearch(q) {
-  filter.search = q;
+function handleSearch() {
   page.size = 5;
 
   loadTaskCategories();

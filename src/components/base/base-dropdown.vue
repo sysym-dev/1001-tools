@@ -26,8 +26,19 @@ const props = defineProps({
       contentWrapper: '',
     }),
   },
+  closeAfterSelect: {
+    type: Boolean,
+    default: true,
+  },
 });
-const emit = defineEmits(['update:modelValue', 'click-option', 'open']);
+const emit = defineEmits([
+  'update:modelValue',
+  'click-option',
+  'open',
+  'close',
+  'content-close',
+  'select-close',
+]);
 
 const active = computed({
   get() {
@@ -67,11 +78,22 @@ function handleVisible() {
 }
 function handleClose() {
   visible.value = false;
+
+  emit('close');
+}
+function handleClickOutside() {
+  if (visible.value) {
+    emit('content-close');
+
+    handleClose();
+  }
 }
 function handleClickOption(option) {
   active.value = option.id;
 
-  handleClose();
+  if (props.closeAfterSelect) {
+    handleClose();
+  }
 
   emit('click-option', option);
 }
@@ -91,7 +113,7 @@ defineExpose({
 <template>
   <div
     :class="['relative inline-block text-left', width]"
-    v-click-outside="handleClose"
+    v-click-outside="handleClickOutside"
   >
     <div>
       <slot
