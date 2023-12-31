@@ -19,6 +19,10 @@ const props = defineProps({
     type: Object,
     default: () => ({}),
   },
+  elements: {
+    type: Object,
+    default: () => ({}),
+  },
 });
 const emit = defineEmits(['update:visible']);
 const emitter = inject('emitter');
@@ -120,7 +124,14 @@ async function handleSubmit() {
               v-model="form.description"
             />
 
-            <task-category-select />
+            <task-category-select
+              v-if="elements.task_category_id !== false"
+              :state="hasError('task_category_id') ? 'error' : 'normal'"
+              :message="
+                hasError('task_category_id') ? errors.task_category_id : ''
+              "
+              v-model="form.task_category_id"
+            />
           </with-state>
         </div>
 

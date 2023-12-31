@@ -35,6 +35,10 @@ const props = defineProps({
     type: Object,
     default: () => ({}),
   },
+  editElements: {
+    type: Object,
+    default: () => ({}),
+  },
 });
 const emitter = inject('emitter');
 
@@ -215,6 +219,7 @@ init();
       >
       <task-detail-modal
         :task-id="detailModal.id"
+        :edit-elements="editElements"
         v-model:visible="detailModal.visible"
       />
     </with-state>

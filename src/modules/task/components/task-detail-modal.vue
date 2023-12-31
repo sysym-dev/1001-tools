@@ -16,6 +16,10 @@ const props = defineProps({
     default: false,
   },
   taskId: null,
+  editElements: {
+    type: Object,
+    default: () => ({}),
+  },
 });
 const emit = defineEmits(['update:visible']);
 
@@ -60,6 +64,9 @@ async function loadTask() {
   try {
     await request({
       url: `/tasks/${props.taskId}`,
+      params: {
+        include: ['task_category'],
+      },
     });
   } catch {}
 }
@@ -141,6 +148,7 @@ function handleDeleted() {
 
   <task-edit-modal
     :task="task.data"
+    :elements="editElements"
     v-model:visible="visibleEditModal"
     v-on:close="handleCloseEditModal"
   />
