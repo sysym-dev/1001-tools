@@ -14,20 +14,27 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  values: {
+    type: Object,
+    default: () => ({}),
+  },
 });
 const emit = defineEmits(['update:visible']);
 const emitter = inject('emitter');
 
-const { form, errors, hasError, resetError, resetForm, submit } = useForm({
-  schema: {
-    description: '',
-    name: '',
-  },
-  validationSchema: object({
-    description: string().optional(),
-    name: string().required(),
-  }),
-});
+const { form, errors, hasError, resetError, resetForm, setForm, submit } =
+  useForm({
+    schema: {
+      task_category_id: '',
+      description: '',
+      name: '',
+    },
+    validationSchema: object({
+      task_category_id: string().required(),
+      description: string().optional(),
+      name: string().required(),
+    }),
+  });
 const {
   isError,
   error,
@@ -57,6 +64,12 @@ async function handleOpenModal() {
   resetForm();
   resetError();
   resetRequestError();
+
+  setForm({
+    name: props.values.name ?? '',
+    description: props.values.name ?? '',
+    task_category_id: props.values.task_category_id ?? '',
+  });
 
   await nextTick();
 

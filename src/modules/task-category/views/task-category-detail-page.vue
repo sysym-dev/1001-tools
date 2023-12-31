@@ -99,11 +99,6 @@ loadTask();
                     task_category_id: route.params.id,
                   },
                 }),
-                h(TaskCreateModal, {
-                  visible: visibleTaskCreateModal.value,
-                  'onUpdate:visible': (value) =>
-                    (visibleTaskCreateModal.value = value),
-                }),
               ]),
           },
           {
@@ -118,5 +113,11 @@ loadTask();
         v-model:active="activeTab"
       />
     </div>
+    <task-create-modal
+      :values="{
+        task_category_id: taskCategory.data.id,
+      }"
+      v-model:visible="visibleTaskCreateModal"
+    />
   </with-state>
 </template>
