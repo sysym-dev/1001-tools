@@ -3,7 +3,11 @@ import BaseDropdown from 'src/components/base/base-dropdown.vue';
 import BaseInput from 'src/components/base/base-input.vue';
 import { computed, onMounted, reactive, ref } from 'vue';
 import { useRequest } from 'src/composes/request.compose.js';
-import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/vue/24/outline';
+import {
+  ChevronDownIcon,
+  ChevronUpIcon,
+  XMarkIcon,
+} from '@heroicons/vue/24/outline';
 
 const {
   isLoading,
@@ -75,6 +79,12 @@ function handleSelected() {
     (option) => option.id === selected.value,
   ).name;
 }
+function handleClear() {
+  selected.value = null;
+  filter.search = null;
+
+  loadTaskCategories();
+}
 
 onMounted(() => {
   setInfiniteScroll();
@@ -104,6 +114,9 @@ onMounted(() => {
           v-on:debounce-input="handleSearch"
         >
           <template #append>
+            <button v-if="selected" type="button" v-on:click="handleClear">
+              <x-mark-icon class="w-4 h-4" />
+            </button>
             <chevron-up-icon v-if="visible" class="w-4 h-4" />
             <chevron-down-icon v-else class="w-4 h-4" />
           </template>
