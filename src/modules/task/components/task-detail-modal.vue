@@ -53,6 +53,11 @@ const columns = [
     type: 'render',
   },
   {
+    id: 'category',
+    name: 'Category',
+    value: (task) => task.task_category?.name,
+  },
+  {
     id: 'description',
     name: 'Description',
     fullwidth: true,
