@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref } from 'vue';
+import { computed, nextTick, ref } from 'vue';
 
 const props = defineProps({
   options: {
@@ -20,8 +20,14 @@ const props = defineProps({
     type: String,
     default: 'left',
   },
+  classes: {
+    type: Object,
+    default: () => ({
+      contentWrapper: '',
+    }),
+  },
 });
-const emit = defineEmits(['update:modelValue', 'click-option']);
+const emit = defineEmits(['update:modelValue', 'click-option', 'open']);
 
 const active = computed({
   get() {
@@ -33,6 +39,7 @@ const active = computed({
 });
 
 const visible = ref(false);
+const contentEl = ref(null);
 
 const size = computed(() => {
   const sizes = {
@@ -68,25 +75,40 @@ function handleClickOption(option) {
 
   emit('click-option', option);
 }
+async function handleOpen() {
+  visible.value = true;
+
+  await nextTick();
+
+  emit('open');
+}
+
+defineExpose({
+  contentEl,
+});
 </script>
 
 <template>
-  <div :class="['relative inline-block text-left', width]">
+  <div
+    :class="['relative inline-block text-left', width]"
+    v-click-outside="handleClose"
+  >
     <div>
-      <slot name="toggle" :toggle="handleVisible" />
+      <slot name="toggle" :open="handleOpen" :toggle="handleVisible" />
     </div>
     <div
-      v-if="visible"
+      v-show="visible"
+      ref="contentEl"
       :class="[
         'absolute z-10 mt-2 whitespace-nowrap origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none',
         width,
         position,
+        classes.contentWrapper,
       ]"
       role="menu"
       aria-orientation="vertical"
       aria-labelledby="menu-button"
       tabindex="-1"
-      v-click-outside="handleClose"
     >
       <slot>
         <div class="py-1" role="none">
