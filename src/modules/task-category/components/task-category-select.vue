@@ -19,6 +19,8 @@ const filter = reactive({
   search: null,
 });
 const dropdown = ref(null);
+const selected = ref(null);
+
 const options = computed(() => {
   return taskCategories.value.data.rows;
 });
@@ -63,6 +65,11 @@ function handleSearch() {
 
   loadTaskCategories();
 }
+function handleSelected() {
+  filter.search = options.value.find(
+    (option) => option.id === selected.value,
+  ).name;
+}
 
 onMounted(() => {
   setInfiniteScroll();
@@ -79,6 +86,8 @@ onMounted(() => {
         contentWrapper: 'max-h-[150px] overflow-y-auto',
       }"
       v-on:open="handleOpen"
+      v-on:click-option="handleSelected"
+      v-model="selected"
     >
       <template #toggle="{ open }">
         <base-input
