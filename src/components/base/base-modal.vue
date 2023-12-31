@@ -10,6 +10,10 @@ const props = defineProps({
     type: String,
     default: 'sm',
   },
+  dispatchCloseEvent: {
+    type: Boolean,
+    default: true,
+  },
 });
 const emit = defineEmits(['update:visible', 'open', 'close']);
 
@@ -33,7 +37,9 @@ watch(visible, (value) => {
   if (value) {
     emit('open');
   } else {
-    emit('close');
+    if (props.dispatchCloseEvent) {
+      emit('close');
+    }
   }
 });
 </script>

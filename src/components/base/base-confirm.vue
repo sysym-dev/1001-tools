@@ -31,6 +31,10 @@ const props = defineProps({
     default: false,
   },
   errorMessage: String,
+  dispatchCloseEvent: {
+    type: Boolean,
+    default: true,
+  },
 });
 const emit = defineEmits(['update:visible', 'close', 'open', 'confirm']);
 
@@ -84,6 +88,7 @@ function handleConfirm() {
 <template>
   <base-modal
     v-model:visible="visible"
+    :dispatch-close-event="dispatchCloseEvent"
     v-on:open="handleOpen"
     v-on:close="handleClosed"
   >
