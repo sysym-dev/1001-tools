@@ -99,15 +99,24 @@ defineExpose({ inputEl });
       class="block text-sm font-medium leading-6 text-gray-900 mb-2"
       >{{ label }}</label
     >
-    <slot :params="params">
-      <textarea
-        v-if="textarea"
-        ref="inputEl"
-        v-bind="params"
-        v-model="value"
-      ></textarea>
-      <input v-else ref="inputEl" type="text" v-bind="params" v-model="value" />
-    </slot>
+    <div class="w-full relative">
+      <slot :params="params">
+        <textarea
+          v-if="textarea"
+          ref="inputEl"
+          v-bind="params"
+          v-model="value"
+        ></textarea>
+        <input
+          v-else
+          ref="inputEl"
+          type="text"
+          v-bind="params"
+          v-model="value"
+        />
+      </slot>
+      <slot name="append" />
+    </div>
     <p v-if="message" class="mt-2 text-sm text-red-600">{{ message }}</p>
   </div>
 </template>

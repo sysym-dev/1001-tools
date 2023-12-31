@@ -94,7 +94,12 @@ defineExpose({
     v-click-outside="handleClose"
   >
     <div>
-      <slot name="toggle" :open="handleOpen" :toggle="handleVisible" />
+      <slot
+        name="toggle"
+        :visible="visible"
+        :open="handleOpen"
+        :toggle="handleVisible"
+      />
     </div>
     <div
       v-show="visible"
