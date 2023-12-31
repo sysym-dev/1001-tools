@@ -38,6 +38,9 @@ const tabs = computed(() => {
             filter: {
               task_category_id: route.params.id,
             },
+            editElements: {
+              task_category_id: false,
+            },
           }),
         ]),
     },
@@ -117,6 +120,9 @@ loadTaskCategory();
     <task-create-modal
       :values="{
         task_category_id: taskCategory.data.id,
+      }"
+      :elements="{
+        task_category_id: false,
       }"
       v-model:visible="visibleTaskCreateModal"
     />

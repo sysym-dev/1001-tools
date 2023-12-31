@@ -2,7 +2,6 @@
 import BaseDropdown from 'src/components/base/base-dropdown.vue';
 import BaseInput from 'src/components/base/base-input.vue';
 import { computed, nextTick, onMounted, reactive, ref } from 'vue';
-import { useRequest } from 'src/composes/request.compose.js';
 import {
   ChevronDownIcon,
   ChevronUpIcon,
@@ -22,6 +21,8 @@ const props = defineProps({
   },
   modelValue: null,
   search: null,
+  state: String,
+  message: String,
 });
 const emit = defineEmits([
   'update:modelValue',
@@ -109,7 +110,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <base-input with-label :label="label">
+  <base-input with-label :label="label" :state="state" :message="message">
     <base-dropdown
       ref="dropdown"
       width="full"
@@ -125,6 +126,7 @@ onMounted(() => {
       <template #toggle="{ open, visible }">
         <base-input
           ref="input"
+          :state="state"
           :with-label="false"
           :placeholder="placeholder"
           :loading="loading"

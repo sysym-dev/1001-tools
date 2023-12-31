@@ -3,6 +3,17 @@ import BaseSelectSearch from 'src/components/base/base-select-search.vue';
 import { computed, reactive, ref } from 'vue';
 import { useRequest } from 'src/composes/request.compose.js';
 
+const props = defineProps({
+  state: String,
+  message: String,
+  modelValue: null,
+  filter: {
+    type: Object,
+    default: () => ({}),
+  },
+});
+const emit = defineEmits(['update:modelValue']);
+
 const {
   isLoading,
   request,
@@ -15,13 +26,20 @@ const {
   },
 });
 
+const selected = computed({
+  get() {
+    return props.modelValue;
+  },
+  set(value) {
+    emit('update:modelValue', value);
+  },
+});
 const page = reactive({
   size: 5,
 });
 const filter = reactive({
-  search: null,
+  search: props.filter.search ?? null,
 });
-const selected = ref(null);
 
 const options = computed(() => {
   return taskCategories.value.data.rows;
@@ -70,6 +88,8 @@ function handleClear() {
     placeholder="Select Category"
     :loading="isLoading"
     :options="options"
+    :state="state"
+    :message="message"
     v-model="selected"
     v-model:search="filter.search"
     v-on:load-more="handleLoadMore"
