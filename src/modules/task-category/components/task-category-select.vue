@@ -15,6 +15,9 @@ const { request, data: taskCategories } = useRequest('/task-categories', {
 const page = reactive({
   size: 5,
 });
+const filter = reactive({
+  search: null,
+});
 const dropdown = ref(null);
 const options = computed(() => {
   return taskCategories.value.data.rows;
@@ -24,9 +27,8 @@ async function loadTaskCategories() {
   try {
     await request({
       params: {
-        page: {
-          size: page.size,
-        },
+        page,
+        filter,
       },
     });
   } catch (err) {
@@ -51,7 +53,12 @@ function handleLoadMore() {
 }
 function handleOpen() {
   dropdown.value.contentEl.scrollTop = 0;
+  page.size = 5;
 
+  loadTaskCategories();
+}
+function handleSearch() {
+  dropdown.value.contentEl.scrollTop = 0;
   page.size = 5;
 
   loadTaskCategories();
@@ -77,7 +84,9 @@ onMounted(() => {
         <base-input
           :with-label="false"
           placeholder="Select Category"
+          v-model="filter.search"
           v-on:focus="open"
+          v-on:debounce-input="handleSearch"
         />
       </template>
     </base-dropdown>
