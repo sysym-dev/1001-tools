@@ -76,6 +76,8 @@ const filter = reactive({
   status_in: props.filter.status_in ?? ['todo', 'in-progress'],
   status: props.filter.status ?? null,
   task_category_id: props.filter.task_category_id ?? null,
+  due_at_from: props.filter.due_at_from ?? null,
+  due_at_to: props.filter.due_at_to ?? null,
 });
 
 const detailModal = reactive({
