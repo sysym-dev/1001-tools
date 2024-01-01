@@ -9,6 +9,7 @@ import WithState from 'src/components/composes/with-state.vue';
 import { reactive, inject } from 'vue';
 import { useRequest } from 'src/composes/request.compose';
 import { useLoading } from 'src/composes/loading.compose';
+import { date } from 'src/utils/date';
 
 const props = defineProps({
   filterable: {
@@ -198,8 +199,14 @@ init();
         :with-description-end="elements.category !== false"
         v-on:click-detail="handleClickDetail"
       >
-        <template #description>
-          Due on <time datetime="2023-03-17T00:00Z">today</time>
+        <template #description="{ item }">
+          <template v-if="item.due_at"
+            >Due
+            <time :datetime="item.due_at">{{
+              date(item.due_at).fromNow()
+            }}</time></template
+          >
+          <template v-else>No Due</template>
         </template>
         <template #description-end="{ item }">
           {{ item.task_category.name }}
