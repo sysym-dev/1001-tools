@@ -122,8 +122,8 @@ async function handleSubmit() {
             <base-datepicker
               label="Due At"
               placeholder="Due At"
-              :state="hasError('description') ? 'error' : 'normal'"
-              :message="hasError('description') ? errors.description : ''"
+              :state="hasError('due_at') ? 'error' : 'normal'"
+              :message="hasError('due_at') ? errors.due_at : ''"
               v-model="form.due_at"
             />
 
