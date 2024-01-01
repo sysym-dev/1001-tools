@@ -155,7 +155,7 @@ function handleClickDetail(task) {
 }
 
 emitter.on('tasks-created', () => handleRefresh());
-emitter.on('tasks-edited', () => handleRefresh());
+emitter.on('tasks-updated', () => handleRefresh());
 emitter.on('tasks-deleted', () => handleRefresh());
 
 setFilterFromProps();

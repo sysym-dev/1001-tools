@@ -78,7 +78,7 @@ watch(activeTab, (value) => {
   router.push({ query: { tab: value } });
 });
 
-emitter.on('task-categories-edited', () => loadTaskCategory());
+emitter.on('task-categories-updated', () => loadTaskCategory());
 emitter.on('task-categories-deleted', () =>
   router.push({ name: 'task-categories.index' }),
 );
