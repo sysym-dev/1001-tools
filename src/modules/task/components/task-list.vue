@@ -9,6 +9,7 @@ import WithState from 'src/components/composes/with-state.vue';
 import { reactive, inject } from 'vue';
 import { useRequest } from 'src/composes/request.compose';
 import { useLoading } from 'src/composes/loading.compose';
+import { date } from 'src/utils/date';
 
 const props = defineProps({
   filterable: {
@@ -75,6 +76,8 @@ const filter = reactive({
   status_in: props.filter.status_in ?? ['todo', 'in-progress'],
   status: props.filter.status ?? null,
   task_category_id: props.filter.task_category_id ?? null,
+  due_at_from: props.filter.due_at_from ?? null,
+  due_at_to: props.filter.due_at_to ?? null,
 });
 
 const detailModal = reactive({
@@ -96,7 +99,7 @@ async function loadTasks() {
         filter,
         sort: {
           column: props.sortColumn ?? 'id',
-          direction: props.sortDirection ?? 'desc',
+          direction: props.sortDirection ?? 'asc',
         },
         include: ['task_category'],
       },
@@ -198,8 +201,14 @@ init();
         :with-description-end="elements.category !== false"
         v-on:click-detail="handleClickDetail"
       >
-        <template #description>
-          Due on <time datetime="2023-03-17T00:00Z">today</time>
+        <template #description="{ item }">
+          <template v-if="item.due_at"
+            >Due
+            <time :datetime="item.due_at">{{
+              date(item.due_at).fromNow()
+            }}</time></template
+          >
+          <template v-else>No Due</template>
         </template>
         <template #description-end="{ item }">
           {{ item.task_category.name }}

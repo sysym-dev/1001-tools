@@ -9,6 +9,7 @@ import TaskDeleteConfirm from './task-delete-confirm.vue';
 import WithState from 'src/components/composes/with-state.vue';
 import { computed, ref } from 'vue';
 import { useRequest } from 'src/composes/request.compose';
+import { date } from 'src/utils/date';
 
 const props = defineProps({
   visible: {
@@ -56,6 +57,12 @@ const columns = [
     id: 'category',
     name: 'Category',
     value: (task) => task.task_category?.name,
+  },
+  {
+    id: 'due_at',
+    name: 'Due At',
+    fullwidth: true,
+    value: (task) => (task.due_at ? date(task.due_at).fromNow() : 'No Due'),
   },
   {
     id: 'description',
