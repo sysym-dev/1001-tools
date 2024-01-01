@@ -4,7 +4,6 @@ import { computed, nextTick, ref } from 'vue';
 const props = defineProps({
   options: {
     type: Array,
-    required: true,
     default: () => [],
   },
   size: {
@@ -30,6 +29,7 @@ const props = defineProps({
     type: Boolean,
     default: true,
   },
+  customWidth: String,
 });
 const emit = defineEmits([
   'update:modelValue',
@@ -64,6 +64,7 @@ const width = computed(() => {
   return {
     fit: 'min-w-fit',
     full: 'min-w-full',
+    custom: props.customWidth,
   }[props.width];
 });
 const position = computed(() => {
@@ -123,38 +124,40 @@ defineExpose({
         :toggle="handleVisible"
       />
     </div>
-    <div
-      v-show="visible"
-      ref="contentEl"
-      :class="[
-        'absolute z-10 mt-2 whitespace-nowrap origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none',
-        width,
-        position,
-        classes.contentWrapper,
-      ]"
-      role="menu"
-      aria-orientation="vertical"
-      aria-labelledby="menu-button"
-      tabindex="-1"
-    >
-      <slot>
-        <div class="py-1" role="none">
-          <!-- Active: "bg-gray-100 text-gray-900", Not Active: "text-gray-700" -->
-          <a
-            v-for="option in options"
-            :key="option.id"
-            href="#"
-            :class="[
-              'text-gray-700 block hover:bg-gray-100 hover:text-gray-900',
-              size,
-              option.id === active && 'bg-gray-100 text-gray-900',
-            ]"
-            tabindex="-1"
-            v-on:click.prevent="handleClickOption(option)"
-            >{{ option.name }}</a
-          >
-        </div>
-      </slot>
-    </div>
+    <slot name="content" :visible="visible">
+      <div
+        v-show="visible"
+        ref="contentEl"
+        :class="[
+          'absolute z-10 mt-2 whitespace-nowrap origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none',
+          width,
+          position,
+          classes.contentWrapper,
+        ]"
+        role="menu"
+        aria-orientation="vertical"
+        aria-labelledby="menu-button"
+        tabindex="-1"
+      >
+        <slot>
+          <div class="py-1" role="none">
+            <!-- Active: "bg-gray-100 text-gray-900", Not Active: "text-gray-700" -->
+            <a
+              v-for="option in options"
+              :key="option.id"
+              href="#"
+              :class="[
+                'text-gray-700 block hover:bg-gray-100 hover:text-gray-900',
+                size,
+                option.id === active && 'bg-gray-100 text-gray-900',
+              ]"
+              tabindex="-1"
+              v-on:click.prevent="handleClickOption(option)"
+              >{{ option.name }}</a
+            >
+          </div>
+        </slot>
+      </div>
+    </slot>
   </div>
 </template>
