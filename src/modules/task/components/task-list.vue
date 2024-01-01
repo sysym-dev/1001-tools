@@ -99,7 +99,7 @@ async function loadTasks() {
         filter,
         sort: {
           column: props.sortColumn ?? 'id',
-          direction: props.sortDirection ?? 'desc',
+          direction: props.sortDirection ?? 'asc',
         },
         include: ['task_category'],
       },
