@@ -14,6 +14,10 @@ defineProps({
     type: String,
     default: 'top',
   },
+  withDescriptionEnd: {
+    type: Boolean,
+    default: false,
+  },
 });
 const emit = defineEmits(['click-detail']);
 
@@ -50,6 +54,16 @@ function handleClickDetail(item) {
               {{ item.description }}
             </slot>
           </p>
+          <template v-if="withDescriptionEnd">
+            <svg viewBox="0 0 2 2" class="h-0.5 w-0.5 fill-current">
+              <circle cx="1" cy="1" r="1" />
+            </svg>
+            <p class="truncate">
+              <slot name="description-end" :item="item">
+                {{ item.descriptionEnd }}
+              </slot>
+            </p>
+          </template>
         </div>
       </div>
       <slot name="actions" :index="index" :item="item" />
