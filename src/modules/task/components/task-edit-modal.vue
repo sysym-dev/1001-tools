@@ -10,6 +10,7 @@ import { computed, inject, nextTick, ref } from 'vue';
 import { object, string, date } from 'yup';
 import { useForm } from 'src/composes/form.compose';
 import { useRequest } from 'src/composes/request.compose';
+import { createDate } from 'src/utils/date';
 
 const props = defineProps({
   visible: {
@@ -89,7 +90,12 @@ async function handleSubmit() {
     await submit();
     await request({
       url: `/tasks/${props.task.id}`,
-      data: form.value,
+      data: {
+        ...form.value,
+        due_at: form.value.due_at
+          ? createDate(form.value.due_at).startOf('d')
+          : null,
+      },
     });
 
     visible.value = false;

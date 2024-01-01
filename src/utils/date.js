@@ -8,3 +8,6 @@ dayjs.extend(relativeTime);
 export function date(string) {
   return dayjs(string);
 }
+export function createDate(string) {
+  return date(string);
+}
