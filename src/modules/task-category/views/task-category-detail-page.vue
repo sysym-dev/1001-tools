@@ -38,6 +38,9 @@ const tabs = computed(() => {
             filter: {
               task_category_id: route.params.id,
             },
+            elements: {
+              category: false,
+            },
             editElements: {
               task_category_id: false,
             },
