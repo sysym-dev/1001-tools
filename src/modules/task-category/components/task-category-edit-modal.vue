@@ -82,7 +82,7 @@ async function handleSubmit() {
       data: form.value,
     });
 
-    emitter.emit('task-categories-edited');
+    emitter.emit('task-categories-updated');
     visible.value = false;
   } catch (err) {
     //

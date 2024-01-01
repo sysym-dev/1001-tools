@@ -90,7 +90,7 @@ async function handleSubmit() {
 
     visible.value = false;
 
-    emitter.emit('tasks-edited');
+    emitter.emit('tasks-updated');
   } catch (err) {
     //
   }
