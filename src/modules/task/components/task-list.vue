@@ -39,6 +39,10 @@ const props = defineProps({
     type: Object,
     default: () => ({}),
   },
+  elements: {
+    type: Object,
+    default: () => ({}),
+  },
 });
 const emitter = inject('emitter');
 
@@ -94,6 +98,7 @@ async function loadTasks() {
           column: props.sortColumn ?? 'id',
           direction: props.sortDirection ?? 'desc',
         },
+        include: ['task_category'],
       },
     });
   } catch (err) {
@@ -150,7 +155,7 @@ function handleClickDetail(task) {
 }
 
 emitter.on('tasks-created', () => handleRefresh());
-emitter.on('tasks-edited', () => handleRefresh());
+emitter.on('tasks-updated', () => handleRefresh());
 emitter.on('tasks-deleted', () => handleRefresh());
 
 setFilterFromProps();
@@ -190,10 +195,14 @@ init();
     >
       <base-stacked-list
         :data="tasks.data.rows"
+        :with-description-end="elements.category !== false"
         v-on:click-detail="handleClickDetail"
       >
         <template #description>
           Due on <time datetime="2023-03-17T00:00Z">today</time>
+        </template>
+        <template #description-end="{ item }">
+          {{ item.task_category.name }}
         </template>
         <template #actions="{ index }">
           <div>

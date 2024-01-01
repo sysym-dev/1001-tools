@@ -2,7 +2,7 @@
 import BaseButton from 'src/components/base/base-button.vue';
 import BaseDropdown from 'src/components/base/base-dropdown.vue';
 import { ChevronDownIcon } from '@heroicons/vue/24/outline';
-import { computed } from 'vue';
+import { computed, inject } from 'vue';
 import { availableStatus } from 'src/modules/task/task-status';
 import { useRequest } from 'src/composes/request.compose';
 
@@ -11,6 +11,7 @@ const props = defineProps({
   taskId: null,
 });
 const emit = defineEmits(['update:modelValue', 'change']);
+const emitter = inject('emitter');
 
 const { isLoading, request } = useRequest('/tasks', {
   method: 'patch',
@@ -45,6 +46,8 @@ async function updateStatus(status) {
         status,
       },
     });
+
+    emitter.emit('tasks-updated');
   } catch {
     //
   }
