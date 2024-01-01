@@ -2,11 +2,12 @@
 import BaseModal from 'src/components/base/base-modal.vue';
 import BaseCard from 'src/components/base/base-card.vue';
 import BaseInput from 'src/components/base/base-input.vue';
+import BaseDatepicker from 'src/components/base/base-datepicker.vue';
 import BaseButton from 'src/components/base/base-button.vue';
 import WithState from 'src/components/composes/with-state.vue';
 import TaskCategorySelect from 'src/modules/task-category/components/task-category-select.vue';
 import { computed, nextTick, ref, inject } from 'vue';
-import { object, string } from 'yup';
+import { date, object, string } from 'yup';
 import { useForm } from 'src/composes/form.compose';
 import { useRequest } from 'src/composes/request.compose';
 
@@ -32,11 +33,13 @@ const { form, errors, hasError, resetError, resetForm, setForm, submit } =
     schema: {
       task_category_id: '',
       description: '',
+      due_at: null,
       name: '',
     },
     validationSchema: object({
       task_category_id: string().required(),
       description: string().optional(),
+      due_at: date().optional().nullable(),
       name: string().required(),
     }),
   });
@@ -72,6 +75,7 @@ async function handleOpenModal() {
 
   setForm({
     name: props.values.name ?? '',
+    due_at: props.values.due_at ?? null,
     description: props.values.name ?? '',
     task_category_id: props.values.task_category_id ?? '',
   });
@@ -113,6 +117,14 @@ async function handleSubmit() {
               :state="hasError('name') ? 'error' : 'normal'"
               :message="hasError('name') ? errors.name : ''"
               v-model="form.name"
+            />
+
+            <base-datepicker
+              label="Due At"
+              placeholder="Due At"
+              :state="hasError('description') ? 'error' : 'normal'"
+              :message="hasError('description') ? errors.description : ''"
+              v-model="form.due_at"
             />
 
             <base-input
