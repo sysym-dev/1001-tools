@@ -10,6 +10,10 @@ const props = defineProps({
     type: String,
     default: 'normal',
   },
+  type: {
+    type: String,
+    default: 'text',
+  },
   message: String,
   modelValue: null,
   withLabel: {
@@ -32,12 +36,17 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  readonly: {
+    type: Boolean,
+    default: false,
+  },
 });
 const emit = defineEmits([
   'update:modelValue',
   'input',
   'debounce-input',
   'focus',
+  'click',
 ]);
 
 const debounceEmitInput = debounce(() => emit('debounce-input'));
@@ -82,8 +91,10 @@ const params = computed(() => ({
     size.value,
   ],
   placeholder: props.placeholder,
+  readonly: props.readonly,
   onInput: handleInput,
   onFocus: handleFocus,
+  onClick: handleClick,
 }));
 
 function handleInput() {
@@ -92,6 +103,9 @@ function handleInput() {
 }
 function handleFocus() {
   emit('focus');
+}
+function handleClick() {
+  emit('click');
 }
 
 defineExpose({ inputEl });
@@ -115,7 +129,7 @@ defineExpose({ inputEl });
         <input
           v-else
           ref="inputEl"
-          type="text"
+          :type="type"
           v-bind="params"
           v-model="value"
         />
