@@ -15,7 +15,7 @@ useProgressBar(app);
 useEmitter(app);
 
 setupLayout(app);
-setupRouter(app);
 setupStore(app);
+setupRouter(app);
 
 app.mount('#app');

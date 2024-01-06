@@ -8,11 +8,15 @@ export const routes = [
     meta: {
       title: 'Home',
       layout: 'LayoutApp',
+      requireAuth: true,
     },
   },
   {
     path: '/task-categories/',
     name: 'task-categories',
+    meta: {
+      requireAuth: true,
+    },
     children: [
       {
         path: '',
@@ -43,6 +47,9 @@ export const routes = [
   {
     path: '/tasks/',
     name: 'tasks',
+    meta: {
+      requireAuth: true,
+    },
     children: [
       {
         path: '',
