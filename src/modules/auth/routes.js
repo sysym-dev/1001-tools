@@ -6,6 +6,7 @@ export const routes = [
     meta: {
       layout: 'LayoutAuth',
       title: 'Login',
+      requireGuest: true,
     },
   },
   {
@@ -15,6 +16,7 @@ export const routes = [
     meta: {
       layout: 'LayoutAuth',
       title: 'Register',
+      requireGuest: true,
     },
   },
 ];
