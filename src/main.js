@@ -5,6 +5,7 @@ import { useClickOutsideEvent } from './plugins/click-outside-event';
 import { useProgressBar } from './plugins/progress-bar';
 import { useEmitter } from './plugins/emitter';
 import { setupRouter } from './router/setup';
+import { setupLayout } from './layout/setup';
 
 const app = createApp(App);
 
@@ -12,6 +13,7 @@ useClickOutsideEvent(app);
 useProgressBar(app);
 useEmitter(app);
 
+setupLayout(app);
 setupRouter(app);
 
 app.mount('#app');
