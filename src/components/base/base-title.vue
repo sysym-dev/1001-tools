@@ -6,6 +6,10 @@ const props = defineProps({
     type: String,
     default: 'md',
   },
+  centered: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const size = computed(() => {
@@ -19,7 +23,7 @@ const size = computed(() => {
 </script>
 
 <template>
-  <h1 :class="['font-bold text-gray-900', size]">
+  <h1 :class="['font-bold text-gray-900', centered && 'text-center', size]">
     <slot />
   </h1>
 </template>
