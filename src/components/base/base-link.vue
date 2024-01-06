@@ -10,6 +10,7 @@ const props = defineProps({
     type: String,
     default: 'sky',
   },
+  to: [Object, String],
 });
 
 const weight = computed(() => {
@@ -25,5 +26,8 @@ const color = computed(() => {
 </script>
 
 <template>
-  <a href="" :class="[color, weight]"><slot /></a>
+  <router-link v-if="to" :to="to" :class="[color, weight]"
+    ><slot
+  /></router-link>
+  <a v-else href="" :class="[color, weight]"><slot /></a>
 </template>

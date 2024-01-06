@@ -6,6 +6,17 @@ export const routes = [
     meta: {
       layout: 'LayoutAuth',
       title: 'Login',
+      requireGuest: true,
+    },
+  },
+  {
+    path: '/register',
+    name: 'register',
+    component: () => import('src/modules/auth/views/auth-register-page.vue'),
+    meta: {
+      layout: 'LayoutAuth',
+      title: 'Register',
+      requireGuest: true,
     },
   },
 ];
