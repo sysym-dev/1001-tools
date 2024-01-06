@@ -6,6 +6,7 @@ import { useProgressBar } from './plugins/progress-bar';
 import { useEmitter } from './plugins/emitter';
 import { setupRouter } from './router/setup';
 import { setupLayout } from './layout/setup';
+import { setupStore } from './store/setup';
 
 const app = createApp(App);
 
@@ -15,5 +16,6 @@ useEmitter(app);
 
 setupLayout(app);
 setupRouter(app);
+setupStore(app);
 
 app.mount('#app');
