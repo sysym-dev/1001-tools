@@ -8,4 +8,13 @@ export const routes = [
       title: 'Login',
     },
   },
+  {
+    path: '/register',
+    name: 'register',
+    component: () => import('src/modules/auth/views/auth-register-page.vue'),
+    meta: {
+      layout: 'LayoutAuth',
+      title: 'Register',
+    },
+  },
 ];
