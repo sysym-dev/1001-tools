@@ -80,6 +80,7 @@ async function handleSubmit() {
           type="email"
           :state="hasError('email') ? 'error' : 'normal'"
           :message="hasError('email') ? errors.email : ''"
+          autofocus
           v-model="form.email"
         />
         <base-input

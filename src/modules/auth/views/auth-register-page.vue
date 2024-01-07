@@ -81,6 +81,7 @@ async function handleSubmit() {
           placeholder="Name"
           :state="hasError('name') ? 'error' : 'normal'"
           :message="hasError('name') ? errors.name : ''"
+          autofocus
           v-model="form.name"
         />
         <base-input
