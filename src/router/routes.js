@@ -1,3 +1,5 @@
+import { routes as authRoutes } from 'src/modules/auth/routes';
+
 export const routes = [
   {
     path: '/',
@@ -5,11 +7,16 @@ export const routes = [
     component: () => import('src/modules/home/views/home-page.vue'),
     meta: {
       title: 'Home',
+      layout: 'LayoutApp',
+      requireAuth: true,
     },
   },
   {
     path: '/task-categories/',
     name: 'task-categories',
+    meta: {
+      requireAuth: true,
+    },
     children: [
       {
         path: '',
@@ -20,6 +27,7 @@ export const routes = [
           ),
         meta: {
           title: 'Categories',
+          layout: 'LayoutApp',
         },
       },
       {
@@ -31,6 +39,7 @@ export const routes = [
           ),
         meta: {
           title: 'Category Detail',
+          layout: 'LayoutApp',
         },
       },
     ],
@@ -38,6 +47,9 @@ export const routes = [
   {
     path: '/tasks/',
     name: 'tasks',
+    meta: {
+      requireAuth: true,
+    },
     children: [
       {
         path: '',
@@ -45,16 +57,19 @@ export const routes = [
         component: () => import('src/modules/task/views/task-index-page.vue'),
         meta: {
           title: 'Tasks',
+          layout: 'LayoutApp',
         },
       },
     ],
   },
+  ...authRoutes,
   {
     path: '/:pathMatch(.*)*',
     name: 'not-found',
     component: () => import('src/modules/not-found/views/not-found-page.vue'),
     meta: {
       title: 'Not Found',
+      layout: 'LayoutApp',
     },
   },
 ];
