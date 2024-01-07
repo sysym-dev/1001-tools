@@ -9,6 +9,7 @@ import { useForm } from 'src/composes/form.compose';
 import { useAuthStore } from 'src/modules/auth/auth.store';
 import { object, string } from 'yup';
 import { useRouter } from 'vue-router';
+import { computed } from 'vue';
 
 const authStore = useAuthStore();
 const router = useRouter();
@@ -33,6 +34,18 @@ const {
   resetError: resetRequestError,
 } = useRequest('/register', {
   method: 'post',
+});
+
+const errorMessage = computed(() => {
+  if (requestError.value.type !== 'Network Error') {
+    return requestError.value.message;
+  }
+
+  if (requestError.value.data.status !== 422) {
+    return requestError.value.message;
+  }
+
+  return Object.values(requestError.value.data.data.details)[0];
 });
 
 async function handleSubmit() {
@@ -60,7 +73,7 @@ async function handleSubmit() {
     <base-title centered>Register New Account</base-title>
     <with-state
       :is-error="isRequestError"
-      :error-message="isRequestError ? requestError.message : null"
+      :error-message="isRequestError ? errorMessage : null"
     >
       <div class="space-y-4">
         <base-input
