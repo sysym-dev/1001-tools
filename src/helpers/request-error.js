@@ -7,7 +7,12 @@ export class RequestError {
   constructor(error) {
     if (error instanceof AxiosError) {
       this.type = 'Network Error';
-      this.message = error.message;
+
+      if (error.response.status === 422) {
+        this.message = Object.values(error.response.data.details)[0];
+      } else {
+        this.message = error.message;
+      }
     } else if (error instanceof Error) {
       this.type = 'Error';
       this.message = error.message;
