@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { debounce } from '../../utils/debounce';
 import BaseSpinner from './base-spinner.vue';
 
@@ -37,6 +37,10 @@ const props = defineProps({
     default: false,
   },
   readonly: {
+    type: Boolean,
+    default: false,
+  },
+  autofocus: {
     type: Boolean,
     default: false,
   },
@@ -107,6 +111,12 @@ function handleFocus() {
 function handleClick() {
   emit('click');
 }
+
+onMounted(() => {
+  if (props.autofocus) {
+    inputEl.value.focus();
+  }
+});
 
 defineExpose({ inputEl });
 </script>

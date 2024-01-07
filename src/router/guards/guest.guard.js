@@ -1,9 +1,9 @@
 import { useAuthStore } from 'src/modules/auth/auth.store';
 
 export function useGuestGuard(router) {
-  const authStore = useAuthStore();
-
   router.beforeEach((to) => {
+    const authStore = useAuthStore();
+
     if (
       authStore.isLoggedIn &&
       to.matched.some((route) => route.meta.requireGuest)
