@@ -1,5 +1,7 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
+import { jwtDecode } from 'jwt-decode';
+import { createDate } from 'src/utils/date';
 
 export const useAuthStore = defineStore(
   'auth',
@@ -15,7 +17,27 @@ export const useAuthStore = defineStore(
       isLoggedIn.value = true;
     }
 
-    return { isLoggedIn, login };
+    function logout() {
+      accessToken.value = null;
+      me.value = null;
+
+      isLoggedIn.value = false;
+    }
+
+    function checkAccessTokenExpiry() {
+      const decodedToken = jwtDecode(accessToken.value);
+
+      return createDate(decodedToken.exp * 1000).isBefore(new Date());
+    }
+
+    return {
+      isLoggedIn,
+      accessToken,
+      me,
+      login,
+      logout,
+      checkAccessTokenExpiry,
+    };
   },
   { persist: true },
 );
