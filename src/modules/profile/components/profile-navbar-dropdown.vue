@@ -1,12 +1,14 @@
 <script setup>
 import BaseButton from 'src/components/base/base-button.vue';
 import BaseDropdown from 'src/components/base/base-dropdown.vue';
+import AuthLogoutConfirm from 'src/modules/auth/components/auth-logout-confirm.vue';
 import { UserCircleIcon } from '@heroicons/vue/24/outline';
-import { computed, h } from 'vue';
+import { computed, h, ref } from 'vue';
 import { useAuthStore } from 'src/modules/auth/auth.store';
 
 const authStore = useAuthStore();
 
+const visibleConfirm = ref(false);
 const profileDropdownOptions = computed(() => {
   return [
     {
@@ -25,16 +27,16 @@ const profileDropdownOptions = computed(() => {
       to: { name: 'profile' },
     },
     {
-      id: 'setting',
-      name: 'Setting',
-      hasDivider: true,
-    },
-    {
       id: 'logout',
       name: 'Logout',
+      onClick: handleLogout,
     },
   ];
 });
+
+function handleLogout() {
+  visibleConfirm.value = true;
+}
 </script>
 
 <template>
@@ -49,4 +51,5 @@ const profileDropdownOptions = computed(() => {
       </base-button>
     </template>
   </base-dropdown>
+  <auth-logout-confirm v-model:visible="visibleConfirm" />
 </template>

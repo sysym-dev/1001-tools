@@ -104,6 +104,10 @@ function handleClickOption(option) {
     handleClose();
   }
 
+  if (option.onClick) {
+    option.onClick();
+  }
+
   emit('click-option', option);
 }
 async function handleOpen() {
