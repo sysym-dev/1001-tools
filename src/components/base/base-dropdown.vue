@@ -156,6 +156,12 @@ defineExpose({
                 :is="option.component"
                 :classes="{ option: getOptionClass(option) }"
               />
+              <router-link
+                v-else-if="option.to"
+                :to="option.to"
+                :class="getOptionClass(option)"
+                >{{ option.name }}</router-link
+              >
               <a
                 v-else
                 href="#"
