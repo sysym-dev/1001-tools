@@ -22,6 +22,7 @@ const profileDropdownOptions = computed(() => {
     {
       id: 'profile',
       name: 'Profile',
+      to: { name: 'profile' },
     },
     {
       id: 'setting',
