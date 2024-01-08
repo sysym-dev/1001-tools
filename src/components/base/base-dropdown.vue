@@ -74,6 +74,14 @@ const position = computed(() => {
   }[props.position];
 });
 
+function getOptionClass(option) {
+  return [
+    'text-gray-700 block hover:bg-gray-100 hover:text-gray-900',
+    size.value,
+    option.id === active.value && 'bg-gray-100 text-gray-900',
+  ];
+}
+
 function handleVisible() {
   visible.value = !visible.value;
 }
@@ -142,19 +150,22 @@ defineExpose({
         <slot>
           <div class="py-1" role="none">
             <!-- Active: "bg-gray-100 text-gray-900", Not Active: "text-gray-700" -->
-            <a
-              v-for="option in options"
-              :key="option.id"
-              href="#"
-              :class="[
-                'text-gray-700 block hover:bg-gray-100 hover:text-gray-900',
-                size,
-                option.id === active && 'bg-gray-100 text-gray-900',
-              ]"
-              tabindex="-1"
-              v-on:click.prevent="handleClickOption(option)"
-              >{{ option.name }}</a
-            >
+            <template v-for="option in options" :key="option.id">
+              <component
+                v-if="option.component"
+                :is="option.component"
+                :classes="{ option: getOptionClass(option) }"
+              />
+              <a
+                v-else
+                href="#"
+                :class="getOptionClass(option)"
+                tabindex="-1"
+                v-on:click.prevent="handleClickOption(option)"
+                >{{ option.name }}</a
+              >
+              <hr v-if="option.hasDivider" class="my-1 border-gray-100" />
+            </template>
           </div>
         </slot>
       </div>

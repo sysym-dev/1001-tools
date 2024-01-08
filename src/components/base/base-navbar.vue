@@ -1,8 +1,14 @@
 <script setup>
 import BaseButton from './base-button.vue';
-import { Bars3Icon, XMarkIcon } from '@heroicons/vue/24/outline';
-import { ref } from 'vue';
+import BaseDropdown from './base-dropdown.vue';
+import {
+  Bars3Icon,
+  XMarkIcon,
+  UserCircleIcon,
+} from '@heroicons/vue/24/outline';
+import { computed, h, ref } from 'vue';
 import { useRouter } from 'vue-router';
+import { useAuthStore } from 'src/modules/auth/auth.store';
 
 const props = defineProps({
   menus: {
@@ -13,7 +19,36 @@ const props = defineProps({
 });
 
 const router = useRouter();
+const authStore = useAuthStore();
+
 const visibleMobileMenu = ref(false);
+const profileDropdownOptions = computed(() => {
+  return [
+    {
+      id: 'me',
+      name: 'Me',
+      component: (options) =>
+        h('div', { class: [options.classes.option, 'hover:bg-white'] }, [
+          h('p', {}, authStore.me.name),
+          h('p', { class: 'text-xs text-gray-500' }, authStore.me.email),
+        ]),
+      hasDivider: true,
+    },
+    {
+      id: 'profile',
+      name: 'Profile',
+    },
+    {
+      id: 'setting',
+      name: 'Setting',
+      hasDivider: true,
+    },
+    {
+      id: 'logout',
+      name: 'Logout',
+    },
+  ];
+});
 
 function checkIsActive(menu) {
   return menu.id === props.active;
@@ -30,7 +65,8 @@ router.afterEach(() => {
 
 <template>
   <div class="border-b">
-    <div class="container px-4 h-16 flex items-center">
+    <div class="container px-4 h-16 flex items-center justify-between">
+      <!-- Desktop Menu -->
       <div class="hidden space-x-8 h-full sm:flex">
         <router-link
           v-for="menu in menus"
@@ -46,6 +82,7 @@ router.afterEach(() => {
           {{ menu.name }}
         </router-link>
       </div>
+      <!-- Toggle Mobile Menu -->
       <div class="sm:hidden">
         <base-button
           color="transparent-white"
@@ -58,7 +95,20 @@ router.afterEach(() => {
           />
         </base-button>
       </div>
+      <!-- Profile Dropdown -->
+      <base-dropdown :options="profileDropdownOptions" position="right">
+        <template #toggle="{ toggle }">
+          <base-button
+            color="transparent-white"
+            size="square-md"
+            v-on:click="toggle"
+          >
+            <user-circle-icon class="block h-6 w-6" />
+          </base-button>
+        </template>
+      </base-dropdown>
     </div>
+    <!-- Mobile Menu -->
     <div v-if="visibleMobileMenu" class="sm:hidden">
       <div class="space-y-1 pb-2">
         <router-link
