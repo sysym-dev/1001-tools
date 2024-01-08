@@ -1,4 +1,5 @@
 import { routes as authRoutes } from 'src/modules/auth/routes';
+import { routes as profileRoutes } from 'src/modules/profile/routes';
 
 export const routes = [
   {
@@ -62,6 +63,7 @@ export const routes = [
       },
     ],
   },
+  ...profileRoutes,
   ...authRoutes,
   {
     path: '/:pathMatch(.*)*',

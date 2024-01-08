@@ -8,7 +8,7 @@ export const useAuthStore = defineStore(
   () => {
     const isLoggedIn = ref(false);
     const accessToken = ref(null);
-    const me = ref(null);
+    const me = ref({});
 
     function login(payload) {
       accessToken.value = payload.accessToken;
@@ -18,10 +18,10 @@ export const useAuthStore = defineStore(
     }
 
     function logout() {
-      accessToken.value = null;
-      me.value = null;
-
       isLoggedIn.value = false;
+
+      accessToken.value = null;
+      me.value = {};
     }
 
     function checkAccessTokenExpiry() {
