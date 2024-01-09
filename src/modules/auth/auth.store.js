@@ -24,6 +24,10 @@ export const useAuthStore = defineStore(
       me.value = {};
     }
 
+    function setMe(payload) {
+      me.value = payload;
+    }
+
     function checkAccessTokenExpiry() {
       const decodedToken = jwtDecode(accessToken.value);
 
@@ -36,6 +40,7 @@ export const useAuthStore = defineStore(
       me,
       login,
       logout,
+      setMe,
       checkAccessTokenExpiry,
     };
   },
