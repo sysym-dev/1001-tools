@@ -79,6 +79,7 @@ const size = computed(() => {
       ? 'p-3 text-sm rounded-full'
       : 'px-3.5 py-2.5 text-sm rounded-md gap-x-2',
     'square-md': 'p-2 rounded-md',
+    'rounded-sm': 'p-1 rounded-full',
   };
 
   return sizes[props.size];

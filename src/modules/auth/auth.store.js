@@ -12,7 +12,8 @@ export const useAuthStore = defineStore(
 
     function login(payload) {
       accessToken.value = payload.accessToken;
-      me.value = payload.me;
+
+      setMe(payload.me);
 
       isLoggedIn.value = true;
     }
@@ -25,7 +26,10 @@ export const useAuthStore = defineStore(
     }
 
     function setMe(payload) {
-      me.value = payload;
+      me.value = {
+        ...payload,
+        photo_url: `https://ui-avatars.com/api/?name=John+Doe`,
+      };
     }
 
     function checkAccessTokenExpiry() {
