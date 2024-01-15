@@ -26,10 +26,7 @@ export const useAuthStore = defineStore(
     }
 
     function setMe(payload) {
-      me.value = {
-        ...payload,
-        photo_url: `https://ui-avatars.com/api/?name=John+Doe`,
-      };
+      me.value = payload;
     }
 
     function checkAccessTokenExpiry() {

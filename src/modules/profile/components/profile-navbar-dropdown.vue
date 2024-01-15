@@ -2,6 +2,7 @@
 import BaseButton from 'src/components/base/base-button.vue';
 import BaseDropdown from 'src/components/base/base-dropdown.vue';
 import AuthLogoutConfirm from 'src/modules/auth/components/auth-logout-confirm.vue';
+import Avatar from 'src/assets/avatar.png';
 import { computed, h, ref } from 'vue';
 import { useAuthStore } from 'src/modules/auth/auth.store';
 
@@ -46,7 +47,10 @@ function handleLogout() {
         size="rounded-sm"
         v-on:click="toggle"
       >
-        <img class="w-8 h-8 rounded-full" :src="authStore.me.photo_url" />
+        <img
+          class="w-8 h-8 rounded-full"
+          :src="authStore.me.photo_url ?? Avatar"
+        />
       </base-button>
     </template>
   </base-dropdown>

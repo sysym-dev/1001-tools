@@ -38,6 +38,17 @@ const visible = computed({
   },
 });
 const photo = ref();
+const errorMesage = computed(() => {
+  if (error.value.type !== 'Network Error') {
+    return error.value.message;
+  }
+
+  if (error.value.data.status !== 422) {
+    return error.value.message;
+  }
+
+  return error.value.data.data.details.photo;
+});
 
 function handleClose() {
   visible.value = false;
@@ -74,7 +85,7 @@ async function handleSubmit() {
         <div class="space-y-4">
           <with-state
             :is-error="isError"
-            :error-message="isError ? error.message : null"
+            :error-message="isError ? errorMesage : null"
           >
             <base-upload-file with-label label="Upload Photo" v-model="photo" />
           </with-state>

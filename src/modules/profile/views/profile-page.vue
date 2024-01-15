@@ -5,6 +5,7 @@ import BaseButton from 'src/components/base/base-button.vue';
 import ProfileEditModal from 'src/modules/profile/components/profile-edit-modal.vue';
 import ProfileResetPasswordModal from 'src/modules/profile/components/profile-reset-password-modal.vue';
 import ProfileChangePhotoModal from 'src/modules/profile/components/profile-change-photo-modal.vue';
+import Avatar from 'src/assets/avatar.png';
 import { useAuthStore } from 'src/modules/auth/auth.store';
 import { h, ref } from 'vue';
 
@@ -30,7 +31,10 @@ const columns = [
     type: 'render',
     component: ({ data }) =>
       h('div', { class: 'flex items-center space-x-2' }, [
-        h('img', { src: data.photo_url, class: 'w-8 h-8 rounded-full' }),
+        h('img', {
+          src: data.photo_url ?? Avatar,
+          class: 'w-8 h-8 rounded-full',
+        }),
         h(
           BaseButton,
           { size: 'sm', onClick: handleChangePassword },
