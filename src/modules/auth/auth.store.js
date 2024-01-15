@@ -12,7 +12,8 @@ export const useAuthStore = defineStore(
 
     function login(payload) {
       accessToken.value = payload.accessToken;
-      me.value = payload.me;
+
+      setMe(payload.me);
 
       isLoggedIn.value = true;
     }

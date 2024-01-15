@@ -65,7 +65,9 @@ router.afterEach(() => {
         </base-button>
       </div>
       <!-- Profile Dropdown -->
-      <profile-navbar-dropdown />
+      <div>
+        <profile-navbar-dropdown />
+      </div>
     </div>
     <!-- Mobile Menu -->
     <div v-if="visibleMobileMenu" class="sm:hidden">
