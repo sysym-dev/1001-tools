@@ -54,11 +54,11 @@ export const useAuthStore = defineStore(
         }
 
         const baseURL = import.meta.env.VITE_API_URL;
-        const res = await axios.post(`${baseURL}/api/refresh-token`, {
-          refreshToken: token.refreshToken,
+        const res = await axios.post(`${baseURL}/refresh-token`, {
+          token: token.refreshToken,
         });
 
-        setToken(res.data.data);
+        token.accessToken = res.data.data.accessToken;
       } catch (err) {
         logout();
         router.push({ name: 'login' });
