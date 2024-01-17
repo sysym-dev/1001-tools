@@ -78,7 +78,7 @@ async function handleOpenModal() {
     name: props.task.name,
     due_at: props.task.due_at ?? null,
     description: props.task.description,
-    task_category_id: props.task.task_category?.id ?? '',
+    task_category_id: props.task.TaskCategory?.id ?? '',
   });
 
   await nextTick();
@@ -156,7 +156,7 @@ function handleCloseModal() {
                 hasError('task_category_id') ? errors.task_category_id : ''
               "
               :filter="{
-                search: task.task_category.name,
+                search: task.TaskCategory.name,
               }"
               v-model="form.task_category_id"
             />
