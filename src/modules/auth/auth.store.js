@@ -1,18 +1,25 @@
 import { defineStore } from 'pinia';
-import { ref } from 'vue';
+import { reactive, ref } from 'vue';
+import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
 import { createDate } from 'src/utils/date';
+// import { router } from '../router/router';
+import { useRouter } from 'vue-router';
 
 export const useAuthStore = defineStore(
   'auth',
   () => {
+    const router = useRouter();
+
     const isLoggedIn = ref(false);
-    const accessToken = ref(null);
+    const token = reactive({
+      accessToken: null,
+      refreshToken: null,
+    });
     const me = ref({});
 
     function login(payload) {
-      accessToken.value = payload.accessToken;
-
+      setToken(payload.token);
       setMe(payload.me);
 
       isLoggedIn.value = true;
@@ -21,8 +28,13 @@ export const useAuthStore = defineStore(
     function logout() {
       isLoggedIn.value = false;
 
-      accessToken.value = null;
+      token.accessToken = null;
       me.value = {};
+    }
+
+    function setToken(payload) {
+      token.accessToken = payload.accessToken;
+      token.refreshToken = payload.refreshToken;
     }
 
     function setMe(payload) {
@@ -30,19 +42,38 @@ export const useAuthStore = defineStore(
     }
 
     function checkAccessTokenExpiry() {
-      const decodedToken = jwtDecode(accessToken.value);
+      const decodedToken = jwtDecode(token.accessToken);
 
       return createDate(decodedToken.exp * 1000).isBefore(new Date());
     }
 
+    async function refreshToken() {
+      try {
+        if (!checkAccessTokenExpiry()) {
+          return;
+        }
+
+        const baseURL = import.meta.env.VITE_API_URL;
+        const res = await axios.post(`${baseURL}/refresh-token`, {
+          token: token.refreshToken,
+        });
+
+        token.accessToken = res.data.data.accessToken;
+      } catch (err) {
+        logout();
+        router.push({ name: 'login' });
+      }
+    }
+
     return {
       isLoggedIn,
-      accessToken,
+      token,
       me,
       login,
       logout,
       setMe,
       checkAccessTokenExpiry,
+      refreshToken,
     };
   },
   { persist: true },
