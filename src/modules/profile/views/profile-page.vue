@@ -2,9 +2,11 @@
 import BaseHeading from 'src/components/base/base-heading.vue';
 import BaseDescriptionColumn from 'src/components/base/base-description-column.vue';
 import BaseButton from 'src/components/base/base-button.vue';
+import BaseLink from 'src/components/base/base-link.vue';
 import ProfileEditModal from 'src/modules/profile/components/profile-edit-modal.vue';
 import ProfileResetPasswordModal from 'src/modules/profile/components/profile-reset-password-modal.vue';
 import ProfileChangePhotoModal from 'src/modules/profile/components/profile-change-photo-modal.vue';
+import ProfileChangeEmailModal from 'src/modules/profile/components/profile-change-email-modal.vue';
 import Avatar from 'src/assets/avatar.png';
 import { useAuthStore } from 'src/modules/auth/auth.store';
 import { h, ref } from 'vue';
@@ -14,6 +16,7 @@ const authStore = useAuthStore();
 const visibleEditModal = ref(false);
 const visibleResetPasswordModal = ref(false);
 const visibleChangePhotoModal = ref(false);
+const visibleChangeEmailModal = ref(false);
 
 const columns = [
   {
@@ -23,6 +26,22 @@ const columns = [
   {
     id: 'email',
     name: 'Email',
+    type: 'render',
+    component: ({ data }) =>
+      h(
+        'div',
+        { class: 'text-sm leading-6 text-gray-700 flex items-center gap-x-2' },
+        [
+          h('p', data.email),
+          h(
+            BaseLink,
+            { preventClick: true, onClick: handleChangeEmail },
+            {
+              default: () => 'Change',
+            },
+          ),
+        ],
+      ),
   },
   {
     id: 'photo_url',
@@ -53,6 +72,9 @@ function handleResetPassword() {
 function handleChangePassword() {
   visibleChangePhotoModal.value = true;
 }
+function handleChangeEmail() {
+  visibleChangeEmailModal.value = true;
+}
 </script>
 
 <template>
@@ -70,4 +92,5 @@ function handleChangePassword() {
   <profile-edit-modal v-model:visible="visibleEditModal" />
   <profile-reset-password-modal v-model:visible="visibleResetPasswordModal" />
   <profile-change-photo-modal v-model:visible="visibleChangePhotoModal" />
+  <profile-change-email-modal v-model:visible="visibleChangeEmailModal" />
 </template>

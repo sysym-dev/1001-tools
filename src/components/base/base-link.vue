@@ -11,7 +11,12 @@ const props = defineProps({
     default: 'sky',
   },
   to: [Object, String],
+  preventClick: {
+    type: Boolean,
+    default: false,
+  },
 });
+const emit = defineEmits(['click']);
 
 const weight = computed(() => {
   return {
@@ -23,11 +28,21 @@ const color = computed(() => {
     sky: 'text-sky-600 hover:text-sky-500',
   }[props.color];
 });
+
+function handleClick() {
+  emit('click');
+}
 </script>
 
 <template>
   <router-link v-if="to" :to="to" :class="[color, weight]"
     ><slot
   /></router-link>
-  <a v-else href="" :class="[color, weight]"><slot /></a>
+  <a
+    v-else
+    href=""
+    :class="[color, weight]"
+    v-on:click.prevent="preventClick ? handleClick() : null"
+    ><slot
+  /></a>
 </template>
