@@ -1,6 +1,5 @@
 import axios from 'axios';
 import { useAuthStore } from 'src/modules/auth/auth.store';
-import { router } from '../router/router';
 
 const http = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
@@ -10,12 +9,9 @@ http.interceptors.request.use(async (config) => {
   const authStore = useAuthStore();
 
   if (authStore.isLoggedIn) {
-    if (authStore.checkAccessTokenExpiry()) {
-      authStore.logout();
-      router.push({ name: 'login' });
-    }
+    await authStore.refreshToken();
 
-    config.headers.Authorization = authStore.accessToken;
+    config.headers.Authorization = authStore.token.accessToken;
   }
 
   return config;

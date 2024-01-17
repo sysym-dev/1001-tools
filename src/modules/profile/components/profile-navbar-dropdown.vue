@@ -2,7 +2,7 @@
 import BaseButton from 'src/components/base/base-button.vue';
 import BaseDropdown from 'src/components/base/base-dropdown.vue';
 import AuthLogoutConfirm from 'src/modules/auth/components/auth-logout-confirm.vue';
-import { UserCircleIcon } from '@heroicons/vue/24/outline';
+import Avatar from 'src/assets/avatar.png';
 import { computed, h, ref } from 'vue';
 import { useAuthStore } from 'src/modules/auth/auth.store';
 
@@ -44,10 +44,13 @@ function handleLogout() {
     <template #toggle="{ toggle }">
       <base-button
         color="transparent-white"
-        size="square-md"
+        size="rounded-sm"
         v-on:click="toggle"
       >
-        <user-circle-icon class="block h-6 w-6" />
+        <img
+          class="w-8 h-8 rounded-full"
+          :src="authStore.me.photo_url ?? Avatar"
+        />
       </base-button>
     </template>
   </base-dropdown>

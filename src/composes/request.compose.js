@@ -29,6 +29,11 @@ export function useRequest(url, options = {}) {
       const res = await http({
         url,
         method: options.method ?? 'get',
+        headers: {
+          'Content-Type': options.multipart
+            ? 'multipart/form-data'
+            : 'application/json',
+        },
         ...config,
       });
 
