@@ -7,7 +7,7 @@ export const routes = [
   {
     path: '/',
     name: 'home',
-    component: () => import('src/core/views/home-page.vue'),
+    component: () => import('src/views/home-page.vue'),
     meta: {
       title: 'Home',
       layout: 'LayoutApp',
@@ -21,7 +21,7 @@ export const routes = [
   {
     path: '/:pathMatch(.*)*',
     name: 'not-found',
-    component: () => import('src/core/views/not-found-page.vue'),
+    component: () => import('src/views/not-found-page.vue'),
     meta: {
       title: 'Not Found',
       layout: 'LayoutApp',
