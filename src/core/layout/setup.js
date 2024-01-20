@@ -1,6 +1,4 @@
-import { layouts } from './layouts';
-
-export function setupLayout(app) {
+export function setupLayout(app, layouts) {
   for (const layout of layouts) {
     app.component(layout.name, layout);
   }

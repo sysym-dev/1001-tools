@@ -5,8 +5,11 @@ import { useClickOutsideEvent } from './plugins/click-outside-event';
 import { useProgressBar } from './plugins/progress-bar';
 import { useEmitter } from './plugins/emitter';
 import { setupRouter } from './router/setup';
-import { setupLayout } from './layout/setup';
+import { setupLayout } from './core/layout/setup';
 import { setupStore } from './store/setup';
+
+import LayoutApp from 'src/features/app/components/app-layout.vue';
+import LayoutAuth from 'src/features/auth/components/auth-layout.vue';
 
 const app = createApp(App);
 
@@ -14,7 +17,7 @@ useClickOutsideEvent(app);
 useProgressBar(app);
 useEmitter(app);
 
-setupLayout(app);
+setupLayout(app, [LayoutApp, LayoutAuth]);
 setupStore(app);
 setupRouter(app);
 
