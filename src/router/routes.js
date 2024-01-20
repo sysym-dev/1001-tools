@@ -1,6 +1,7 @@
 import { routes as authRoutes } from 'src/features/auth/auth.routes';
 import { routes as profileRoutes } from 'src/features/profile/profile.routes';
 import { routes as taskRoutes } from 'src/features/task/task.routes';
+import { routes as taskCategoryRoutes } from 'src/features/task-category/task-category.routes';
 
 export const routes = [
   {
@@ -13,39 +14,7 @@ export const routes = [
       requireAuth: true,
     },
   },
-  {
-    path: '/task-categories/',
-    name: 'task-categories',
-    meta: {
-      requireAuth: true,
-    },
-    children: [
-      {
-        path: '',
-        name: 'task-categories.index',
-        component: () =>
-          import(
-            'src/features/task-category/views/task-category-index-page.vue'
-          ),
-        meta: {
-          title: 'Categories',
-          layout: 'LayoutApp',
-        },
-      },
-      {
-        path: ':id',
-        name: 'task-categories.detail',
-        component: () =>
-          import(
-            'src/features/task-category/views/task-category-detail-page.vue'
-          ),
-        meta: {
-          title: 'Category Detail',
-          layout: 'LayoutApp',
-        },
-      },
-    ],
-  },
+  ...taskCategoryRoutes,
   ...taskRoutes,
   ...profileRoutes,
   ...authRoutes,
