@@ -123,11 +123,12 @@ defineExpose({ inputEl });
 
 <template>
   <div class="w-full">
-    <label
-      v-if="withLabel"
-      class="block text-sm font-medium leading-6 text-gray-900 mb-2"
-      >{{ label }}</label
-    >
+    <div v-if="withLabel" class="flex items-center justify-between mb-2">
+      <label class="block text-sm font-medium leading-6 text-gray-900">{{
+        label
+      }}</label>
+      <slot name="label-end" />
+    </div>
     <div class="w-full relative">
       <slot :params="params">
         <textarea
