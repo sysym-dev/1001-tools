@@ -4,7 +4,7 @@ import BaseCard from 'src/components/base/base-card.vue';
 import BaseInput from 'src/components/base/base-input.vue';
 import BaseButton from 'src/components/base/base-button.vue';
 import WithState from 'src/components/composes/with-state.vue';
-import { computed, nextTick, ref } from 'vue';
+import { computed, inject, nextTick, ref } from 'vue';
 import { object, string, ref as yupRef } from 'yup';
 import { useForm } from 'src/composes/form.compose';
 import { useRequest } from 'src/composes/request.compose';
@@ -16,6 +16,7 @@ const props = defineProps({
   },
 });
 const emit = defineEmits(['update:visible']);
+const emitter = inject('emitter');
 
 const { form, errors, hasError, resetError, resetForm, submit } = useForm({
   schema: {
@@ -66,6 +67,11 @@ async function handleSubmit() {
     await submit();
     await request({
       data: form.value,
+    });
+
+    emitter.emit('create-notification', {
+      type: 'notification-success',
+      message: 'Email Verification Link Sent',
     });
 
     visible.value = false;
