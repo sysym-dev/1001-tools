@@ -7,7 +7,7 @@ export const routes = [
   {
     path: '/',
     name: 'home',
-    component: () => import('src/features/app/views/app-home-page.vue'),
+    component: () => import('src/core/views/home-page.vue'),
     meta: {
       title: 'Home',
       layout: 'LayoutApp',
