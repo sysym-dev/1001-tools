@@ -1,6 +1,6 @@
 <script setup>
-import BaseDropdown from 'src/components/base/base-dropdown.vue';
-import BaseInput from 'src/components/base/base-input.vue';
+import BaseDropdown from 'src/core/components/base/base-dropdown.vue';
+import BaseInput from 'src/core/components/base/base-input.vue';
 import { computed, nextTick, onMounted, reactive, ref } from 'vue';
 import {
   ChevronDownIcon,

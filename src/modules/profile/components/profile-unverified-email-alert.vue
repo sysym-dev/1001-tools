@@ -1,7 +1,7 @@
 <script setup>
-import BaseLink from 'src/components/base/base-link.vue';
-import BaseAlert from 'src/components/base/base-alert.vue';
-import BaseSpinner from 'src/components/base/base-spinner.vue';
+import BaseLink from 'src/core/components/base/base-link.vue';
+import BaseAlert from 'src/core/components/base/base-alert.vue';
+import BaseSpinner from 'src/core/components/base/base-spinner.vue';
 import { useRequest } from 'src/composes/request.compose';
 import { useAuthStore } from 'src/modules/auth/auth.store';
 import { inject } from 'vue';

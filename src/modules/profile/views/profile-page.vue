@@ -1,8 +1,8 @@
 <script setup>
-import BaseHeading from 'src/components/base/base-heading.vue';
-import BaseDescriptionColumn from 'src/components/base/base-description-column.vue';
-import BaseButton from 'src/components/base/base-button.vue';
-import BaseLink from 'src/components/base/base-link.vue';
+import BaseHeading from 'src/core/components/base/base-heading.vue';
+import BaseDescriptionColumn from 'src/core/components/base/base-description-column.vue';
+import BaseButton from 'src/core/components/base/base-button.vue';
+import BaseLink from 'src/core/components/base/base-link.vue';
 import ProfileEditModal from 'src/modules/profile/components/profile-edit-modal.vue';
 import ProfileResetPasswordModal from 'src/modules/profile/components/profile-reset-password-modal.vue';
 import ProfileChangePhotoModal from 'src/modules/profile/components/profile-change-photo-modal.vue';

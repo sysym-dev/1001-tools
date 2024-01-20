@@ -1,5 +1,5 @@
 <script setup>
-import BaseConfirm from 'src/components/base/base-confirm.vue';
+import BaseConfirm from 'src/core/components/base/base-confirm.vue';
 import { computed } from 'vue';
 import { useAuthStore } from 'src/modules/auth/auth.store';
 import { useRouter } from 'vue-router';

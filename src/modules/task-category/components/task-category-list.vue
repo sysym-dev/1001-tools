@@ -1,9 +1,9 @@
 <script setup>
 import { EllipsisHorizontalIcon } from '@heroicons/vue/20/solid';
-import BaseButton from 'src/components/base/base-button.vue';
-import BaseDropdown from 'src/components/base/base-dropdown.vue';
-import BaseInput from 'src/components/base/base-input.vue';
-import BaseStackedList from 'src/components/base/base-stacked-list.vue';
+import BaseButton from 'src/core/components/base/base-button.vue';
+import BaseDropdown from 'src/core/components/base/base-dropdown.vue';
+import BaseInput from 'src/core/components/base/base-input.vue';
+import BaseStackedList from 'src/core/components/base/base-stacked-list.vue';
 import TaskCategoryDeleteConfirm from './task-category-delete-confirm.vue';
 import WithState from 'src/components/composes/with-state.vue';
 import { inject, reactive } from 'vue';

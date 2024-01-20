@@ -1,6 +1,6 @@
 <script setup>
-import BaseButton from 'src/components/base/base-button.vue';
-import BaseWidget from 'src/components/base/base-widget.vue';
+import BaseButton from 'src/core/components/base/base-button.vue';
+import BaseWidget from 'src/core/components/base/base-widget.vue';
 import WithState from 'src/components/composes/with-state.vue';
 import { useRequest } from 'src/composes/request.compose';
 

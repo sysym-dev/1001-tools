@@ -1,8 +1,8 @@
 <script setup>
 import { PlusIcon } from '@heroicons/vue/24/outline';
-import BaseHeading from 'src/components/base/base-heading.vue';
-import BaseButton from 'src/components/base/base-button.vue';
-import BaseTabs from 'src/components/base/base-tabs.vue';
+import BaseHeading from 'src/core/components/base/base-heading.vue';
+import BaseButton from 'src/core/components/base/base-button.vue';
+import BaseTabs from 'src/core/components/base/base-tabs.vue';
 import TaskList from 'src/modules/task/components/task-list.vue';
 import TaskCreateModal from 'src/modules/task/components/task-create-modal.vue';
 import WithState from 'src/components/composes/with-state.vue';

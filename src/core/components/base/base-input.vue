@@ -1,6 +1,6 @@
 <script setup>
 import { computed, onMounted, ref } from 'vue';
-import { debounce } from '../../utils/debounce';
+import { debounce } from 'src/utils/debounce';
 import BaseSpinner from './base-spinner.vue';
 
 const props = defineProps({

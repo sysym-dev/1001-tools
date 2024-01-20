@@ -1,6 +1,6 @@
 <script setup>
-import BaseDescriptionList from 'src/components/base/base-description-list.vue';
-import BaseButton from 'src/components/base/base-button.vue';
+import BaseDescriptionList from 'src/core/components/base/base-description-list.vue';
+import BaseButton from 'src/core/components/base/base-button.vue';
 import TaskCategoryEditModal from './task-category-edit-modal.vue';
 import TaskCategoryDeleteConfirm from './task-category-delete-confirm.vue';
 import { h, ref } from 'vue';

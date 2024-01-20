@@ -1,5 +1,5 @@
 <script setup>
-import BaseSkeleton from 'src/components/base/base-skeleton.vue';
+import BaseSkeleton from 'src/core/components/base/base-skeleton.vue';
 
 defineProps({
   loading: {

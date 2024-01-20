@@ -1,8 +1,8 @@
 <script setup>
-import BaseModal from 'src/components/base/base-modal.vue';
-import BaseCard from 'src/components/base/base-card.vue';
-import BaseButton from 'src/components/base/base-button.vue';
-import BaseDescriptionColumn from 'src/components/base/base-description-column.vue';
+import BaseModal from 'src/core/components/base/base-modal.vue';
+import BaseCard from 'src/core/components/base/base-card.vue';
+import BaseButton from 'src/core/components/base/base-button.vue';
+import BaseDescriptionColumn from 'src/core/components/base/base-description-column.vue';
 import TaskStatusDropdown from './task-status-dropdown.vue';
 import TaskEditModal from './task-edit-modal.vue';
 import TaskDeleteConfirm from './task-delete-confirm.vue';

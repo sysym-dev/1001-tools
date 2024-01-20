@@ -1,6 +1,6 @@
 <script setup>
-import BaseButton from 'src/components/base/base-button.vue';
-import BaseDropdown from 'src/components/base/base-dropdown.vue';
+import BaseButton from 'src/core/components/base/base-button.vue';
+import BaseDropdown from 'src/core/components/base/base-dropdown.vue';
 import AuthLogoutConfirm from 'src/modules/auth/components/auth-logout-confirm.vue';
 import Avatar from 'src/assets/avatar.png';
 import { computed, h, ref } from 'vue';

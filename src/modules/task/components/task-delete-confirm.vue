@@ -1,5 +1,5 @@
 <script setup>
-import BaseConfirm from 'src/components/base/base-confirm.vue';
+import BaseConfirm from 'src/core/components/base/base-confirm.vue';
 import { computed, inject, nextTick, ref } from 'vue';
 import { useRequest } from 'src/composes/request.compose';
 

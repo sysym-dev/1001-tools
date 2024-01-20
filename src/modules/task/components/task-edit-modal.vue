@@ -1,9 +1,9 @@
 <script setup>
-import BaseModal from 'src/components/base/base-modal.vue';
-import BaseCard from 'src/components/base/base-card.vue';
-import BaseInput from 'src/components/base/base-input.vue';
-import BaseButton from 'src/components/base/base-button.vue';
-import BaseDatepicker from 'src/components/base/base-datepicker.vue';
+import BaseModal from 'src/core/components/base/base-modal.vue';
+import BaseCard from 'src/core/components/base/base-card.vue';
+import BaseInput from 'src/core/components/base/base-input.vue';
+import BaseButton from 'src/core/components/base/base-button.vue';
+import BaseDatepicker from 'src/core/components/base/base-datepicker.vue';
 import WithState from 'src/components/composes/with-state.vue';
 import TaskCategorySelect from 'src/modules/task-category/components/task-category-select.vue';
 import { computed, inject, nextTick, ref } from 'vue';

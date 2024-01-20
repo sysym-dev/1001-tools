@@ -1,5 +1,5 @@
 <script setup>
-import BaseSelectSearch from 'src/components/base/base-select-search.vue';
+import BaseSelectSearch from 'src/core/components/base/base-select-search.vue';
 import { computed, reactive, ref } from 'vue';
 import { useRequest } from 'src/composes/request.compose.js';
 

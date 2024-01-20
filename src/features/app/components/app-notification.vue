@@ -1,5 +1,5 @@
 <script setup>
-import BaseNotification from 'src/components/base/base-notification.vue';
+import BaseNotification from 'src/core/components/base/base-notification.vue';
 import { inject, ref } from 'vue';
 
 const emitter = inject('emitter');

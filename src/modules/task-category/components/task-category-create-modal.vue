@@ -1,8 +1,8 @@
 <script setup>
-import BaseModal from 'src/components/base/base-modal.vue';
-import BaseCard from 'src/components/base/base-card.vue';
-import BaseInput from 'src/components/base/base-input.vue';
-import BaseButton from 'src/components/base/base-button.vue';
+import BaseModal from 'src/core/components/base/base-modal.vue';
+import BaseCard from 'src/core/components/base/base-card.vue';
+import BaseInput from 'src/core/components/base/base-input.vue';
+import BaseButton from 'src/core/components/base/base-button.vue';
 import WithState from 'src/components/composes/with-state.vue';
 import { computed, inject, nextTick, ref } from 'vue';
 import { object, string } from 'yup';

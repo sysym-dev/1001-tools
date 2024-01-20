@@ -1,7 +1,7 @@
 <script setup>
-import BaseButton from 'src/components/base/base-button.vue';
-import BaseInput from 'src/components/base/base-input.vue';
-import BaseStackedList from 'src/components/base/base-stacked-list.vue';
+import BaseButton from 'src/core/components/base/base-button.vue';
+import BaseInput from 'src/core/components/base/base-input.vue';
+import BaseStackedList from 'src/core/components/base/base-stacked-list.vue';
 import TaskStatusDropdown from './task-status-dropdown.vue';
 import TaskDetailModal from './task-detail-modal.vue';
 import TaskStatusCheckboxDropdown from './task-status-checkbox-dropdown.vue';

@@ -1,5 +1,5 @@
 <script>
-import BaseNavbar from 'src/components/base/base-navbar.vue';
+import BaseNavbar from 'src/core/components/base/base-navbar.vue';
 import AppNotification from 'src/features/app/components/app-notification.vue';
 import { useRoute } from 'vue-router';
 
