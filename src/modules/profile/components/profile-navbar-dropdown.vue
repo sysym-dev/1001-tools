@@ -1,10 +1,10 @@
 <script setup>
 import BaseButton from 'src/core/components/base/base-button.vue';
 import BaseDropdown from 'src/core/components/base/base-dropdown.vue';
-import AuthLogoutConfirm from 'src/modules/auth/components/auth-logout-confirm.vue';
+import AuthLogoutConfirm from 'src/features/auth/components/auth-logout-confirm.vue';
 import Avatar from 'src/assets/avatar.png';
 import { computed, h, ref } from 'vue';
-import { useAuthStore } from 'src/modules/auth/auth.store';
+import { useAuthStore } from 'src/features/auth/auth.store';
 
 const authStore = useAuthStore();
 

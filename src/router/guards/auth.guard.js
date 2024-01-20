@@ -1,4 +1,4 @@
-import { useAuthStore } from 'src/modules/auth/auth.store';
+import { useAuthStore } from 'src/features/auth/auth.store';
 
 export function useAuthGuard(router) {
   router.beforeEach((to) => {

@@ -2,7 +2,7 @@ export const routes = [
   {
     path: '/login',
     name: 'login',
-    component: () => import('src/modules/auth/views/auth-login-page.vue'),
+    component: () => import('src/features/auth/views/auth-login-page.vue'),
     meta: {
       layout: 'LayoutAuth',
       title: 'Login',
@@ -12,7 +12,7 @@ export const routes = [
   {
     path: '/register',
     name: 'register',
-    component: () => import('src/modules/auth/views/auth-register-page.vue'),
+    component: () => import('src/features/auth/views/auth-register-page.vue'),
     meta: {
       layout: 'LayoutAuth',
       title: 'Register',

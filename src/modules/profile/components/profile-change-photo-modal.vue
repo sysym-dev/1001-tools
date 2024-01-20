@@ -6,7 +6,7 @@ import BaseButton from 'src/core/components/base/base-button.vue';
 import WithState from 'src/core/components/base/base-state.vue';
 import { computed, ref } from 'vue';
 import { useRequest } from 'src/core/request/request.compose';
-import { useAuthStore } from 'src/modules/auth/auth.store';
+import { useAuthStore } from 'src/features/auth/auth.store';
 
 const props = defineProps({
   visible: {

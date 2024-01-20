@@ -1,7 +1,7 @@
 <script setup>
 import BaseConfirm from 'src/core/components/base/base-confirm.vue';
 import { computed } from 'vue';
-import { useAuthStore } from 'src/modules/auth/auth.store';
+import { useAuthStore } from 'src/features/auth/auth.store';
 import { useRouter } from 'vue-router';
 
 const props = defineProps({

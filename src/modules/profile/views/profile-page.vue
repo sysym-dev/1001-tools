@@ -9,7 +9,7 @@ import ProfileChangePhotoModal from 'src/modules/profile/components/profile-chan
 import ProfileChangeEmailModal from 'src/modules/profile/components/profile-change-email-modal.vue';
 import ProfileUnverifiedEmailAlert from 'src/modules/profile/components/profile-unverified-email-alert.vue';
 import Avatar from 'src/assets/avatar.png';
-import { useAuthStore } from 'src/modules/auth/auth.store';
+import { useAuthStore } from 'src/features/auth/auth.store';
 import { h, ref } from 'vue';
 
 const authStore = useAuthStore();

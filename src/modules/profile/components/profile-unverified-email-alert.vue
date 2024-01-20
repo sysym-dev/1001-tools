@@ -3,7 +3,7 @@ import BaseLink from 'src/core/components/base/base-link.vue';
 import BaseAlert from 'src/core/components/base/base-alert.vue';
 import BaseSpinner from 'src/core/components/base/base-spinner.vue';
 import { useRequest } from 'src/core/request/request.compose';
-import { useAuthStore } from 'src/modules/auth/auth.store';
+import { useAuthStore } from 'src/features/auth/auth.store';
 import { inject } from 'vue';
 
 const emitter = inject('emitter');

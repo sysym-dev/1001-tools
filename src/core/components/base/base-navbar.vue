@@ -4,7 +4,7 @@ import ProfileNavbarDropdown from 'src/modules/profile/components/profile-navbar
 import { Bars3Icon, XMarkIcon } from '@heroicons/vue/24/outline';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { useAuthStore } from 'src/modules/auth/auth.store';
+import { useAuthStore } from 'src/features/auth/auth.store';
 
 const props = defineProps({
   menus: {

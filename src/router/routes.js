@@ -1,4 +1,4 @@
-import { routes as authRoutes } from 'src/modules/auth/routes';
+import { routes as authRoutes } from 'src/features/auth/auth.routes';
 import { routes as profileRoutes } from 'src/modules/profile/routes';
 
 export const routes = [

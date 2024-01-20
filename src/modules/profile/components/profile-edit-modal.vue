@@ -8,7 +8,7 @@ import { computed, nextTick, ref } from 'vue';
 import { object, string } from 'yup';
 import { useForm } from 'src/core/composes/form.compose';
 import { useRequest } from 'src/core/request/request.compose';
-import { useAuthStore } from 'src/modules/auth/auth.store';
+import { useAuthStore } from 'src/features/auth/auth.store';
 
 const props = defineProps({
   visible: {
