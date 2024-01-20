@@ -1,4 +1,5 @@
 <script setup>
+import BaseProgressBar from 'src/components/base/base-progress-bar.vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useTitle } from 'src/composes/title.compose';
 import { useRequest } from 'src/composes/request.compose';
@@ -30,5 +31,6 @@ if (authStore.isLoggedIn) {
 </script>
 
 <template>
+  <base-progress-bar />
   <component :is="route.meta.layout" />
 </template>

@@ -1,12 +1,11 @@
 <script>
 import BaseNavbar from 'src/components/base/base-navbar.vue';
-import AppProgressBar from 'src/components/app/app-progress-bar.vue';
 import AppNotification from 'src/components/app/app-notification.vue';
 import { useRoute } from 'vue-router';
 
 export default {
   name: 'LayoutApp',
-  components: { BaseNavbar, AppNotification, AppProgressBar },
+  components: { BaseNavbar, AppNotification },
   setup() {
     const route = useRoute();
 
@@ -40,7 +39,6 @@ export default {
 </script>
 
 <template>
-  <app-progress-bar />
   <app-notification />
   <base-navbar :menus="menus" :active="route.name" />
   <div class="px-4 py-8 container">
