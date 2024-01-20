@@ -4,7 +4,7 @@ import BaseDropdown from 'src/core/components/base/base-dropdown.vue';
 import { ChevronDownIcon } from '@heroicons/vue/24/outline';
 import { computed, inject } from 'vue';
 import { availableStatus } from 'src/modules/task/task-status';
-import { useRequest } from 'src/core/composes/request.compose';
+import { useRequest } from 'src/core/request/request.compose';
 
 const props = defineProps({
   modelValue: null,

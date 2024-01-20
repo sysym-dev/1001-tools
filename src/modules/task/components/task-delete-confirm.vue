@@ -1,7 +1,7 @@
 <script setup>
 import BaseConfirm from 'src/core/components/base/base-confirm.vue';
 import { computed, inject, nextTick, ref } from 'vue';
-import { useRequest } from 'src/core/composes/request.compose';
+import { useRequest } from 'src/core/request/request.compose';
 
 const props = defineProps({
   visible: {

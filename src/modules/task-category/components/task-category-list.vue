@@ -8,7 +8,7 @@ import TaskCategoryDeleteConfirm from './task-category-delete-confirm.vue';
 import WithState from 'src/core/components/base/base-state.vue';
 import { inject, reactive } from 'vue';
 import { useRouter } from 'vue-router';
-import { useRequest } from 'src/core/composes/request.compose';
+import { useRequest } from 'src/core/request/request.compose';
 import { useLoading } from 'src/core/composes/loading.compose';
 
 const props = defineProps({

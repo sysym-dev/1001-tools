@@ -7,7 +7,7 @@ import WithState from 'src/core/components/base/base-state.vue';
 import { computed, inject, nextTick, ref } from 'vue';
 import { object, string, ref as yupRef } from 'yup';
 import { useForm } from 'src/core/composes/form.compose';
-import { useRequest } from 'src/core/composes/request.compose';
+import { useRequest } from 'src/core/request/request.compose';
 
 const props = defineProps({
   visible: {

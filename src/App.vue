@@ -2,7 +2,7 @@
 import BaseProgressBar from 'src/core/components/base/base-progress-bar.vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useTitle } from 'src/core/composes/title.compose';
-import { useRequest } from 'src/core/composes/request.compose';
+import { useRequest } from 'src/core/request/request.compose';
 import { useAuthStore } from 'src/modules/auth/auth.store';
 
 const { setTitle } = useTitle();

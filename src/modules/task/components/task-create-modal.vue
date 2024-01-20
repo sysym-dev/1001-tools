@@ -9,7 +9,7 @@ import TaskCategorySelect from 'src/modules/task-category/components/task-catego
 import { computed, nextTick, ref, inject } from 'vue';
 import { date, object, string } from 'yup';
 import { useForm } from 'src/core/composes/form.compose';
-import { useRequest } from 'src/core/composes/request.compose';
+import { useRequest } from 'src/core/request/request.compose';
 import { createDate } from 'src/utils/date';
 
 const props = defineProps({
