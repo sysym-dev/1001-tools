@@ -5,6 +5,7 @@ import {
   InformationCircleIcon,
   XMarkIcon,
 } from '@heroicons/vue/20/solid';
+import { CheckCircleIcon as CheckCircleIconOutline } from '@heroicons/vue/24/outline';
 import { computed } from 'vue';
 
 const props = defineProps({
@@ -21,6 +22,8 @@ const props = defineProps({
 const wrapperColor = computed(() => {
   return {
     success: 'bg-green-50',
+    'notification-success':
+      'bg-white shadow-lg ring-1 ring-black ring-opacity-5',
     error: 'bg-red-50',
     info: 'bg-sky-50',
   }[props.type];
@@ -28,6 +31,7 @@ const wrapperColor = computed(() => {
 const textColor = computed(() => {
   return {
     success: 'text-green-800',
+    'notification-success': 'text-gray-800',
     error: 'text-red-800',
     info: 'text-sky-800',
   }[props.type];
@@ -35,6 +39,7 @@ const textColor = computed(() => {
 const iconColor = computed(() => {
   return {
     success: 'text-green-400',
+    'notification-success': 'text-green-400',
     error: 'text-red-400',
     info: 'text-sky-400',
   }[props.type];
@@ -52,6 +57,7 @@ const dismissColor = computed(() => {
 const icon = computed(() => {
   return {
     success: CheckCircleIcon,
+    'notification-success': CheckCircleIconOutline,
     error: XCircleIcon,
     info: InformationCircleIcon,
   }[props.type];
@@ -80,7 +86,7 @@ const icon = computed(() => {
           <button
             type="button"
             :class="[
-              'inline-flex rounded-md p-1.5 focus:outline-none focus:ring-2 focus:ring-offset-2',
+              'inline-flex rounded-md p-0.25 focus:outline-none focus:ring-2 focus:ring-offset-2',
               dismissColor,
             ]"
           >
