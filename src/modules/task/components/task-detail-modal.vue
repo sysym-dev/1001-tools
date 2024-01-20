@@ -9,7 +9,7 @@ import TaskDeleteConfirm from './task-delete-confirm.vue';
 import WithState from 'src/core/components/base/base-state.vue';
 import { computed, ref } from 'vue';
 import { useRequest } from 'src/core/request/request.compose';
-import { date } from 'src/utils/date';
+import { date } from 'src/core/utils/date';
 
 const props = defineProps({
   visible: {

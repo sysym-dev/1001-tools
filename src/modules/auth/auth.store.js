@@ -2,7 +2,7 @@ import { defineStore } from 'pinia';
 import { reactive, ref } from 'vue';
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
-import { createDate } from 'src/utils/date';
+import { createDate } from 'src/core/utils/date';
 import { useRouter } from 'vue-router';
 
 export const useAuthStore = defineStore(

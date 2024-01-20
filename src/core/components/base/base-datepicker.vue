@@ -8,7 +8,7 @@ import {
   XMarkIcon,
 } from '@heroicons/vue/24/outline';
 import { computed, ref } from 'vue';
-import { date } from 'src/utils/date';
+import { date } from 'src/core/utils/date';
 
 const props = defineProps({
   label: String,

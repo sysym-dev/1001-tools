@@ -9,7 +9,7 @@ import WithState from 'src/core/components/base/base-state.vue';
 import { reactive, inject } from 'vue';
 import { useRequest } from 'src/core/request/request.compose';
 import { useLoading } from 'src/core/composes/loading.compose';
-import { date } from 'src/utils/date';
+import { date } from 'src/core/utils/date';
 
 const props = defineProps({
   filterable: {
