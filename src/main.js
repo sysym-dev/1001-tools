@@ -1,9 +1,9 @@
 import { createApp } from 'vue';
 import './style.css';
 import App from './App.vue';
-import { useClickOutsideEvent } from './plugins/click-outside-event';
-import { useProgressBar } from './plugins/progress-bar';
-import { useEmitter } from './plugins/emitter';
+import { useClickOutsideEvent } from './core/plugins/click-outside-event';
+import { useProgressBar } from './core/plugins/progress-bar';
+import { useEmitter } from './core/plugins/emitter';
 import { setupRouter } from './router/setup';
 import { setupLayout } from './core/layout/setup';
 import { setupStore } from './store/setup';
