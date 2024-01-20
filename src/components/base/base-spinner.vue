@@ -6,6 +6,14 @@ const props = defineProps({
     type: String,
     default: 'md',
   },
+  color: {
+    type: String,
+    default: 'sky',
+  },
+  classes: {
+    type: Object,
+    default: () => ({}),
+  },
 });
 
 const size = computed(() => {
@@ -16,13 +24,19 @@ const size = computed(() => {
     xl: 'w-10 h-10',
   }[props.size];
 });
+const color = computed(() => {
+  return {
+    sky: 'text-gray-200 fill-sky-600',
+    yellow: 'text-gray-200 fill-yellow-600',
+  }[props.color];
+});
 </script>
 
 <template>
-  <div class="flex items-center gap-x-2">
+  <div :class="[$slots.default && 'flex items-center gap-x-2', classes.base]">
     <svg
       aria-hidden="true"
-      :class="['inline text-gray-200 animate-spin fill-sky-600', size]"
+      :class="['inline animate-spin', size, color]"
       viewBox="0 0 100 101"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"

@@ -7,11 +7,18 @@ const emitter = inject('emitter');
 const items = ref([]);
 
 emitter.on('create-notification', (data) => {
-  const index = items.value.push(data);
+  const id = items.value.length + 1;
+
+  items.value.push({
+    id,
+    ...data,
+  });
 
   setTimeout(() => {
-    items.value.splice(index - 1, 1);
-  }, 3000);
+    const index = items.value.findIndex((item) => item.id === id);
+
+    items.value.splice(index, 1);
+  }, 2000);
 });
 </script>
 
