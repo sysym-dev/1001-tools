@@ -6,8 +6,8 @@ import BaseButton from 'src/core/components/base/base-button.vue';
 import WithState from 'src/core/components/base/base-state.vue';
 import { computed, inject, nextTick, ref } from 'vue';
 import { object, string } from 'yup';
-import { useForm } from 'src/composes/form.compose';
-import { useRequest } from 'src/composes/request.compose';
+import { useForm } from 'src/core/composes/form.compose';
+import { useRequest } from 'src/core/composes/request.compose';
 
 const props = defineProps({
   visible: {

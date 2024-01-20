@@ -1,6 +1,6 @@
 import { ref } from 'vue';
 import { http } from 'src/helpers/http';
-import { RequestError } from '../helpers/request-error';
+import { RequestError } from 'src/helpers/request-error';
 
 export function useRequest(url, options = {}) {
   const isLoading = ref(false);

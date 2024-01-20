@@ -3,7 +3,6 @@ import { reactive, ref } from 'vue';
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
 import { createDate } from 'src/utils/date';
-// import { router } from '../router/router';
 import { useRouter } from 'vue-router';
 
 export const useAuthStore = defineStore(

@@ -9,8 +9,8 @@ import WithState from 'src/core/components/base/base-state.vue';
 import TaskCategoryDetailDescriptionList from 'src/modules/task-category/components/task-category-detail-description-list.vue';
 import { inject, h, ref, watch, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { useRequest } from 'src/composes/request.compose';
-import { useTitle } from 'src/composes/title.compose';
+import { useRequest } from 'src/core/composes/request.compose';
+import { useTitle } from 'src/core/composes/title.compose';
 
 const route = useRoute();
 const router = useRouter();

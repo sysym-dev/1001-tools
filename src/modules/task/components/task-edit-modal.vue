@@ -8,8 +8,8 @@ import WithState from 'src/core/components/base/base-state.vue';
 import TaskCategorySelect from 'src/modules/task-category/components/task-category-select.vue';
 import { computed, inject, nextTick, ref } from 'vue';
 import { object, string, date } from 'yup';
-import { useForm } from 'src/composes/form.compose';
-import { useRequest } from 'src/composes/request.compose';
+import { useForm } from 'src/core/composes/form.compose';
+import { useRequest } from 'src/core/composes/request.compose';
 import { createDate } from 'src/utils/date';
 
 const props = defineProps({

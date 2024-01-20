@@ -7,8 +7,8 @@ import TaskDetailModal from './task-detail-modal.vue';
 import TaskStatusCheckboxDropdown from './task-status-checkbox-dropdown.vue';
 import WithState from 'src/core/components/base/base-state.vue';
 import { reactive, inject } from 'vue';
-import { useRequest } from 'src/composes/request.compose';
-import { useLoading } from 'src/composes/loading.compose';
+import { useRequest } from 'src/core/composes/request.compose';
+import { useLoading } from 'src/core/composes/loading.compose';
 import { date } from 'src/utils/date';
 
 const props = defineProps({

@@ -2,7 +2,7 @@
 import BaseButton from 'src/core/components/base/base-button.vue';
 import BaseWidget from 'src/core/components/base/base-widget.vue';
 import WithState from 'src/core/components/base/base-state.vue';
-import { useRequest } from 'src/composes/request.compose';
+import { useRequest } from 'src/core/composes/request.compose';
 
 const {
   isLoading,
