@@ -7,6 +7,7 @@ import ProfileEditModal from 'src/modules/profile/components/profile-edit-modal.
 import ProfileResetPasswordModal from 'src/modules/profile/components/profile-reset-password-modal.vue';
 import ProfileChangePhotoModal from 'src/modules/profile/components/profile-change-photo-modal.vue';
 import ProfileChangeEmailModal from 'src/modules/profile/components/profile-change-email-modal.vue';
+import ProfileUnverifiedEmailAlert from 'src/modules/profile/components/profile-unverified-email-alert.vue';
 import Avatar from 'src/assets/avatar.png';
 import { useAuthStore } from 'src/modules/auth/auth.store';
 import { h, ref } from 'vue';
@@ -78,16 +79,19 @@ function handleChangeEmail() {
 </script>
 
 <template>
-  <base-heading title="Profile">
-    <template #actions>
-      <div class="space-x-2">
-        <base-button v-on:click="handleEdit">Edit Profile</base-button>
-        <base-button v-on:click="handleResetPassword"
-          >Reset Password</base-button
-        >
-      </div>
-    </template>
-  </base-heading>
+  <div class="space-y-6">
+    <base-heading title="Profile">
+      <template #actions>
+        <div class="space-x-2">
+          <base-button v-on:click="handleEdit">Edit Profile</base-button>
+          <base-button v-on:click="handleResetPassword"
+            >Reset Password</base-button
+          >
+        </div>
+      </template>
+    </base-heading>
+    <profile-unverified-email-alert v-if="!authStore.me.is_email_verified" />
+  </div>
   <base-description-column :columns="columns" :data="authStore.me" />
   <profile-edit-modal v-model:visible="visibleEditModal" />
   <profile-reset-password-modal v-model:visible="visibleResetPasswordModal" />

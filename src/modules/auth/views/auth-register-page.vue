@@ -106,7 +106,7 @@ async function handleSubmit() {
           :disabled="isRequestLoading"
           fullwidth
           color="sky"
-          >Login</base-button
+          >Register</base-button
         >
         <p class="text-sm text-center text-gray-500">
           Already have account?
