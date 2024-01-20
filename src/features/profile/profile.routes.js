@@ -2,7 +2,7 @@ export const routes = [
   {
     path: '/profile',
     name: 'profile',
-    component: () => import('src/modules/profile/views/profile-page.vue'),
+    component: () => import('src/features/profile/views/profile-page.vue'),
     meta: {
       layout: 'LayoutApp',
       title: 'Profile',

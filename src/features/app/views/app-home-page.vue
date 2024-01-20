@@ -1,7 +1,7 @@
 <script setup>
 import BaseHeading from 'src/core/components/base/base-heading.vue';
-import TaskCategoryWidgetList from 'src/modules/task-category/components/task-category-widget-list.vue';
-import TaskList from 'src/modules/task/components/task-list.vue';
+import TaskCategoryWidgetList from 'src/features/task-category/components/task-category-widget-list.vue';
+import TaskList from 'src/features/task/components/task-list.vue';
 import { createDate } from 'src/core/utils/date';
 </script>
 

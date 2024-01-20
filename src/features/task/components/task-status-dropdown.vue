@@ -3,7 +3,7 @@ import BaseButton from 'src/core/components/base/base-button.vue';
 import BaseDropdown from 'src/core/components/base/base-dropdown.vue';
 import { ChevronDownIcon } from '@heroicons/vue/24/outline';
 import { computed, inject } from 'vue';
-import { availableStatus } from 'src/modules/task/task-status';
+import { availableStatus } from 'src/features/task/task-status';
 import { useRequest } from 'src/core/request/request.compose';
 
 const props = defineProps({

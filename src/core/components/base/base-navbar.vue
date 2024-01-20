@@ -1,6 +1,6 @@
 <script setup>
 import BaseButton from './base-button.vue';
-import ProfileNavbarDropdown from 'src/modules/profile/components/profile-navbar-dropdown.vue';
+import ProfileNavbarDropdown from 'src/features/profile/components/profile-navbar-dropdown.vue';
 import { Bars3Icon, XMarkIcon } from '@heroicons/vue/24/outline';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';

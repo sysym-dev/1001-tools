@@ -2,7 +2,7 @@
 import BaseButton from 'src/core/components/base/base-button.vue';
 import BaseDropdown from 'src/core/components/base/base-dropdown.vue';
 import BaseCheckbox from 'src/core/components/base/base-checkbox.vue';
-import { availableStatus, getStatusById } from 'src/modules/task/task-status';
+import { availableStatus, getStatusById } from 'src/features/task/task-status';
 import { computed } from 'vue';
 
 const props = defineProps({
