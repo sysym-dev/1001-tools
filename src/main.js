@@ -6,7 +6,7 @@ import { useProgressBar } from './core/plugins/progress-bar';
 import { useEmitter } from './core/plugins/emitter';
 import { setupRouter } from './router/setup';
 import { setupLayout } from './core/layout/setup';
-import { setupStore } from './store/setup';
+import { setupStore } from './core/store/setup';
 
 import LayoutApp from 'src/features/app/components/app-layout.vue';
 import LayoutAuth from 'src/features/auth/components/auth-layout.vue';
