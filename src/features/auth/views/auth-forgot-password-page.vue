@@ -17,10 +17,12 @@ const { form, errors, hasError, submit } = useForm({
   schema: {
     password: null,
     email: null,
+    name: null,
   },
   validationSchema: object({
     password: string().required(),
     email: string().email().required(),
+    name: string().required(),
   }),
 });
 const {
@@ -30,7 +32,7 @@ const {
   isError: isRequestError,
   error: requestError,
   resetError: resetRequestError,
-} = useRequest('/login', {
+} = useRequest('/register', {
   method: 'post',
 });
 
@@ -39,11 +41,11 @@ const errorMessage = computed(() => {
     return requestError.value.message;
   }
 
-  if (requestError.value.data.status !== 401) {
+  if (requestError.value.data.status !== 422) {
     return requestError.value.message;
   }
 
-  return requestError.value.data.data.message;
+  return Object.values(requestError.value.data.data.details)[0];
 });
 
 async function handleSubmit() {
@@ -68,19 +70,26 @@ async function handleSubmit() {
     class="px-4 py-20 min-w-full sm:px-0 sm:min-w-[400px] space-y-6"
     v-on:submit.prevent="handleSubmit"
   >
-    <base-title centered>Login To Your Account</base-title>
+    <base-title centered>Register New Account</base-title>
     <with-state
       :is-error="isRequestError"
       :error-message="isRequestError ? errorMessage : null"
     >
       <div class="space-y-4">
         <base-input
+          label="Name"
+          placeholder="Name"
+          :state="hasError('name') ? 'error' : 'normal'"
+          :message="hasError('name') ? errors.name : ''"
+          autofocus
+          v-model="form.name"
+        />
+        <base-input
           label="Email"
           placeholder="Email"
           type="email"
           :state="hasError('email') ? 'error' : 'normal'"
           :message="hasError('email') ? errors.email : ''"
-          autofocus
           v-model="form.email"
         />
         <base-input
@@ -90,26 +99,18 @@ async function handleSubmit() {
           :state="hasError('password') ? 'error' : 'normal'"
           :message="hasError('password') ? errors.password : ''"
           v-model="form.password"
-        >
-          <template #label-end>
-            <base-link
-              :to="{ name: 'forgot-password' }"
-              :classes="{ base: 'text-sm' }"
-              >Forgot Password</base-link
-            >
-          </template>
-        </base-input>
+        />
         <base-button
           type="submit"
           :loading="isRequestLoading"
           :disabled="isRequestLoading"
           fullwidth
           color="sky"
-          >Login</base-button
+          >Register</base-button
         >
         <p class="text-sm text-center text-gray-500">
-          Doesn't have account?
-          <base-link :to="{ name: 'register' }">Register Here</base-link>
+          Already have account?
+          <base-link :to="{ name: 'login' }">Login Here</base-link>
         </p>
       </div>
     </with-state>
