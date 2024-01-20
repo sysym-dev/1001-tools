@@ -3,7 +3,7 @@ import BaseModal from 'src/core/components/base/base-modal.vue';
 import BaseCard from 'src/core/components/base/base-card.vue';
 import BaseUploadFile from 'src/core/components/base/base-upload-file.vue';
 import BaseButton from 'src/core/components/base/base-button.vue';
-import WithState from 'src/components/composes/with-state.vue';
+import WithState from 'src/core/components/base/base-state.vue';
 import { computed, ref } from 'vue';
 import { useRequest } from 'src/composes/request.compose';
 import { useAuthStore } from 'src/modules/auth/auth.store';

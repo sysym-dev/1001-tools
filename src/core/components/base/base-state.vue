@@ -1,8 +1,8 @@
 <script setup>
-import BaseSkeleton from 'src/core/components/base/base-skeleton.vue';
-import BaseAlert from 'src/core/components/base/base-alert.vue';
-import BaseSpinner from 'src/core/components/base/base-spinner.vue';
-import BaseEmpty from 'src/core/components/base/base-empty.vue';
+import BaseSkeleton from './base-skeleton.vue';
+import BaseAlert from './base-alert.vue';
+import BaseSpinner from './base-spinner.vue';
+import BaseEmpty from './base-empty.vue';
 
 defineProps({
   loadingType: {

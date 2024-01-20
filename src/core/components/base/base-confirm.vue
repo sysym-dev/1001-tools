@@ -4,7 +4,7 @@ import BaseCard from './base-card.vue';
 import BaseButton from './base-button.vue';
 import { CheckIcon, ExclamationCircleIcon } from '@heroicons/vue/24/outline';
 import { computed } from 'vue';
-import WithState from 'src/components/composes/with-state.vue';
+import WithState from 'src/core/components/base/base-state.vue';
 
 const props = defineProps({
   title: String,

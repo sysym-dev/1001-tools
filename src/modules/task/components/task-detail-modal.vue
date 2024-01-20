@@ -6,7 +6,7 @@ import BaseDescriptionColumn from 'src/core/components/base/base-description-col
 import TaskStatusDropdown from './task-status-dropdown.vue';
 import TaskEditModal from './task-edit-modal.vue';
 import TaskDeleteConfirm from './task-delete-confirm.vue';
-import WithState from 'src/components/composes/with-state.vue';
+import WithState from 'src/core/components/base/base-state.vue';
 import { computed, ref } from 'vue';
 import { useRequest } from 'src/composes/request.compose';
 import { date } from 'src/utils/date';

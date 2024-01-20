@@ -5,7 +5,7 @@ import BaseButton from 'src/core/components/base/base-button.vue';
 import BaseTabs from 'src/core/components/base/base-tabs.vue';
 import TaskList from 'src/modules/task/components/task-list.vue';
 import TaskCreateModal from 'src/modules/task/components/task-create-modal.vue';
-import WithState from 'src/components/composes/with-state.vue';
+import WithState from 'src/core/components/base/base-state.vue';
 import TaskCategoryDetailDescriptionList from 'src/modules/task-category/components/task-category-detail-description-list.vue';
 import { inject, h, ref, watch, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';

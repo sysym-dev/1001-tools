@@ -3,7 +3,7 @@ import BaseTitle from 'src/core/components/base/base-title.vue';
 import BaseInput from 'src/core/components/base/base-input.vue';
 import BaseButton from 'src/core/components/base/base-button.vue';
 import BaseLink from 'src/core/components/base/base-link.vue';
-import WithState from 'src/components/composes/with-state.vue';
+import WithState from 'src/core/components/base/base-state.vue';
 import { useRequest } from 'src/composes/request.compose';
 import { useForm } from 'src/composes/form.compose';
 import { useAuthStore } from 'src/modules/auth/auth.store';

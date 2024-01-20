@@ -4,7 +4,7 @@ import BaseCard from 'src/core/components/base/base-card.vue';
 import BaseInput from 'src/core/components/base/base-input.vue';
 import BaseDatepicker from 'src/core/components/base/base-datepicker.vue';
 import BaseButton from 'src/core/components/base/base-button.vue';
-import WithState from 'src/components/composes/with-state.vue';
+import WithState from 'src/core/components/base/base-state.vue';
 import TaskCategorySelect from 'src/modules/task-category/components/task-category-select.vue';
 import { computed, nextTick, ref, inject } from 'vue';
 import { date, object, string } from 'yup';

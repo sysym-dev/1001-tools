@@ -3,7 +3,7 @@ import BaseModal from 'src/core/components/base/base-modal.vue';
 import BaseCard from 'src/core/components/base/base-card.vue';
 import BaseInput from 'src/core/components/base/base-input.vue';
 import BaseButton from 'src/core/components/base/base-button.vue';
-import WithState from 'src/components/composes/with-state.vue';
+import WithState from 'src/core/components/base/base-state.vue';
 import { computed, inject, nextTick, ref } from 'vue';
 import { object, string, ref as yupRef } from 'yup';
 import { useForm } from 'src/composes/form.compose';
