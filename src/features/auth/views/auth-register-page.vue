@@ -3,7 +3,9 @@ import BaseTitle from 'src/core/components/base/base-title.vue';
 import BaseInput from 'src/core/components/base/base-input.vue';
 import BaseButton from 'src/core/components/base/base-button.vue';
 import BaseLink from 'src/core/components/base/base-link.vue';
+import BaseLine from 'src/core/components/base/base-line.vue';
 import WithState from 'src/core/components/base/base-state.vue';
+import AuthSocialLoginButton from 'src/features/auth/components/auth-social-login-button.vue';
 import { useRequest } from 'src/core/request/request.compose';
 import { useForm } from 'src/core/composes/form.compose';
 import { useAuthStore } from 'src/features/auth/auth.store';
@@ -70,7 +72,13 @@ async function handleSubmit() {
     class="px-4 py-20 min-w-full sm:px-0 sm:min-w-[400px] space-y-6"
     v-on:submit.prevent="handleSubmit"
   >
-    <base-title centered>Register New Account</base-title>
+    <div class="space-y-4">
+      <base-title>Register New Account</base-title>
+      <p class="text-sm text-gray-500">
+        Already have account?
+        <base-link :to="{ name: 'login' }">Login Here</base-link>
+      </p>
+    </div>
     <with-state
       :is-error="isRequestError"
       :error-message="isRequestError ? errorMessage : null"
@@ -108,11 +116,9 @@ async function handleSubmit() {
           color="sky"
           >Register</base-button
         >
-        <p class="text-sm text-center text-gray-500">
-          Already have account?
-          <base-link :to="{ name: 'login' }">Login Here</base-link>
-        </p>
       </div>
     </with-state>
+    <base-line text="Or Continue With" />
+    <auth-social-login-button />
   </form>
 </template>
