@@ -44,6 +44,17 @@ const visible = computed({
     emit('update:visible', value);
   },
 });
+const errorMessage = computed(() => {
+  if (error.value.type !== 'Network Error') {
+    return error.value.message;
+  }
+
+  if (error.value.data.status !== 422) {
+    return error.value.message;
+  }
+
+  return Object.values(error.value.data.data.details)[0];
+});
 
 const inputEmail = ref();
 
@@ -88,7 +99,7 @@ async function handleSubmit() {
         <div class="space-y-4">
           <with-state
             :is-error="isError"
-            :error-message="isError ? error.message : null"
+            :error-message="isError ? errorMessage : null"
           >
             <base-input
               ref="inputEmail"
