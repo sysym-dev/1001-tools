@@ -3,16 +3,13 @@ import BaseTitle from 'src/core/components/base/base-title.vue';
 import BaseInput from 'src/core/components/base/base-input.vue';
 import BaseButton from 'src/core/components/base/base-button.vue';
 import BaseLink from 'src/core/components/base/base-link.vue';
+import BaseAlert from 'src/core/components/base/base-alert.vue';
 import WithState from 'src/core/components/base/base-state.vue';
 import { useRequest } from 'src/core/request/request.compose';
 import { useForm } from 'src/core/composes/form.compose';
-import { useAuthStore } from 'src/features/auth/auth.store';
 import { object, string } from 'yup';
-import { useRouter } from 'vue-router';
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 
-const authStore = useAuthStore();
-const router = useRouter();
 const { form, errors, hasError, submit } = useForm({
   schema: {
     email: null,
@@ -23,18 +20,22 @@ const { form, errors, hasError, submit } = useForm({
 });
 const {
   request,
-  data: result,
   isLoading: isRequestLoading,
   isError: isRequestError,
   error: requestError,
   resetError: resetRequestError,
-} = useRequest('/forgot-password', {
+} = useRequest('/password/forgot', {
   method: 'post',
 });
+const isSuccess = ref(false);
 
 const errorMessage = computed(() => {
   if (requestError.value.type !== 'Network Error') {
     return requestError.value.message;
+  }
+
+  if (requestError.value.data.status === 404) {
+    return requestError.value.data.data.message;
   }
 
   if (requestError.value.data.status !== 422) {
@@ -45,6 +46,8 @@ const errorMessage = computed(() => {
 });
 
 async function handleSubmit() {
+  isSuccess.value = false;
+
   try {
     resetRequestError();
 
@@ -53,8 +56,7 @@ async function handleSubmit() {
       data: form.value,
     });
 
-    authStore.login(result.value.data);
-    router.push({ name: 'home' });
+    isSuccess.value = true;
   } catch (err) {
     //
   }
@@ -67,6 +69,9 @@ async function handleSubmit() {
     v-on:submit.prevent="handleSubmit"
   >
     <base-title centered>Forgot Password</base-title>
+    <base-alert v-if="isSuccess"
+      >A password reset link has been sent to your email</base-alert
+    >
     <with-state
       :is-error="isRequestError"
       :error-message="isRequestError ? errorMessage : null"
