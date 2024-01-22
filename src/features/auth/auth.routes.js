@@ -41,4 +41,15 @@ export const routes = [
       requireGuest: true,
     },
   },
+  {
+    path: '/github/callback',
+    name: 'github-callback',
+    component: () =>
+      import('src/features/auth/views/auth-github-callback-page.vue'),
+    meta: {
+      layout: 'LayoutAuth',
+      title: 'Login With Github',
+      requireGuest: true,
+    },
+  },
 ];
