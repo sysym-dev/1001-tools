@@ -2,15 +2,19 @@
 import BaseTitle from 'src/core/components/base/base-title.vue';
 import WithState from 'src/core/components/base/base-state.vue';
 import { useRequest } from 'src/core/request/request.compose';
-import { computed, ref } from 'vue';
-import { useRoute } from 'vue-router';
+import { computed } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import { useAuthStore } from 'src/features/auth/auth.store';
 
+const router = useRouter();
+const authStore = useAuthStore();
 const route = useRoute();
 const {
   request,
   isError: isRequestError,
   error: requestError,
   resetError: resetRequestError,
+  data: result,
 } = useRequest('/login/github', {
   method: 'post',
 });
@@ -32,8 +36,13 @@ async function handleSubmit() {
     resetRequestError();
 
     await request({
-      code: route.query.code,
+      data: {
+        code: route.query.code,
+      },
     });
+
+    authStore.login(result.value.data);
+    router.push({ name: 'home' });
   } catch (err) {}
 }
 
