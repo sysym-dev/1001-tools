@@ -2,12 +2,19 @@
 import BaseButton from 'src/core/components/base/base-button.vue';
 import { useGoogleLogin } from 'src/features/auth/composes/google-login.compose';
 import { useGithubLogin } from 'src/features/auth/composes/github-login.compose';
+import { useRouter } from 'vue-router';
 
-const { login: googleLogin } = useGoogleLogin();
+const { login: googleLogin } = useGoogleLogin(handleGoogleLoggedIn);
 const { login: githubLogin } = useGithubLogin();
+const router = useRouter();
 
-function handleClickGoogle() {
-  googleLogin();
+function handleGoogleLoggedIn() {
+  router.push({ name: 'home' });
+}
+async function handleClickGoogle() {
+  try {
+    await googleLogin();
+  } catch (err) {}
 }
 function handleClickGithub() {
   githubLogin();
