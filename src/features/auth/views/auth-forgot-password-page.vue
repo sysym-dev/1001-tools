@@ -68,7 +68,13 @@ async function handleSubmit() {
     class="px-4 py-20 min-w-full sm:px-0 sm:min-w-[400px] space-y-6"
     v-on:submit.prevent="handleSubmit"
   >
-    <base-title centered>Forgot Password</base-title>
+    <div class="space-y-4">
+      <base-title>Forgot Password</base-title>
+      <p class="text-sm text-gray-500">
+        Finished updating?
+        <base-link :to="{ name: 'login' }">Login Here</base-link>
+      </p>
+    </div>
     <base-alert v-if="isSuccess"
       >A password reset link has been sent to your email</base-alert
     >
@@ -94,10 +100,6 @@ async function handleSubmit() {
           color="sky"
           >Forgot Password</base-button
         >
-        <p class="text-sm text-center text-gray-500">
-          Finished updating?
-          <base-link :to="{ name: 'login' }">Login Here</base-link>
-        </p>
       </div>
     </with-state>
   </form>
