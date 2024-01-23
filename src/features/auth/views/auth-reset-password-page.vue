@@ -78,7 +78,13 @@ if (!route.query.token) {
     class="px-4 py-20 min-w-full sm:px-0 sm:min-w-[400px] space-y-6"
     v-on:submit.prevent="handleSubmit"
   >
-    <base-title centered>Reset Password</base-title>
+    <div class="space-y-4">
+      <base-title>Reset Password</base-title>
+      <p class="text-sm text-gray-500">
+        Finished updating?
+        <base-link :to="{ name: 'login' }">Login Here</base-link>
+      </p>
+    </div>
     <with-state
       :is-error="isRequestError"
       :error-message="isRequestError ? errorMessage : null"
@@ -113,10 +119,6 @@ if (!route.query.token) {
           color="sky"
           >Reset Password</base-button
         >
-        <p class="text-sm text-center text-gray-500">
-          Finished updating?
-          <base-link :to="{ name: 'login' }">Login Here</base-link>
-        </p>
       </div>
     </with-state>
   </form>
