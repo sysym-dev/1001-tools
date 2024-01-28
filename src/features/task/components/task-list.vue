@@ -101,7 +101,7 @@ async function loadTasks() {
           column: props.sortColumn ?? 'id',
           direction: props.sortDirection ?? 'asc',
         },
-        include: ['TaskCategory'],
+        include: ['taskCategory'],
       },
     });
   } catch (err) {
@@ -211,7 +211,7 @@ init();
           <template v-else>No Due</template>
         </template>
         <template #description-end="{ item }">
-          {{ item.TaskCategory.name }}
+          {{ item.taskCategory.name }}
         </template>
         <template #actions="{ index }">
           <div>
