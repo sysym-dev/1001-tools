@@ -24,11 +24,15 @@ export const useAuthStore = defineStore(
       isLoggedIn.value = true;
     }
 
-    function logout() {
+    function logout(options = {}) {
       isLoggedIn.value = false;
 
       token.accessToken = null;
       me.value = {};
+
+      if (options.redirect) {
+        router.push({ name: 'login' });
+      }
     }
 
     function setToken(payload) {

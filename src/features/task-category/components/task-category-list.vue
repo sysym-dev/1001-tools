@@ -6,7 +6,7 @@ import BaseInput from 'src/core/components/base/base-input.vue';
 import BaseStackedList from 'src/core/components/base/base-stacked-list.vue';
 import TaskCategoryDeleteConfirm from './task-category-delete-confirm.vue';
 import WithState from 'src/core/components/base/base-state.vue';
-import { inject, reactive } from 'vue';
+import { inject, onMounted, onUnmounted, reactive } from 'vue';
 import { useRouter } from 'vue-router';
 import { useRequest } from 'src/core/request/request.compose';
 import { useLoading } from 'src/core/composes/loading.compose';
@@ -146,8 +146,14 @@ async function handleRefresh() {
   }
 }
 
-emitter.on('task-categories-created', () => handleRefresh());
-emitter.on('task-categories-deleted', () => handleRefresh());
+onMounted(() => {
+  emitter.on('task-categories-created', () => handleRefresh());
+  emitter.on('task-categories-deleted', () => handleRefresh());
+});
+onUnmounted(() => {
+  emitter.off('task-categories-created');
+  emitter.off('task-categories-deleted');
+});
 
 init();
 </script>

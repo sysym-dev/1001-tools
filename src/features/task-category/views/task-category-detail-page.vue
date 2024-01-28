@@ -7,7 +7,7 @@ import TaskList from 'src/features/task/components/task-list.vue';
 import TaskCreateModal from 'src/features/task/components/task-create-modal.vue';
 import WithState from 'src/core/components/base/base-state.vue';
 import TaskCategoryDetailDescriptionList from 'src/features/task-category/components/task-category-detail-description-list.vue';
-import { inject, h, ref, watch, computed } from 'vue';
+import { inject, h, ref, watch, computed, onMounted, onUnmounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useRequest } from 'src/core/request/request.compose';
 import { useTitle } from 'src/core/composes/title.compose';
@@ -73,15 +73,25 @@ async function loadTaskCategory() {
 function handleCreateTask() {
   visibleTaskCreateModal.value = true;
 }
+function handleUpdated() {
+  loadTaskCategory();
+}
+function handleDeleted() {
+  router.push({ name: 'task-categories.index' });
+}
 
 watch(activeTab, (value) => {
   router.push({ query: { tab: value } });
 });
 
-emitter.on('task-categories-updated', () => loadTaskCategory());
-emitter.on('task-categories-deleted', () =>
-  router.push({ name: 'task-categories.index' }),
-);
+onMounted(() => {
+  emitter.on('task-categories-updated', handleUpdated);
+  emitter.on('task-categories-deleted', handleDeleted);
+});
+onUnmounted(() => {
+  emitter.off('task-categories-updated');
+  emitter.off('task-categories-deleted');
+});
 
 loadTaskCategory();
 </script>

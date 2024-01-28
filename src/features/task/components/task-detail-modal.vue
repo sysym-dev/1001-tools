@@ -56,7 +56,7 @@ const columns = [
   {
     id: 'category',
     name: 'Category',
-    value: (task) => task.TaskCategory?.name,
+    value: (task) => task.taskCategory?.name,
   },
   {
     id: 'due_at',
@@ -77,7 +77,7 @@ async function loadTask() {
     await request({
       url: `/tasks/${props.taskId}`,
       params: {
-        include: ['TaskCategory'],
+        include: ['taskCategory'],
       },
     });
   } catch {}
