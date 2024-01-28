@@ -6,7 +6,7 @@ import TaskStatusDropdown from './task-status-dropdown.vue';
 import TaskDetailModal from './task-detail-modal.vue';
 import TaskStatusCheckboxDropdown from './task-status-checkbox-dropdown.vue';
 import WithState from 'src/core/components/base/base-state.vue';
-import { reactive, inject } from 'vue';
+import { reactive, inject, onMounted, onUnmounted } from 'vue';
 import { useRequest } from 'src/core/request/request.compose';
 import { useLoading } from 'src/core/composes/loading.compose';
 import { date } from 'src/core/utils/date';
@@ -157,9 +157,17 @@ function handleClickDetail(task) {
   detailModal.visible = true;
 }
 
-emitter.on('tasks-created', () => handleRefresh());
-emitter.on('tasks-updated', () => handleRefresh());
-emitter.on('tasks-deleted', () => handleRefresh());
+onMounted(() => {
+  emitter.on('tasks-created', () => handleRefresh());
+  emitter.on('tasks-updated', () => handleRefresh());
+  emitter.on('tasks-deleted', () => handleRefresh());
+});
+
+onUnmounted(() => {
+  emitter.off('tasks-created');
+  emitter.off('tasks-updated');
+  emitter.off('tasks-deleted');
+});
 
 setFilterFromProps();
 init();
