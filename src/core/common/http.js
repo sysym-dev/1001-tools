@@ -17,4 +17,19 @@ http.interceptors.request.use(async (config) => {
   return config;
 });
 
+http.interceptors.response.use(
+  (res) => res,
+  async (err) => {
+    const authStore = useAuthStore();
+
+    if (err.response.status === 401) {
+      await authStore.logout({
+        redirect: true,
+      });
+    }
+
+    return Promise.reject(err);
+  },
+);
+
 export { http };

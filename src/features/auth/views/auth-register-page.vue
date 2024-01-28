@@ -9,7 +9,7 @@ import AuthSocialLoginButton from 'src/features/auth/components/auth-social-logi
 import { useRequest } from 'src/core/request/request.compose';
 import { useForm } from 'src/core/composes/form.compose';
 import { useAuthStore } from 'src/features/auth/auth.store';
-import { object, string } from 'yup';
+import { object, string, ref } from 'yup';
 import { useRouter } from 'vue-router';
 import { computed } from 'vue';
 
@@ -17,11 +17,15 @@ const authStore = useAuthStore();
 const router = useRouter();
 const { form, errors, hasError, submit } = useForm({
   schema: {
+    password_confirmation: null,
     password: null,
     email: null,
     name: null,
   },
   validationSchema: object({
+    password_confirmation: string()
+      .required()
+      .oneOf([ref('password')]),
     password: string().required(),
     email: string().email().required(),
     name: string().required(),
@@ -107,6 +111,18 @@ async function handleSubmit() {
           :state="hasError('password') ? 'error' : 'normal'"
           :message="hasError('password') ? errors.password : ''"
           v-model="form.password"
+        />
+        <base-input
+          label="Password Confirmation"
+          placeholder="Password Confirmation"
+          type="password"
+          :state="hasError('password_confirmation') ? 'error' : 'normal'"
+          :message="
+            hasError('password_confirmation')
+              ? errors.password_confirmation
+              : ''
+          "
+          v-model="form.password_confirmation"
         />
         <base-button
           type="submit"
