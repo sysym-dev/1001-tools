@@ -94,7 +94,7 @@ async function handleSubmit() {
       data: {
         ...form.value,
         due_at: form.value.due_at
-          ? createDate(form.value.due_at).startOf('d')
+          ? createDate(form.value.due_at).endOf('d')
           : null,
       },
     });
