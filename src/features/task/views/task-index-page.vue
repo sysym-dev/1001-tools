@@ -34,7 +34,7 @@ function handleCreateTask() {
     </template>
   </base-heading>
   <div class="py-5">
-    <task-list />
+    <task-list :page="{ size: 10 }" />
     <task-create-modal v-model:visible="visibleCreateModal" />
   </div>
 </template>
