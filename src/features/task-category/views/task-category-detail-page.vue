@@ -44,6 +44,9 @@ const tabs = computed(() => {
             editElements: {
               task_category_id: false,
             },
+            page: {
+              size: 10,
+            },
           }),
         ]),
     },
