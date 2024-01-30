@@ -32,5 +32,6 @@ if (authStore.isLoggedIn) {
 
 <template>
   <base-progress-bar />
-  <component :is="route.meta.layout" />
+  <component v-if="route.meta.layout" :is="route.meta.layout" />
+  <router-view v-else />
 </template>
