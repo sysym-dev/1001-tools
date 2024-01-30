@@ -24,7 +24,6 @@ export const routes = [
     component: () => import('src/views/not-found-page.vue'),
     meta: {
       title: 'Not Found',
-      layout: 'LayoutApp',
     },
   },
 ];
