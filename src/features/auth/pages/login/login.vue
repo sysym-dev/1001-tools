@@ -20,6 +20,11 @@ const alert = ref(null);
 
 async function handleSubmit() {
   isLoading.value = true;
+  errors.value = {
+    email: null,
+    password: null,
+  };
+  alert.value = null;
 
   try {
     await validateSchema(form);
