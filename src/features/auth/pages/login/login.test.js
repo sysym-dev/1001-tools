@@ -3,11 +3,15 @@ import { beforeEach, describe, expect, test, vi } from 'vitest';
 import Login from './login.vue';
 import BaseButton from 'src/components/base/base-button.vue';
 import { validateSchema } from 'src/core/validation/validate-schema';
-import { ValidationError } from 'src/core/validation/validation-error';
+import { ValidationError } from 'src/core/validation/validation.error';
 import { nextTick } from 'vue';
+import { request } from 'src/core/request/request';
+import { RequestError } from 'src/core/request/request.error';
 
 vi.mock('src/core/validation/validate-schema');
-vi.mock('src/core/validation/validation-error');
+vi.mock('src/core/validation/validation.error');
+vi.mock('src/core/request/request');
+vi.mock('src/core/request/request.error');
 
 describe('login.vue', () => {
   let wrapper;
@@ -21,6 +25,7 @@ describe('login.vue', () => {
   }
   async function triggerSubmitForm() {
     await formLogin.trigger('submit');
+    await nextTick();
   }
   async function triggerErrorSubmitForm(options = {}) {
     ValidationError.mockImplementation(function () {
@@ -40,6 +45,33 @@ describe('login.vue', () => {
 
     return { error };
   }
+  function testRenderInput(input, options) {
+    expect(input.exists()).toBe(true);
+    expect(input.props('type')).toBe(options.type);
+    expect(input.props('hasMessage')).toBe(false);
+  }
+  function testButtonLoadingVisibility(value) {
+    const submitBtn = findSubmitBtn();
+
+    expect(submitBtn.props('isLoading')).toBe(value);
+  }
+  function testInputMessage(input, message) {
+    expect(input.props('hasMessage')).toBe(true);
+    expect(input.props('message')).toBe(message);
+  }
+  function testAlert(value, message = null) {
+    const alert = wrapper.find('#alert');
+
+    expect(alert.exists()).toBe(value);
+
+    if (message) {
+      expect(alert.text()).toBe(message);
+    }
+  }
+  async function fillForm(values) {
+    await findInput('email').find('input').setValue(values.email);
+    await findInput('password').find('input').setValue(values.password);
+  }
 
   beforeEach(() => {
     validateSchema.mockReset();
@@ -55,35 +87,30 @@ describe('login.vue', () => {
     const inputPassword = findInput('password');
     const submitBtn = findSubmitBtn();
 
-    expect(inputEmail.exists()).toBe(true);
-    expect(inputEmail.props('type')).toBe('email');
-    expect(inputEmail.props('hasMessage')).toBe(false);
-
-    expect(inputPassword.exists()).toBe(true);
-    expect(inputPassword.props('type')).toBe('password');
-    expect(inputPassword.props('hasMessage')).toBe(false);
+    testRenderInput(inputEmail, { type: 'email' });
+    testRenderInput(inputPassword, { type: 'password' });
 
     expect(submitBtn.exists()).toBe(true);
     expect(submitBtn.props('type')).toBe('submit');
     expect(submitBtn.text()).toBe('Login');
-    expect(submitBtn.props('isLoading')).toBe(false);
+
+    testButtonLoadingVisibility(false);
+    testAlert(false);
   });
 
-  test('toggle button loading on form submit and after submit', async () => {
+  test('toggle button loading when form submitted', async () => {
     triggerSubmitForm();
-
-    const submitBtn = findSubmitBtn();
 
     await nextTick();
 
-    expect(submitBtn.props('isLoading')).toBe(true);
+    testButtonLoadingVisibility(true);
 
     await flushPromises();
 
-    expect(submitBtn.props('isLoading')).toBe(false);
+    testButtonLoadingVisibility(false);
   });
 
-  test('shows input element error messages when validate form error', async () => {
+  test('show input error message when validate form error', async () => {
     const { error } = await triggerErrorSubmitForm();
 
     expect(validateSchema).toHaveBeenCalledWith({
@@ -94,18 +121,19 @@ describe('login.vue', () => {
     const inputEmail = findInput('email');
     const inputPassword = findInput('password');
 
-    expect(inputEmail.props('hasMessage')).toBe(true);
-    expect(inputEmail.props('message')).toBe(error.details.email);
-    expect(inputPassword.props('hasMessage')).toBe(true);
-    expect(inputPassword.props('message')).toBe(error.details.password);
+    testInputMessage(inputEmail, error.details.email);
+    testInputMessage(inputPassword, error.details.password);
   });
 
-  test('reset input element error messages when submit', async () => {
+  test('reset input error message when submit', async () => {
     await triggerErrorSubmitForm();
 
-    const email = 'test@email.com';
+    const formValues = {
+      email: 'test@email.com',
+      password: '',
+    };
 
-    await findInput('email').find('input').setValue(email);
+    await fillForm(formValues);
 
     const { error } = await triggerErrorSubmitForm({
       details: {
@@ -113,17 +141,39 @@ describe('login.vue', () => {
       },
     });
 
-    expect(validateSchema).toHaveBeenCalledWith({
-      email,
-      password: '',
-    });
+    expect(validateSchema).toHaveBeenCalledWith(formValues);
 
     const inputEmail = findInput('email');
     const inputPassword = findInput('password');
 
     expect(inputEmail.props('hasMessage')).toBe(false);
     expect(inputEmail.props('message')).toBeUndefined();
-    expect(inputPassword.props('hasMessage')).toBe(true);
-    expect(inputPassword.props('message')).toBe(error.details.password);
+
+    testInputMessage(inputPassword, error.details.password);
+  });
+
+  test('show request error when request error', async () => {
+    const formValues = {
+      email: 'test@email.com',
+      password: 'password',
+    };
+
+    await fillForm(formValues);
+
+    RequestError.mockImplementation(function () {
+      this.message = 'Password incorrect';
+
+      return this;
+    });
+
+    const error = new RequestError();
+
+    request.mockRejectedValue(error);
+
+    await triggerSubmitForm();
+
+    expect(request).toHaveBeenCalledWith(formValues);
+
+    testAlert(true, error.message);
   });
 });
