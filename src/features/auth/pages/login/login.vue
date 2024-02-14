@@ -6,7 +6,9 @@ import { validateSchema } from 'src/core/validation/validate-schema';
 import { ValidationError } from 'src/core/validation/validation.error';
 import { request } from 'src/core/request/request';
 import { RequestError } from 'src/core/request/request.error';
+import { useAuthStore } from 'src/features/auth/stores/auth.store';
 
+const authStore = useAuthStore();
 const form = reactive({
   email: '',
   password: '',
@@ -28,7 +30,10 @@ async function handleSubmit() {
 
   try {
     await validateSchema(form);
-    await request(form);
+
+    const res = await request(form);
+
+    authStore.login(res.data);
   } catch (err) {
     if (err instanceof ValidationError) {
       errors.value = err.details;

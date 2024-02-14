@@ -7,11 +7,21 @@ import { ValidationError } from 'src/core/validation/validation.error';
 import { nextTick } from 'vue';
 import { request } from 'src/core/request/request';
 import { RequestError } from 'src/core/request/request.error';
+import { useAuthStore } from 'src/features/auth/stores/auth.store';
 
 vi.mock('src/core/validation/validate-schema');
 vi.mock('src/core/validation/validation.error');
 vi.mock('src/core/request/request');
 vi.mock('src/core/request/request.error');
+vi.mock('src/features/auth/stores/auth.store', () => {
+  const login = vi.fn();
+
+  return {
+    useAuthStore: () => ({
+      login,
+    }),
+  };
+});
 
 describe('login.vue', () => {
   let wrapper;
@@ -227,6 +237,23 @@ describe('login.vue', () => {
       await triggerSubmitForm();
 
       testAlert(false);
+    });
+
+    test('auth store login action called', async () => {
+      const loginRes = {
+        data: {
+          accessToken: 'example',
+          me: {
+            email: 'test@email.com',
+          },
+        },
+      };
+
+      request.mockResolvedValue(loginRes);
+
+      await triggerSubmitForm();
+
+      expect(useAuthStore().login).toHaveBeenCalledWith(loginRes.data);
     });
   });
 });
