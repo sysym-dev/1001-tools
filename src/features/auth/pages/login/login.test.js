@@ -23,11 +23,15 @@ describe('login.vue', () => {
   function findSubmitBtn() {
     return formLogin.findComponent(BaseButton);
   }
+  async function fillForm(values) {
+    await findInput('email').find('input').setValue(values.email);
+    await findInput('password').find('input').setValue(values.password);
+  }
   async function triggerSubmitForm() {
     await formLogin.trigger('submit');
     await nextTick();
   }
-  async function triggerErrorSubmitForm(options = {}) {
+  async function triggerErrorValidationSubmitForm(options = {}) {
     ValidationError.mockImplementation(function () {
       this.details = options.details ?? {
         email: 'email is required',
@@ -40,6 +44,21 @@ describe('login.vue', () => {
     const error = new ValidationError();
 
     validateSchema.mockRejectedValue(error);
+
+    await triggerSubmitForm();
+
+    return { error };
+  }
+  async function triggerErrorRequestSubmitForm() {
+    RequestError.mockImplementation(function () {
+      this.message = 'Password incorrect';
+
+      return this;
+    });
+
+    const error = new RequestError();
+
+    request.mockRejectedValue(error);
 
     await triggerSubmitForm();
 
@@ -68,112 +87,146 @@ describe('login.vue', () => {
       expect(alert.text()).toBe(message);
     }
   }
-  async function fillForm(values) {
-    await findInput('email').find('input').setValue(values.email);
-    await findInput('password').find('input').setValue(values.password);
+  function resetValidateSchemaMock() {
+    validateSchema.mockReset();
+  }
+  function resetRequestMock() {
+    request.mockReset();
   }
 
   beforeEach(() => {
-    validateSchema.mockReset();
+    resetValidateSchemaMock();
+    resetRequestMock();
 
     wrapper = mount(Login);
     formLogin = wrapper.find('form#login');
   });
 
-  test('render form element', () => {
-    expect(formLogin.exists()).toBe(true);
-
-    const inputEmail = findInput('email');
-    const inputPassword = findInput('password');
-    const submitBtn = findSubmitBtn();
-
-    testRenderInput(inputEmail, { type: 'email' });
-    testRenderInput(inputPassword, { type: 'password' });
-
-    expect(submitBtn.exists()).toBe(true);
-    expect(submitBtn.props('type')).toBe('submit');
-    expect(submitBtn.text()).toBe('Login');
-
-    testButtonLoadingVisibility(false);
-    testAlert(false);
-  });
-
-  test('toggle button loading when form submitted', async () => {
-    triggerSubmitForm();
-
-    await nextTick();
-
-    testButtonLoadingVisibility(true);
-
-    await flushPromises();
-
-    testButtonLoadingVisibility(false);
-  });
-
-  test('show input error message when validate form error', async () => {
-    const { error } = await triggerErrorSubmitForm();
-
-    expect(validateSchema).toHaveBeenCalledWith({
-      email: '',
-      password: '',
+  describe('when mounted', () => {
+    test('render form login', () => {
+      expect(formLogin.exists()).toBe(true);
     });
 
-    const inputEmail = findInput('email');
-    const inputPassword = findInput('password');
+    test('render inputs', () => {
+      const inputEmail = findInput('email');
+      const inputPassword = findInput('password');
 
-    testInputMessage(inputEmail, error.details.email);
-    testInputMessage(inputPassword, error.details.password);
-  });
-
-  test('reset input error message when submit', async () => {
-    await triggerErrorSubmitForm();
-
-    const formValues = {
-      email: 'test@email.com',
-      password: '',
-    };
-
-    await fillForm(formValues);
-
-    const { error } = await triggerErrorSubmitForm({
-      details: {
-        password: 'password is required',
-      },
+      testRenderInput(inputEmail, { type: 'email' });
+      testRenderInput(inputPassword, { type: 'password' });
     });
 
-    expect(validateSchema).toHaveBeenCalledWith(formValues);
+    test('submit button', () => {
+      const submitBtn = findSubmitBtn();
 
-    const inputEmail = findInput('email');
-    const inputPassword = findInput('password');
+      expect(submitBtn.exists()).toBe(true);
+      expect(submitBtn.props('type')).toBe('submit');
+      expect(submitBtn.text()).toBe('Login');
 
-    expect(inputEmail.props('hasMessage')).toBe(false);
-    expect(inputEmail.props('message')).toBeUndefined();
-
-    testInputMessage(inputPassword, error.details.password);
-  });
-
-  test('show request error when request error', async () => {
-    const formValues = {
-      email: 'test@email.com',
-      password: 'password',
-    };
-
-    await fillForm(formValues);
-
-    RequestError.mockImplementation(function () {
-      this.message = 'Password incorrect';
-
-      return this;
+      testButtonLoadingVisibility(false);
     });
 
-    const error = new RequestError();
+    test('hide alert', () => {
+      testAlert(false);
+    });
+  });
 
-    request.mockRejectedValue(error);
+  describe('when submitted', () => {
+    test('toggle button loading', async () => {
+      triggerSubmitForm();
 
-    await triggerSubmitForm();
+      await nextTick();
 
-    expect(request).toHaveBeenCalledWith(formValues);
+      testButtonLoadingVisibility(true);
 
-    testAlert(true, error.message);
+      await flushPromises();
+
+      testButtonLoadingVisibility(false);
+    });
+  });
+
+  describe('when validate', () => {
+    test('validateSchema called', async () => {
+      const formValues = {
+        email: 'test@email.com',
+        password: 'password',
+      };
+
+      await fillForm(formValues);
+      await triggerSubmitForm();
+
+      expect(validateSchema).toHaveBeenCalledWith(formValues);
+    });
+
+    test('show input error messages', async () => {
+      const { error } = await triggerErrorValidationSubmitForm();
+
+      const inputEmail = findInput('email');
+      const inputPassword = findInput('password');
+
+      testInputMessage(inputEmail, error.details.email);
+      testInputMessage(inputPassword, error.details.password);
+    });
+  });
+
+  describe('when request', () => {
+    test('reset input error messages', async () => {
+      await triggerErrorValidationSubmitForm();
+
+      resetValidateSchemaMock();
+
+      const formValues = {
+        email: 'test@email.com',
+        password: 'password',
+      };
+
+      await fillForm(formValues);
+      await triggerSubmitForm();
+
+      const inputEmail = findInput('email');
+      const inputPassword = findInput('password');
+
+      expect(inputEmail.props('hasMessage')).toBe(false);
+      expect(inputPassword.props('hasMessage')).toBe(false);
+    });
+
+    test('request called', async () => {
+      const formValues = {
+        email: 'test@email.com',
+        password: 'password',
+      };
+
+      await fillForm(formValues);
+      await triggerSubmitForm();
+
+      expect(request).toHaveBeenCalledWith(formValues);
+    });
+
+    test('show request error', async () => {
+      const formValues = {
+        email: 'test@email.com',
+        password: 'password',
+      };
+
+      await fillForm(formValues);
+      const { error } = await triggerErrorRequestSubmitForm();
+
+      testAlert(true, error.message);
+    });
+
+    test('reset request error', async () => {
+      await triggerErrorRequestSubmitForm();
+
+      resetRequestMock();
+
+      const formValues = {
+        email: 'test@email.com',
+        password: 'password',
+      };
+
+      await fillForm(formValues);
+      await triggerSubmitForm();
+
+      testAlert(false);
+    });
   });
 });
