@@ -7,7 +7,9 @@ import { ValidationError } from 'src/core/validation/validation.error';
 import { request } from 'src/core/request/request';
 import { RequestError } from 'src/core/request/request.error';
 import { useAuthStore } from 'src/features/auth/stores/auth.store';
+import { useRouter } from 'vue-router';
 
+const router = useRouter();
 const authStore = useAuthStore();
 const form = reactive({
   email: '',
@@ -34,6 +36,8 @@ async function handleSubmit() {
     const res = await request(form);
 
     authStore.login(res.data);
+
+    router.push({ name: 'home' });
   } catch (err) {
     if (err instanceof ValidationError) {
       errors.value = err.details;

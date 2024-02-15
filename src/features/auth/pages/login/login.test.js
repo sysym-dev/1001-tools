@@ -8,6 +8,7 @@ import { nextTick } from 'vue';
 import { request } from 'src/core/request/request';
 import { RequestError } from 'src/core/request/request.error';
 import { useAuthStore } from 'src/features/auth/stores/auth.store';
+import { useRouter } from 'vue-router';
 
 vi.mock('src/core/validation/validate-schema');
 vi.mock('src/core/validation/validation.error');
@@ -20,6 +21,17 @@ vi.mock('src/features/auth/stores/auth.store', () => {
     useAuthStore: () => ({
       login,
     }),
+  };
+});
+vi.mock('vue-router', () => {
+  const push = vi.fn();
+
+  return {
+    useRouter: () => {
+      return {
+        push,
+      };
+    },
   };
 });
 
@@ -102,6 +114,20 @@ describe('login.vue', () => {
   }
   function resetRequestMock() {
     request.mockReset();
+  }
+  function mockRequestResolvedValue() {
+    const res = {
+      data: {
+        accessToken: 'example',
+        me: {
+          email: 'test@email.com',
+        },
+      },
+    };
+
+    request.mockResolvedValue(res);
+
+    return { res };
   }
 
   beforeEach(() => {
@@ -240,20 +266,19 @@ describe('login.vue', () => {
     });
 
     test('auth store login action called', async () => {
-      const loginRes = {
-        data: {
-          accessToken: 'example',
-          me: {
-            email: 'test@email.com',
-          },
-        },
-      };
-
-      request.mockResolvedValue(loginRes);
+      const { res } = mockRequestResolvedValue();
 
       await triggerSubmitForm();
 
-      expect(useAuthStore().login).toHaveBeenCalledWith(loginRes.data);
+      expect(useAuthStore().login).toHaveBeenCalledWith(res.data);
+    });
+
+    test('redirect to home', async () => {
+      mockRequestResolvedValue();
+
+      await triggerSubmitForm();
+
+      expect(useRouter().push).toHaveBeenCalledWith({ name: 'home' });
     });
   });
 });
