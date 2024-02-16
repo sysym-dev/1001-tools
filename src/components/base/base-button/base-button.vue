@@ -12,5 +12,7 @@ defineProps({
 </script>
 
 <template>
-  <slot />
+  <button :type="type" :disabled="!isLoading">
+    <slot />
+  </button>
 </template>
