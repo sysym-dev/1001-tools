@@ -66,4 +66,17 @@ describe('base-input.vue', () => {
 
     testMessage(true, message);
   });
+
+  test('modelValue', async () => {
+    const wrapper = mount(BaseInput, {
+      props: {
+        modelValue: 'init',
+        'onUpdate:modelValue': (e) => wrapper.setProps({ modelValue: e }),
+      },
+    });
+
+    await wrapper.find('input').setValue('test');
+
+    expect(wrapper.props('modelValue')).toBe('test');
+  });
 });
