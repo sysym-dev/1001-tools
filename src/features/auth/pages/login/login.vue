@@ -1,5 +1,5 @@
 <script setup>
-import BaseInput from 'src/components/base/base-input.vue';
+import BaseInput from 'src/components/base/base-input/base-input.vue';
 import BaseButton from 'src/components/base/base-button.vue';
 import { reactive, ref } from 'vue';
 import { validateSchema } from 'src/core/validation/validate-schema';
