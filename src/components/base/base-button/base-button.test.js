@@ -2,7 +2,7 @@ import { mount } from '@vue/test-utils';
 import { describe, expect, test, beforeEach } from 'vitest';
 import BaseButton from './base-button.vue';
 
-describe('base-button.vue', () => {
+describe.only('base-button.vue', () => {
   let wrapper;
   let button;
 

@@ -138,7 +138,7 @@ describe('login.vue', () => {
     formLogin = wrapper.find('form#login');
   });
 
-  describe('when mounted', () => {
+  describe('mounted', () => {
     test('render form login', () => {
       expect(formLogin.exists()).toBe(true);
     });
@@ -151,7 +151,7 @@ describe('login.vue', () => {
       testRenderInput(inputPassword, { type: 'password' });
     });
 
-    test('submit button', () => {
+    test('render submit button', () => {
       const submitBtn = findSubmitBtn();
 
       expect(submitBtn.exists()).toBe(true);
@@ -161,12 +161,12 @@ describe('login.vue', () => {
       testButtonLoadingVisibility(false);
     });
 
-    test('hide alert', () => {
+    test('alert hidden', () => {
       testAlert(false);
     });
   });
 
-  describe('when submitted', () => {
+  describe('submitted', () => {
     test('toggle button loading', async () => {
       triggerSubmitForm();
 
@@ -180,7 +180,7 @@ describe('login.vue', () => {
     });
   });
 
-  describe('when validate', () => {
+  describe('validate', () => {
     test('validateSchema called', async () => {
       const formValues = {
         email: 'test@email.com',
@@ -193,7 +193,7 @@ describe('login.vue', () => {
       expect(validateSchema).toHaveBeenCalledWith(formValues);
     });
 
-    test('show input error messages', async () => {
+    test('input error messages visible', async () => {
       const { error } = await triggerErrorValidationSubmitForm();
 
       const inputEmail = findInput('email');
@@ -204,8 +204,8 @@ describe('login.vue', () => {
     });
   });
 
-  describe('when request', () => {
-    test('reset input error messages', async () => {
+  describe('request', () => {
+    test('input error messages restored', async () => {
       await triggerErrorValidationSubmitForm();
 
       resetValidateSchemaMock();
@@ -237,7 +237,7 @@ describe('login.vue', () => {
       expect(request).toHaveBeenCalledWith(formValues);
     });
 
-    test('show request error', async () => {
+    test('request error visible', async () => {
       const formValues = {
         email: 'test@email.com',
         password: 'password',
@@ -249,7 +249,7 @@ describe('login.vue', () => {
       testAlert(true, error.message);
     });
 
-    test('reset request error', async () => {
+    test('request error restored', async () => {
       await triggerErrorRequestSubmitForm();
 
       resetRequestMock();
@@ -273,7 +273,7 @@ describe('login.vue', () => {
       expect(useAuthStore().login).toHaveBeenCalledWith(res.data);
     });
 
-    test('redirect to home', async () => {
+    test('redirected to home', async () => {
       mockRequestResolvedValue();
 
       await triggerSubmitForm();
