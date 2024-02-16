@@ -40,7 +40,7 @@ describe('login.vue', () => {
   let formLogin;
 
   function findInput(id) {
-    return formLogin.findComponent(`#${id}`);
+    return formLogin.findComponent(`#base-input-${id}`);
   }
   function findSubmitBtn() {
     return formLogin.findComponent(BaseButton);
