@@ -21,19 +21,23 @@ describe('base-input.vue', () => {
     input = wrapper.find('input');
   });
 
-  test('render wrapper', () => {
-    expect(wrapper.find('div#base-input').exists()).toBe(true);
+  describe('default', () => {
+    test('render wrapper', () => {
+      expect(wrapper.find('div#base-input').exists()).toBe(true);
+    });
+
+    test('render input', () => {
+      expect(input.exists()).toBe(true);
+      expect(input.attributes('type')).toBe('text');
+      expect(input.attributes('id')).toBeUndefined();
+    });
+
+    test('message hidden', () => {
+      testMessage(false);
+    });
   });
 
-  test('render input', () => {
-    expect(input.exists()).toBe(true);
-    expect(input.attributes('type')).toBe('text');
-    expect(input.attributes('id')).toBeUndefined();
-
-    testMessage(false);
-  });
-
-  test('has id attribute', async () => {
+  test('set id', async () => {
     const id = 'test';
 
     await wrapper.setProps({
@@ -44,7 +48,7 @@ describe('base-input.vue', () => {
     expect(input.attributes('id')).toBe(id);
   });
 
-  test('has type attribute', async () => {
+  test('set type', async () => {
     await wrapper.setProps({
       type: 'email',
     });
@@ -52,7 +56,7 @@ describe('base-input.vue', () => {
     expect(input.attributes('type')).toBe('email');
   });
 
-  test('render message', async () => {
+  test('show message', async () => {
     const message = 'message';
 
     await wrapper.setProps({

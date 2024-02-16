@@ -1,7 +1,7 @@
 import { flushPromises, mount } from '@vue/test-utils';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 import Login from './login.vue';
-import BaseButton from 'src/components/base/base-button.vue';
+import BaseButton from 'src/components/base/base-button/base-button.vue';
 import { validateSchema } from 'src/core/validation/validate-schema';
 import { ValidationError } from 'src/core/validation/validation.error';
 import { nextTick } from 'vue';
