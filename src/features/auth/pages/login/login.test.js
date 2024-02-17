@@ -2,18 +2,28 @@ import { flushPromises, mount } from '@vue/test-utils';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 import Login from './login.vue';
 import BaseButton from 'src/components/base/base-button/base-button.vue';
-import { validateSchema } from 'src/core/validation/validate-schema';
 import { ValidationError } from 'src/core/validation/validation.error';
 import { nextTick } from 'vue';
 import { request } from 'src/core/request/request';
 import { RequestError } from 'src/core/request/request.error';
 import { useAuthStore } from 'src/features/auth/stores/auth.store';
 import { useRouter } from 'vue-router';
+import { useValidation } from 'src/core/validation/validation.compose';
 
-vi.mock('src/core/validation/validate-schema');
 vi.mock('src/core/validation/validation.error');
 vi.mock('src/core/request/request');
 vi.mock('src/core/request/request.error');
+vi.mock('src/core/validation/validation.compose', () => {
+  const validate = vi.fn();
+
+  return {
+    useValidation: () => {
+      return {
+        validate,
+      };
+    },
+  };
+});
 vi.mock('src/features/auth/stores/auth.store', () => {
   const login = vi.fn();
 
@@ -65,7 +75,7 @@ describe('login.vue', () => {
 
     const error = new ValidationError();
 
-    validateSchema.mockRejectedValue(error);
+    useValidation().validate.mockRejectedValue(error);
 
     await triggerSubmitForm();
 
@@ -110,7 +120,7 @@ describe('login.vue', () => {
     }
   }
   function resetValidateSchemaMock() {
-    validateSchema.mockReset();
+    useValidation().validate.mockReset();
   }
   function resetRequestMock() {
     request.mockReset();
@@ -181,7 +191,7 @@ describe('login.vue', () => {
   });
 
   describe('validated', () => {
-    test('validateSchema called', async () => {
+    test('validate called', async () => {
       const formValues = {
         email: 'test@email.com',
         password: 'password',
@@ -190,7 +200,7 @@ describe('login.vue', () => {
       await fillForm(formValues);
       await triggerSubmitForm();
 
-      expect(validateSchema).toHaveBeenCalledWith(formValues);
+      expect(useValidation().validate).toHaveBeenCalledWith(formValues);
     });
 
     test('input error messages visible', async () => {

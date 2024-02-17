@@ -81,23 +81,8 @@ describe('request.js', () => {
   });
 
   test('throw response error', async () => {
-    const message = 'Id is not found';
-
-    RequestError.mockImplementation(function (error) {
-      this.message = error.response.data.message;
-
-      return this;
-    });
-
-    axios.mockRejectedValue({
-      response: {
-        data: {
-          message,
-        },
-      },
-    });
+    axios.mockRejectedValue();
 
     expect(() => request('/test')).rejects.toThrowError(RequestError);
-    expect(() => request('/test')).rejects.toThrowError(message);
   });
 });

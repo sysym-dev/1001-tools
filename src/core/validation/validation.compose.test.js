@@ -1,16 +1,16 @@
 import { describe, expect, test, vi } from 'vitest';
-import { useValidationCompose } from './validation.compose';
+import { useValidation } from './validation.compose';
 import { ValidationError } from './validation.error';
 
 vi.mock('./validation.error');
 
 describe('validation.compose.js', () => {
   test('callable', () => {
-    expect(useValidationCompose).toBeTypeOf('function');
+    expect(useValidation).toBeTypeOf('function');
   });
 
   test('return validate function', () => {
-    const { validate } = useValidationCompose();
+    const { validate } = useValidation();
 
     expect(validate).toBeTypeOf('function');
   });
@@ -18,7 +18,7 @@ describe('validation.compose.js', () => {
   describe('validate', () => {
     test('schema validate called', () => {
       const schemaValidate = vi.fn();
-      const { validate } = useValidationCompose({
+      const { validate } = useValidation({
         validate: schemaValidate,
       });
 
@@ -33,7 +33,7 @@ describe('validation.compose.js', () => {
 
     test('throw validation error', async () => {
       const schemaValidate = vi.fn().mockRejectedValue();
-      const { validate } = useValidationCompose({
+      const { validate } = useValidation({
         validate: schemaValidate,
       });
 
@@ -50,7 +50,7 @@ describe('validation.compose.js', () => {
       };
 
       const schemaValidate = vi.fn().mockResolvedValue(data);
-      const { validate } = useValidationCompose({
+      const { validate } = useValidation({
         validate: schemaValidate,
       });
 
