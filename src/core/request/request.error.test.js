@@ -6,14 +6,14 @@ describe('request.error.js', () => {
     expect(RequestError).toBeTypeOf('function');
   });
 
-  test('has error message', () => {
+  test('has message property', () => {
     const error = new RequestError();
 
     expect(error).toHaveProperty('message');
     expect(error.message).toBeUndefined();
   });
 
-  test('response error message', () => {
+  test('set message from response error', () => {
     const error = new RequestError({
       response: {
         data: {
@@ -25,7 +25,7 @@ describe('request.error.js', () => {
     expect(error.message).toBe('Test');
   });
 
-  test('request error message', () => {
+  test('set message from request error', () => {
     const error = new RequestError(new Error('Test'));
 
     expect(error.message).toBe('Test');

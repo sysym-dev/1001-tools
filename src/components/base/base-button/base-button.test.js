@@ -11,7 +11,7 @@ describe('base-button.vue', () => {
     button = wrapper.find('button');
   });
 
-  test('render button', () => {
+  test('button rendered', () => {
     expect(button.exists()).toBe(true);
     expect(button.attributes('type')).toBe('button');
     expect(button.attributes('disabled')).toBe('');
@@ -34,7 +34,7 @@ describe('base-button.vue', () => {
     expect(button.attributes('disabled')).toBeUndefined();
   });
 
-  test('show slot', async () => {
+  test('display slot', async () => {
     const text = 'Test';
     const wrapper = mount(BaseButton, {
       slots: {

@@ -139,11 +139,11 @@ describe('login.vue', () => {
   });
 
   describe('mounted', () => {
-    test('render form login', () => {
+    test('render form login rendered', () => {
       expect(formLogin.exists()).toBe(true);
     });
 
-    test('render inputs', () => {
+    test('inputs rendered', () => {
       const inputEmail = findInput('email');
       const inputPassword = findInput('password');
 
@@ -151,7 +151,7 @@ describe('login.vue', () => {
       testRenderInput(inputPassword, { type: 'password' });
     });
 
-    test('render submit button', () => {
+    test('submit button rendered', () => {
       const submitBtn = findSubmitBtn();
 
       expect(submitBtn.exists()).toBe(true);
@@ -166,8 +166,8 @@ describe('login.vue', () => {
     });
   });
 
-  describe('submitted', () => {
-    test('toggle button loading', async () => {
+  describe('submited', () => {
+    test('button loading toggled', async () => {
       triggerSubmitForm();
 
       await nextTick();
@@ -180,7 +180,7 @@ describe('login.vue', () => {
     });
   });
 
-  describe('validate', () => {
+  describe('validated', () => {
     test('validateSchema called', async () => {
       const formValues = {
         email: 'test@email.com',
@@ -204,8 +204,8 @@ describe('login.vue', () => {
     });
   });
 
-  describe('request', () => {
-    test('input error messages restored', async () => {
+  describe('requested', () => {
+    test('input error messages hidden', async () => {
       await triggerErrorValidationSubmitForm();
 
       resetValidateSchemaMock();
@@ -249,7 +249,7 @@ describe('login.vue', () => {
       testAlert(true, error.message);
     });
 
-    test('request error restored', async () => {
+    test('request error hidden', async () => {
       await triggerErrorRequestSubmitForm();
 
       resetRequestMock();
@@ -273,7 +273,7 @@ describe('login.vue', () => {
       expect(useAuthStore().login).toHaveBeenCalledWith(res.data);
     });
 
-    test('redirected to home', async () => {
+    test('route redirected to home', async () => {
       mockRequestResolvedValue();
 
       await triggerSubmitForm();
