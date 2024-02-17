@@ -11,6 +11,6 @@ export async function request(url, options = {}) {
 
     return res.data;
   } catch (err) {
-    throw new RequestError(err.response.data.message);
+    throw new RequestError(err);
   }
 }
