@@ -83,8 +83,8 @@ describe('request.js', () => {
   test('throw error', async () => {
     const message = 'Id is not found';
 
-    RequestError.mockImplementation(function (message) {
-      this.message = message;
+    RequestError.mockImplementation(function (error) {
+      this.message = error.response.data.message;
 
       return this;
     });
