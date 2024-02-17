@@ -2,7 +2,7 @@
 import BaseInput from 'src/components/base/base-input/base-input.vue';
 import BaseButton from 'src/components/base/base-button/base-button.vue';
 import { reactive, ref } from 'vue';
-import { validateSchema } from 'src/core/validation/validate-schema';
+import { useValidation } from 'src/core/validation/validation.compose';
 import { ValidationError } from 'src/core/validation/validation.error';
 import { request } from 'src/core/request/request';
 import { RequestError } from 'src/core/request/request.error';
@@ -11,6 +11,8 @@ import { useRouter } from 'vue-router';
 
 const router = useRouter();
 const authStore = useAuthStore();
+const { validate } = useValidation();
+
 const form = reactive({
   email: '',
   password: '',
@@ -31,7 +33,7 @@ async function handleSubmit() {
   alert.value = null;
 
   try {
-    await validateSchema(form);
+    await validate(form);
 
     const res = await request(form);
 

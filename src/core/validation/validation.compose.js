@@ -1,6 +1,6 @@
 import { ValidationError } from './validation.error';
 
-export function useValidationCompose(schema) {
+export function useValidation(schema) {
   async function validate(values) {
     try {
       const res = await schema.validate(values);
