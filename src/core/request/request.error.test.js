@@ -6,7 +6,7 @@ describe('request.error.js', () => {
     expect(RequestError).toBeTypeOf('function');
   });
 
-  test(' has error message', () => {
+  test('has error message', () => {
     const error = new RequestError();
 
     expect(error).toHaveProperty('message');
