@@ -7,14 +7,14 @@ describe('validation.error.js', () => {
     expect(ValidationError).toBeTypeOf('function');
   });
 
-  test('has details', () => {
+  test('has details property', () => {
     const error = new ValidationError();
 
     expect(error).toHaveProperty('details');
     expect(error.details).toEqual({});
   });
 
-  test('set single details', () => {
+  test('constructor', () => {
     const error = new ValidationError(
       new yup.ValidationError({
         path: 'name',

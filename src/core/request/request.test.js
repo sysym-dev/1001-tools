@@ -24,7 +24,7 @@ describe('request.js', () => {
     });
   });
 
-  test('different method', async () => {
+  test('set different method', async () => {
     await request('/test', {
       method: 'post',
     });
@@ -35,7 +35,7 @@ describe('request.js', () => {
     });
   });
 
-  test('send params', async () => {
+  test('set params', async () => {
     const params = {
       q: 'test',
     };
@@ -51,7 +51,7 @@ describe('request.js', () => {
     });
   });
 
-  test('send data', async () => {
+  test('set data', async () => {
     const data = {
       q: 'test',
     };
@@ -68,7 +68,7 @@ describe('request.js', () => {
     });
   });
 
-  test('return data', async () => {
+  test('return response data', async () => {
     const data = {
       id: 1,
     };
@@ -80,7 +80,7 @@ describe('request.js', () => {
     expect(request('/test')).resolves.toEqual(data);
   });
 
-  test('throw error', async () => {
+  test('throw response error', async () => {
     const message = 'Id is not found';
 
     RequestError.mockImplementation(function (error) {

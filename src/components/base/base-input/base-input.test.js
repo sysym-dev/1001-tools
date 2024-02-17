@@ -21,12 +21,12 @@ describe('base-input.vue', () => {
     input = wrapper.find('input');
   });
 
-  describe('default', () => {
-    test('render wrapper', () => {
+  describe('mounted', () => {
+    test('wrapper rendered', () => {
       expect(wrapper.find('div#base-input').exists()).toBe(true);
     });
 
-    test('render input', () => {
+    test('input rendered', () => {
       expect(input.exists()).toBe(true);
       expect(input.attributes('type')).toBe('text');
       expect(input.attributes('id')).toBeUndefined();
@@ -56,7 +56,7 @@ describe('base-input.vue', () => {
     expect(input.attributes('type')).toBe('email');
   });
 
-  test('show message', async () => {
+  test('display message', async () => {
     const message = 'message';
 
     await wrapper.setProps({
