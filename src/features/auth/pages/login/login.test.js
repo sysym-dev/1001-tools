@@ -60,7 +60,7 @@ describe('login.vue', () => {
     await findInput('password').find('input').setValue(values.password);
   }
   async function triggerSubmitForm() {
-    await formLogin.trigger('submit');
+    await formLogin.trigger('submit.prevent');
     await nextTick();
   }
   async function triggerErrorValidationSubmitForm(options = {}) {
@@ -244,7 +244,10 @@ describe('login.vue', () => {
       await fillForm(formValues);
       await triggerSubmitForm();
 
-      expect(request).toHaveBeenCalledWith(formValues);
+      expect(request).toHaveBeenCalledWith('/login', {
+        method: 'post',
+        data: formValues,
+      });
     });
 
     test('request error visible', async () => {
