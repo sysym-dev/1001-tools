@@ -15,12 +15,8 @@ describe('validation.error.js', () => {
   });
 
   test('constructor', () => {
-    const error = new ValidationError(
-      new YupValidationError({
-        path: 'name',
-        errors: 'name is required',
-      }),
-    );
+    const errorName = new YupValidationError('name is required', '', 'name');
+    const error = new ValidationError(new YupValidationError([errorName]));
 
     expect(error.details).toEqual({
       name: 'name is required',

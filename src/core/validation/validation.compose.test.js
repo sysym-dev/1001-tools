@@ -28,7 +28,9 @@ describe('validation.compose.js', () => {
 
       validate(data);
 
-      expect(schemaValidate).toHaveBeenCalledWith(data);
+      expect(schemaValidate).toHaveBeenCalledWith(data, {
+        abortEarly: false,
+      });
     });
 
     test('throw validation error', async () => {
