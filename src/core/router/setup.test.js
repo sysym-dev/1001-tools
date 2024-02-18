@@ -1,7 +1,18 @@
 import { describe, expect, test, vi } from 'vitest';
 import { setupRouter } from './setup.js';
 import { createRouter, createWebHistory } from 'vue-router';
+import { routes } from 'src/routes/index.js';
 
+vi.mock('src/routes/index.js', () => {
+  return {
+    routes: [
+      {
+        path: '/',
+        name: 'home',
+      },
+    ],
+  };
+});
 vi.mock('vue-router', () => {
   return {
     createRouter: vi.fn(),
@@ -23,7 +34,7 @@ describe('setup.js', () => {
 
     expect(createRouter).toBeCalledWith({
       history: createWebHistory(),
-      routes: [],
+      routes,
     });
   });
 
