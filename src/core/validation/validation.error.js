@@ -6,8 +6,8 @@ export class ValidationError {
   constructor(error) {
     if (error instanceof YupValidationError) {
       this.details = Object.fromEntries(
-        error.errors.map((item) => {
-          return [item.path, item.errors];
+        error.inner.map((item) => {
+          return [item.path, item.errors[0]];
         }),
       );
     } else {
