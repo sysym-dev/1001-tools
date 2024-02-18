@@ -14,7 +14,7 @@ describe('base-button.vue', () => {
   test('button rendered', () => {
     expect(button.exists()).toBe(true);
     expect(button.attributes('type')).toBe('button');
-    expect(button.attributes('disabled')).toBe('');
+    expect(button.attributes('disabled')).toBeUndefined();
     expect(button.text()).toBe('');
   });
 
@@ -31,7 +31,7 @@ describe('base-button.vue', () => {
       isLoading: true,
     });
 
-    expect(button.attributes('disabled')).toBeUndefined();
+    expect(button.attributes('disabled')).toBe('');
   });
 
   test('display slot', async () => {

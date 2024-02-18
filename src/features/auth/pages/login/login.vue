@@ -8,10 +8,16 @@ import { request } from 'src/core/request/request';
 import { RequestError } from 'src/core/request/request.error';
 import { useAuthStore } from 'src/features/auth/stores/auth.store';
 import { useRouter } from 'vue-router';
+import { object, string } from 'yup';
 
 const router = useRouter();
 const authStore = useAuthStore();
-const { validate } = useValidation();
+const { validate } = useValidation(
+  object({
+    email: string().required(),
+    password: string().required(),
+  }),
+);
 
 const form = reactive({
   email: '',
@@ -35,7 +41,10 @@ async function handleSubmit() {
   try {
     await validate(form);
 
-    const res = await request(form);
+    const res = await request('/login', {
+      method: 'post',
+      data: form,
+    });
 
     authStore.login(res.data);
 
@@ -53,7 +62,7 @@ async function handleSubmit() {
 </script>
 
 <template>
-  <form id="login" v-on:submit="handleSubmit">
+  <form id="login" v-on:submit.prevent="handleSubmit">
     <p v-if="alert" id="alert">{{ alert }}</p>
     <base-input
       id="email"
