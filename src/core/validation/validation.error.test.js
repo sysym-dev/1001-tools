@@ -1,6 +1,6 @@
-import { ValidationError } from './validation.error';
+import { ValidationError as YupValidationError } from 'yup';
 import { describe, expect, test } from 'vitest';
-import yup from 'yup';
+import { ValidationError } from './validation.error';
 
 describe('validation.error.js', () => {
   test('callable', () => {
@@ -16,7 +16,7 @@ describe('validation.error.js', () => {
 
   test('constructor', () => {
     const error = new ValidationError(
-      new yup.ValidationError({
+      new YupValidationError({
         path: 'name',
         errors: 'name is required',
       }),
