@@ -3,16 +3,6 @@ import { setupRouter } from './setup.js';
 import { createRouter, createWebHistory } from 'vue-router';
 import { routes } from 'src/routes/index.js';
 
-vi.mock('src/routes/index.js', () => {
-  return {
-    routes: [
-      {
-        path: '/',
-        name: 'home',
-      },
-    ],
-  };
-});
 vi.mock('vue-router', () => {
   return {
     createRouter: vi.fn(),
@@ -30,7 +20,7 @@ describe('setup.js', () => {
   });
 
   test('createRouter called', () => {
-    setupRouter(app);
+    setupRouter(app, routes);
 
     expect(createRouter).toBeCalledWith({
       history: createWebHistory(),
