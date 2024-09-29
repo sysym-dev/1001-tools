@@ -1,4 +1,5 @@
 <script setup>
+import BaseCard from 'src/components/base-card.vue';
 import { ArrowsLeftRight } from '@vicons/tabler';
 
 const menus = [
@@ -7,7 +8,7 @@ const menus = [
 </script>
 
 <template>
-  <div class="bg-white p-6 rounded-xl border">
+  <base-card>
     <nav>
       <ul class="space-y-1">
         <li v-for="menu in menus" :key="menu.id">
@@ -21,5 +22,5 @@ const menus = [
         </li>
       </ul>
     </nav>
-  </div>
+  </base-card>
 </template>
