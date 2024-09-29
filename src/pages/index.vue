@@ -1,9 +1,9 @@
 <script setup>
-import { ArrowsLeftRight } from '@vicons/tabler'
+import { ArrowsLeftRight } from '@vicons/tabler';
 
 const menus = [
   { id: 'json-to-yaml', name: 'JSON to YAML', icon: ArrowsLeftRight },
-]
+];
 </script>
 
 <template>
