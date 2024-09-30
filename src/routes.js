@@ -3,7 +3,7 @@ export const routes = [
     path: '/',
     name: 'index',
     meta: {
-      title: '1001 Tools',
+      title: import.meta.env.VITE_APP_TITLE,
       withHeader: false,
     },
     component: () => import('./pages/index.vue'),

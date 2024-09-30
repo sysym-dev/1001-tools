@@ -1,10 +1,19 @@
 <script setup>
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import PartialNavbar from './components/partials/partial-navbar.vue';
 import PartialFooter from './components/partials/partial-footer.vue';
 import BaseContainer from './components/base/base-container.vue';
 
 const route = useRoute();
+const router = useRouter();
+
+router.afterEach((to) => {
+  if (to.path === '/') {
+    document.title = to.meta.title;
+  } else {
+    document.title = `${import.meta.env.VITE_APP_TITLE} - ${to.meta.title}`;
+  }
+});
 </script>
 
 <template>
