@@ -19,7 +19,7 @@ const menus = [
       <input
         type="text"
         placeholder="Search Tools"
-        class="w-full border-gray-200"
+        class="w-full border-gray-200 focus:border-sky-600 focus:ring-sky-600"
         autofocus
       />
     </header>

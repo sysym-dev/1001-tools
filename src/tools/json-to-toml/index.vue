@@ -1,5 +1,4 @@
 <script setup>
-import BaseCard from 'src/components/base-card.vue';
 import { stringify } from 'smol-toml';
 import { ref, watch } from 'vue';
 import {
@@ -74,6 +73,7 @@ watch(json, onChangeJson);
         <div class="flex items-center justify-between">
           <p class="font-medium">TOML Result</p>
           <button
+            v-if="toml"
             v-tooltip="{
               content: 'Copied!',
               triggers: [],
