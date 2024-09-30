@@ -1,5 +1,6 @@
 <script setup>
 import BaseCard from 'src/components/base-card.vue';
+import BaseButton from 'src/components/base-button.vue';
 import { stringify } from 'smol-toml';
 import { ref } from 'vue';
 import {
@@ -72,9 +73,9 @@ async function onCopyToml() {
         <div>
           <div class="px-4 h-12 border-b flex items-center justify-between">
             <p class="font-medium">TOML Result</p>
-            <button
-              v-if="toml"
-              class="border flex items-center py-0.5 px-2 rounded-md gap-x-1"
+            <base-button
+              size="sm"
+              :icon-left="CopyIcon"
               v-tooltip="{
                 content: 'Copied!',
                 triggers: [],
@@ -83,9 +84,8 @@ async function onCopyToml() {
               }"
               @click="onCopyToml"
             >
-              <copy-icon class="w-3.5 h-3.5" />
-              <span class="text-sm">Copy</span>
-            </button>
+              Copy
+            </base-button>
           </div>
         </div>
         <textarea
