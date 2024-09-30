@@ -2,7 +2,11 @@
 import BaseCard from 'src/components/base-card.vue';
 import { stringify } from 'smol-toml';
 import { ref } from 'vue';
-import { Copy as CopyIcon } from '@vicons/tabler';
+import {
+  Copy as CopyIcon,
+  Check as SuccessIcon,
+  AlertTriangle as WarningIcon,
+} from '@vicons/tabler';
 
 const json = ref(null);
 const jsonValid = ref(false);
@@ -45,12 +49,15 @@ async function onCopyToml() {
         <div>
           <div class="px-4 h-12 border-b flex items-center justify-between">
             <p class="font-medium">Insert JSON Here</p>
-            <p
+            <component
               v-if="json"
-              :class="[jsonValid ? 'text-green-600' : 'text-red-600']"
-            >
-              {{ jsonValid ? 'Valid' : 'Invalid' }}
-            </p>
+              :is="jsonValid ? SuccessIcon : WarningIcon"
+              :class="[
+                jsonValid ? 'text-green-600' : 'text-red-600',
+                'w-4 h-4',
+              ]"
+              v-tooltip="jsonValid ? 'JSON valid' : 'JSON tidak valid'"
+            />
           </div>
         </div>
         <textarea
