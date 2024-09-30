@@ -1,13 +1,16 @@
 <script setup>
-import BaseCard from 'src/components/base-card.vue';
-import BaseButton from 'src/components/base-button.vue';
 import { stringify } from 'smol-toml';
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import {
   Copy as CopyIcon,
   Check as SuccessIcon,
   AlertTriangle as WarningIcon,
 } from '@vicons/tabler';
+import { Codemirror as CodeMirror } from 'vue-codemirror';
+import { json as LangJson } from '@codemirror/lang-json';
+
+const jsonExtensions = [LangJson()];
+const tomlExtensions = [];
 
 const json = ref(null);
 const jsonValid = ref(false);
@@ -15,9 +18,6 @@ const toml = ref(null);
 const copied = ref(false);
 
 function onChangeJson(e) {
-  e.target.style.height = 'auto';
-  e.target.style.height = e.target.scrollHeight + 'px';
-
   if (json.value === '') {
     toml.value = '';
 
@@ -41,61 +41,59 @@ async function onCopyToml() {
     copied.value = false;
   }, 1000);
 }
+
+watch(json, onChangeJson);
 </script>
 
 <template>
-  <base-card :with-padding="false">
-    <div class="grid grid-cols-2 divide-x">
-      <div class="flex flex-col justify-start">
-        <div>
-          <div class="px-4 h-12 border-b flex items-center justify-between">
-            <p class="font-medium">Insert JSON Here</p>
-            <component
-              v-if="json"
-              :is="jsonValid ? SuccessIcon : WarningIcon"
-              :class="[
-                jsonValid ? 'text-green-600' : 'text-red-600',
-                'w-4 h-4',
-              ]"
-              v-tooltip="jsonValid ? 'JSON valid' : 'JSON tidak valid'"
-            />
-          </div>
+  <div class="grid grid-cols-2 items-start gap-8">
+    <div class="space-y-2">
+      <div>
+        <div class="flex items-center justify-between">
+          <p class="font-medium">Insert JSON Here</p>
+          <component
+            v-if="json"
+            :is="jsonValid ? SuccessIcon : WarningIcon"
+            :class="[jsonValid ? 'text-green-600' : 'text-red-600', 'w-4 h-4']"
+            v-tooltip="jsonValid ? 'JSON valid' : 'JSON tidak valid'"
+          />
         </div>
-        <textarea
-          rows="5"
-          placeholder="Insert JSON Here"
-          class="px-4 py-3 resize-none overflow-hidden w-full h-full focus:outline-none rounded-b-xl"
-          v-model="json"
-          @input="onChangeJson"
-        ></textarea>
       </div>
-      <div class="flex flex-col">
-        <div>
-          <div class="px-4 h-12 border-b flex items-center justify-between">
-            <p class="font-medium">TOML Result</p>
-            <base-button
-              size="sm"
-              :icon-left="CopyIcon"
-              v-tooltip="{
-                content: 'Copied!',
-                triggers: [],
-                shown: copied,
-                delay: { show: 0, hide: 0 },
-              }"
-              @click="onCopyToml"
-            >
-              Copy
-            </base-button>
-          </div>
-        </div>
-        <textarea
-          rows="5"
-          placeholder="TOML Result"
-          class="px-4 py-3 resize-none overflow-hidden w-full h-full focus:outline-none rounded-b-xl"
-          readonly
-          v-model="toml"
-        ></textarea>
+      <div class="border">
+        <code-mirror
+          placeholder="Insert JSON Here"
+          :extensions="jsonExtensions"
+          :style="{ height: '800px' }"
+          v-model="json"
+        />
       </div>
     </div>
-  </base-card>
+    <div class="space-y-2">
+      <div>
+        <div class="flex items-center justify-between">
+          <p class="font-medium">TOML Result</p>
+          <button
+            v-tooltip="{
+              content: 'Copied!',
+              triggers: [],
+              shown: copied,
+              delay: { show: 0, hide: 0 },
+            }"
+            @click="onCopyToml"
+          >
+            <copy-icon class="w-4 h-4 text-gray-600" />
+          </button>
+        </div>
+      </div>
+      <div class="border">
+        <code-mirror
+          placeholder="TOML Result"
+          :extensions="tomlExtensions"
+          :style="{ height: '800px' }"
+          disabled
+          v-model="toml"
+        />
+      </div>
+    </div>
+  </div>
 </template>
