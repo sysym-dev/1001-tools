@@ -46,7 +46,7 @@ watch(json, onChangeJson);
 </script>
 
 <template>
-  <div class="grid grid-cols-2 items-start gap-8">
+  <div class="grid md:grid-cols-2 items-start gap-8">
     <div class="space-y-2">
       <div>
         <div class="flex items-center justify-between">
