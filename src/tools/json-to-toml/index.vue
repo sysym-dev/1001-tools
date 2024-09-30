@@ -1,4 +1,5 @@
 <script setup>
+import BaseCard from 'src/components/base-card.vue';
 import { stringify } from 'smol-toml';
 import { ref, watch } from 'vue';
 import {

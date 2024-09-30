@@ -8,7 +8,7 @@ defineProps({
 </script>
 
 <template>
-  <div :class="['bg-white rounded-xl border', withPadding ? 'p-6' : '']">
+  <div :class="['bg-white border', withPadding ? 'p-4' : '']">
     <slot />
   </div>
 </template>

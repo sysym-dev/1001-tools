@@ -4,6 +4,7 @@ export const routes = [
     name: 'index',
     meta: {
       title: '1001 Tools',
+      withHeader: false,
     },
     component: () => import('./pages/index.vue'),
   },
