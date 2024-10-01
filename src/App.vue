@@ -7,7 +7,7 @@ import BaseContainer from './components/base/base-container.vue';
 const route = useRoute();
 const router = useRouter();
 
-router.afterEach((to) => {
+router.beforeResolve((to) => {
   if (to.path === '/') {
     document.title = to.meta.title;
   } else {
