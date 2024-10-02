@@ -28,21 +28,21 @@ router.beforeResolve((to) => {
 
   document.title = title;
 
-  updateMeta('description', description),
-    updateMeta('keywords', to.meta.keywords.join(', ')),
-    updateMeta('author', import.meta.env.VITE_APP_AUTHOR),
-    updateMeta('og:title', title, true),
-    updateMeta('og:description', description, true),
-    updateMeta(
-      'og:image',
-      new URL(
-        to.path === '/' ? 'images/banner.png' : `images/tools/${to.path}`,
-        window.location.origin,
-      ),
-      true,
+  updateMeta('description', description);
+  updateMeta('keywords', to.meta.keywords);
+  updateMeta('author', import.meta.env.VITE_APP_AUTHOR);
+  updateMeta('og:title', title, true);
+  updateMeta('og:description', description, true);
+  updateMeta(
+    'og:image',
+    new URL(
+      to.path === '/' ? 'images/banner.png' : `images/tools/${to.path}`,
+      window.location.origin,
     ),
-    updateMeta('og:url', url, true),
-    updateLink('canonical', url);
+    true,
+  );
+  updateMeta('og:url', url, true);
+  updateLink('canonical', url);
 });
 </script>
 
