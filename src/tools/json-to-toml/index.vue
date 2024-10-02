@@ -5,6 +5,7 @@ import {
   Copy as CopyIcon,
   Check as SuccessIcon,
   AlertTriangle as WarningIcon,
+  Download as DownloadIcon,
 } from '@vicons/tabler';
 import { Codemirror as CodeMirror } from 'vue-codemirror';
 import { json as LangJson } from '@codemirror/lang-json';
@@ -41,6 +42,21 @@ async function onCopyToml() {
     copied.value = false;
   }, 1000);
 }
+async function onDownloadToml() {
+  const file = new File([toml.value], 'result.toml', {
+    type: 'application/toml',
+  });
+  const url = URL.createObjectURL(file);
+
+  const a = document.createElement('a');
+
+  a.setAttribute('href', url);
+  a.setAttribute('download', file.name);
+
+  a.click();
+
+  URL.revokeObjectURL(url);
+}
 
 watch(json, onChangeJson);
 </script>
@@ -72,18 +88,23 @@ watch(json, onChangeJson);
       <div>
         <div class="flex items-center justify-between">
           <p class="font-medium">TOML Result</p>
-          <button
-            v-if="toml"
-            v-tooltip="{
-              content: 'Copied!',
-              triggers: [],
-              shown: copied,
-              delay: { show: 0, hide: 0 },
-            }"
-            @click="onCopyToml"
-          >
-            <copy-icon class="w-4 h-4 text-gray-600" />
-          </button>
+          <div class="flex items-center gap-x-2">
+            <button
+              v-if="toml"
+              v-tooltip="{
+                content: 'Copied!',
+                triggers: [],
+                shown: copied,
+                delay: { show: 0, hide: 0 },
+              }"
+              @click="onCopyToml"
+            >
+              <copy-icon class="w-4 h-4 text-gray-600" />
+            </button>
+            <button v-if="toml" @click="onDownloadToml">
+              <download-icon class="w-4 h-4 text-gray-600" />
+            </button>
+          </div>
         </div>
       </div>
       <div class="border">
