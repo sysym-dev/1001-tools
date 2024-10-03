@@ -1,9 +1,12 @@
 <script setup>
 import BaseContainer from 'src/components/base/base-container.vue';
+import { inject } from 'vue';
+
+const config = inject('config');
 
 const menus = [
   { id: 'tools', name: 'Tools' },
-  { id: 'github', name: 'Github' },
+  { id: 'github', name: 'Github', url: config.githubUrl },
 ];
 </script>
 
@@ -13,7 +16,9 @@ const menus = [
       <span>&copy; 2014</span>
       <nav>
         <ul class="flex items-center gap-x-4">
-          <li v-for="menu in menus" :key="menu.id">{{ menu.name }}</li>
+          <li v-for="menu in menus" :key="menu.id">
+            <a :href="menu.url" target="_blank">{{ menu.name }}</a>
+          </li>
         </ul>
       </nav>
     </base-container>
