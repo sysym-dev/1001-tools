@@ -12,6 +12,17 @@ export const routes = [
     component: () => import('./pages/index.vue'),
   },
   {
+    path: '/:pathMatch(.*)*',
+    name: 'not-found',
+    component: () => import('./pages/404.vue'),
+    meta: {
+      title: '404 Not Found',
+      description: 'The requested page is not found',
+      keywords: '404, not found',
+      withBreadcrumbs: false,
+    },
+  },
+  {
     path: '/json',
     name: 'json',
     meta: {
