@@ -27,11 +27,13 @@ export const routes = [
     path: '/json-to-toml',
     name: 'json-to-toml',
     meta: {
-      title: 'JSON to TOML',
+      title: 'JSON to TOML Converter',
       description:
         'Easily convert JSON to TOML with our free online converter. Fast, accurate, and simple to use, perfect for developers and data format conversions in seconds.',
       keywords: 'json to toml, json, toml, convert',
       breadcrumbs: [{ id: 'json', name: 'JSON' }],
+      breadcrumbTitle: 'JSON to TOML',
+      headingTitle: 'JSON to TOML',
     },
     component: () => import('./tools/json-to-toml/index.vue'),
   },

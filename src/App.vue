@@ -52,14 +52,14 @@ router.beforeResolve((to) => {
   <div class="min-h-screen text-gray-900 flex flex-col justify-between">
     <div>
       <partial-navbar />
-      <base-container class="py-10 space-y-4">
+      <base-container class="py-10 space-y-6">
         <partial-breadcrumb />
         <header v-if="route.meta.withHeader ?? true">
           <h1 class="text-4xl font-bold tracking-tight">
-            {{ route.meta.title }}
+            {{ route.meta.headingTitle || route.meta.title }}
           </h1>
         </header>
-        <main>
+        <main class="space-y-6">
           <router-view />
         </main>
       </base-container>

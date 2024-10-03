@@ -1,5 +1,8 @@
+<script setup>
+import ToolsList from 'src/components/tools/tools-list.vue';
+</script>
+
 <template>
-  <div>
-    <h1>oke</h1>
-  </div>
+  <hr />
+  <tools-list tag="json" />
 </template>
