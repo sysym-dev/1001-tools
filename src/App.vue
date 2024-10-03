@@ -3,7 +3,9 @@ import { useRoute, useRouter } from 'vue-router';
 import PartialNavbar from './components/partials/partial-navbar.vue';
 import PartialFooter from './components/partials/partial-footer.vue';
 import BaseContainer from './components/base/base-container.vue';
+import { inject } from 'vue';
 
+const config = inject('config');
 const route = useRoute();
 const router = useRouter();
 
@@ -22,7 +24,7 @@ function updateLink(rel, href) {
 }
 
 router.beforeResolve((to) => {
-  const title = `${import.meta.env.VITE_APP_TITLE} - ${to.meta.title}`;
+  const title = `${config.app.title} - ${to.meta.title}`;
   const description = to.meta.description;
   const url = new URL(to.fullPath, window.location.origin);
 
@@ -30,7 +32,7 @@ router.beforeResolve((to) => {
 
   updateMeta('description', description);
   updateMeta('keywords', to.meta.keywords);
-  updateMeta('author', import.meta.env.VITE_APP_AUTHOR);
+  updateMeta('author', config.app.author);
   updateMeta('og:title', title, true);
   updateMeta('og:description', description, true);
   updateMeta(
