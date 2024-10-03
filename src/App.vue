@@ -35,14 +35,6 @@ router.beforeResolve((to) => {
   updateMeta('author', config.app.author);
   updateMeta('og:title', title, true);
   updateMeta('og:description', description, true);
-  updateMeta(
-    'og:image',
-    new URL(
-      to.path === '/' ? 'images/banner.png' : `images/tools/${to.path}`,
-      window.location.origin,
-    ),
-    true,
-  );
   updateMeta('og:url', url, true);
   updateLink('canonical', url);
 });
