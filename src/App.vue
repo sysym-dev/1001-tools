@@ -1,7 +1,6 @@
 <script setup>
 import { useRoute, useRouter } from 'vue-router';
 import PartialNavbar from './components/partials/partial-navbar.vue';
-import PartialFooter from './components/partials/partial-footer.vue';
 import BaseContainer from './components/base/base-container.vue';
 import { inject } from 'vue';
 
@@ -63,6 +62,5 @@ router.beforeResolve((to) => {
         </main>
       </base-container>
     </div>
-    <partial-footer />
   </div>
 </template>

@@ -11,6 +11,18 @@ export const routes = [
     component: () => import('./pages/index.vue'),
   },
   {
+    path: '/json',
+    name: 'json',
+    meta: {
+      title: 'JSON Tools - Free Online JSON Converters and Validators',
+      description:
+        'Find the best free online JSON tools at 1001 Tools. Convert, validate, format, and manipulate JSON data easily with our comprehensive set of tools for developers and data handling.',
+      keywords: 'json, json tools, json converter, json beautify, json minify',
+      withHeader: false,
+    },
+    component: () => import('./pages/tools.vue'),
+  },
+  {
     path: '/json-to-toml',
     name: 'json-to-toml',
     meta: {

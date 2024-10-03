@@ -1,5 +1,8 @@
 <script setup>
 import { ArrowsLeftRight } from '@vicons/tabler';
+import { useRoute } from 'vue-router';
+
+const route = useRoute();
 
 const menus = [
   {
@@ -15,7 +18,7 @@ const menus = [
 <template>
   <div class="space-y-6">
     <header class="space-y-4 py-0">
-      <h1 class="font-bold text-4xl tracking-tight">1001 Tools</h1>
+      <h1 class="font-bold text-4xl tracking-tight">{{ route.meta.title }}</h1>
       <input
         type="text"
         placeholder="Search Tools"

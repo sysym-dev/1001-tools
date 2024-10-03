@@ -5,7 +5,7 @@ import { inject } from 'vue';
 const config = inject('config');
 
 const menus = [
-  { id: 'tools', name: 'Tools' },
+  { id: 'tools', name: 'Tools', to: { name: 'index' } },
   { id: 'github', name: 'Github', url: config.githubUrl },
 ];
 </script>
@@ -17,7 +17,10 @@ const menus = [
       <nav>
         <ul class="flex items-center gap-x-4">
           <li v-for="menu in menus" :key="menu.id">
-            <a :href="menu.url" target="_blank">{{ menu.name }}</a>
+            <a v-if="menu.url" :href="menu.url" target="_blank">{{
+              menu.name
+            }}</a>
+            <router-link v-else :to="menu.to">{{ menu.name }}</router-link>
           </li>
         </ul>
       </nav>
