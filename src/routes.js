@@ -7,6 +7,7 @@ export const routes = [
       description: import.meta.env.VITE_APP_DESCRIPTION,
       keywords: 'tools, web tools, developer tools',
       withHeader: false,
+      withBreadcrumbs: false,
     },
     component: () => import('./pages/index.vue'),
   },
@@ -14,13 +15,13 @@ export const routes = [
     path: '/json',
     name: 'json',
     meta: {
-      title: 'JSON Tools - Free Online JSON Converters and Validators',
+      title: 'Free Online Tools for JSON',
       description:
-        'Find the best free online JSON tools at 1001 Tools. Convert, validate, format, and manipulate JSON data easily with our comprehensive set of tools for developers and data handling.',
+        'Discover various free online JSON tools at 1001 Tools. Easily convert, edit, format, and validate JSON data with a range of simple and effective tools.',
       keywords: 'json, json tools, json converter, json beautify, json minify',
-      withHeader: false,
+      breadcrumbTitle: 'JSON',
     },
-    component: () => import('./pages/tools.vue'),
+    component: () => import('./pages/json.vue'),
   },
   {
     path: '/json-to-toml',
@@ -30,6 +31,7 @@ export const routes = [
       description:
         'Easily convert JSON to TOML with our free online converter. Fast, accurate, and simple to use, perfect for developers and data format conversions in seconds.',
       keywords: 'json to toml, json, toml, convert',
+      breadcrumbs: [{ id: 'json', name: 'JSON' }],
     },
     component: () => import('./tools/json-to-toml/index.vue'),
   },

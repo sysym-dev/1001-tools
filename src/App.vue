@@ -2,6 +2,7 @@
 import { useRoute, useRouter } from 'vue-router';
 import PartialNavbar from './components/partials/partial-navbar.vue';
 import BaseContainer from './components/base/base-container.vue';
+import PartialBreadcrumb from './components/partials/partial-breadcrumb.vue';
 import { inject } from 'vue';
 
 const config = inject('config');
@@ -52,6 +53,7 @@ router.beforeResolve((to) => {
     <div>
       <partial-navbar />
       <base-container class="py-10 space-y-4">
+        <partial-breadcrumb />
         <header v-if="route.meta.withHeader ?? true">
           <h1 class="text-4xl font-bold tracking-tight">
             {{ route.meta.title }}
