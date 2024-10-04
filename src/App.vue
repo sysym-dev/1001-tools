@@ -1,8 +1,9 @@
 <script setup>
 import { useRoute, useRouter } from 'vue-router';
 import PartialNavbar from './components/partials/partial-navbar.vue';
-import BaseContainer from './components/base/base-container.vue';
 import PartialBreadcrumb from './components/partials/partial-breadcrumb.vue';
+import PartialProgressBar from './components/partials/partial-progress-bar.vue';
+import BaseContainer from './components/base/base-container.vue';
 import { inject } from 'vue';
 
 const config = inject('config');
@@ -43,6 +44,7 @@ router.beforeResolve((to) => {
 <template>
   <div class="min-h-screen text-gray-900 flex flex-col justify-between">
     <div>
+      <partial-progress-bar />
       <partial-navbar />
       <base-container class="py-10 space-y-6">
         <partial-breadcrumb />
