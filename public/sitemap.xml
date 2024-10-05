@@ -1,5 +1,5 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
-<url><loc>http://localhost:5173</loc></url>
-<url><loc>http://localhost:5173/json</loc></url>
-<url><loc>http://localhost:5173/json-to-toml</loc></url>
+<url><loc>https://sysym.dev/1001-tools</loc></url>
+<url><loc>https://sysym.dev/1001-tools/json</loc></url>
+<url><loc>https://sysym.dev/1001-tools/json-to-toml</loc></url>
 </urlset>
