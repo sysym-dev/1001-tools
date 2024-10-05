@@ -6,7 +6,7 @@ const route = useRoute();
 </script>
 
 <template>
-  <nav v-if="route.meta.withBreadcrumbs ?? true">
+  <nav>
     <ul class="flex items-center gap-x-4 text-gray-900">
       <li>
         <router-link :to="{ name: 'index' }"> Tools </router-link>
