@@ -3,8 +3,9 @@ import { useRoute, useRouter } from 'vue-router';
 import PartialNavbar from './components/partials/partial-navbar.vue';
 import PartialBreadcrumb from './components/partials/partial-breadcrumb.vue';
 import PartialProgressBar from './components/partials/partial-progress-bar.vue';
+import PartialSplash from './components/partials/partial-splash.vue';
 import BaseContainer from './components/base/base-container.vue';
-import { inject } from 'vue';
+import { inject, ref } from 'vue';
 
 const config = inject('config');
 const route = useRoute();
@@ -43,11 +44,12 @@ router.beforeResolve((to) => {
 
 <template>
   <div class="min-h-screen text-gray-900 flex flex-col justify-between">
+    <partial-splash />
     <div>
       <partial-progress-bar />
       <partial-navbar />
       <base-container class="py-10 space-y-6">
-        <partial-breadcrumb />
+        <partial-breadcrumb v-if="route.meta.withBreadcrumbs" />
         <header v-if="route.meta.withHeader ?? true">
           <h1 class="text-4xl font-bold tracking-tight">
             {{ route.meta.headingTitle || route.meta.title }}
