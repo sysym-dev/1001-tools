@@ -5,5 +5,5 @@
 Todo:
 
 - [x] JSON to TOML
-- [ ] TOML to JSON
+- [x] TOML to JSON
 - [ ] QR Code Scanner
