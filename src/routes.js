@@ -34,6 +34,19 @@ export const routes = [
     component: () => import('./pages/json.vue'),
   },
   {
+    path: '/toml',
+    name: 'toml',
+    meta: {
+      title: 'Free Online Tools for TOML',
+      description:
+        'Discover various free online TOML tools at 1001 Tools. Easily convert, edit, format, and validate TOML data with a range of simple and effective tools.',
+      keywords: 'toml, toml tools, toml converter, toml beautify, toml minify',
+      breadcrumbTitle: 'TOML',
+      withBreadcrumbs: true,
+    },
+    component: () => import('./pages/toml.vue'),
+  },
+  {
     path: '/json-to-toml',
     name: 'json-to-toml',
     meta: {
@@ -47,5 +60,20 @@ export const routes = [
       withBreadcrumbs: true,
     },
     component: () => import('./tools/json-to-toml/index.vue'),
+  },
+  {
+    path: '/toml-to-json',
+    name: 'toml-to-json',
+    meta: {
+      title: 'TOML to JSON Converter',
+      description:
+        'Easily convert TOML to JSON with our free online converter. Fast, accurate, and simple to use, perfect for developers and data format conversions in seconds.',
+      keywords: 'toml to json, toml, json, convert',
+      breadcrumbs: [{ id: 'toml', name: 'TOML' }],
+      breadcrumbTitle: 'TOML to JSON',
+      headingTitle: 'TOML to JSON',
+      withBreadcrumbs: true,
+    },
+    component: () => import('./tools/toml-to-json/index.vue'),
   },
 ];
