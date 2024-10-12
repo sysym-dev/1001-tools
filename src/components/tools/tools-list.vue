@@ -14,6 +14,16 @@ const menus = [
     childrenNames: ['JSON to TOML'],
     children: [
       { id: 'json-to-toml', name: 'JSON to TOML', icon: ArrowsLeftRight },
+      { id: 'toml-to-json', name: 'TOML to JSON', icon: ArrowsLeftRight },
+    ],
+  },
+  {
+    id: 'toml',
+    name: 'TOML',
+    childrenNames: ['TOML to JSON'],
+    children: [
+      { id: 'toml-to-json', name: 'TOML to JSON', icon: ArrowsLeftRight },
+      { id: 'json-to-toml', name: 'JSON to TOML', icon: ArrowsLeftRight },
     ],
   },
 ];
@@ -63,7 +73,7 @@ const filteredMenus = computed(() => {
     </template>
     <template v-else>
       <p v-if="!filteredMenus.length" class="text-gray-500">No Tools Found</p>
-      <template v-else>
+      <div v-else class="space-y-6">
         <template v-for="menu in filteredMenus" :key="menu.id">
           <div class="space-y-2">
             <p class="text-lg font-bold">{{ menu.name }}</p>
@@ -80,7 +90,7 @@ const filteredMenus = computed(() => {
             </ul>
           </div>
         </template>
-      </template>
+      </div>
     </template>
   </nav>
 </template>
