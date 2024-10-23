@@ -1,5 +1,6 @@
 <script setup>
 import BaseButton from 'src/components/base/base-button.vue';
+import BaseAlert from 'src/components/base/base-alert.vue';
 import { Html5Qrcode } from 'html5-qrcode';
 import { nextTick, ref } from 'vue';
 
@@ -11,6 +12,7 @@ const uploadedImage = ref(null);
 const uploadedQrPreview = ref();
 const copied = ref(false);
 const link = ref(false);
+const errorUpload = ref(false);
 
 async function setupCamera() {
   const devices = await Html5Qrcode.getCameras();
@@ -39,20 +41,26 @@ function setResult(text) {
 }
 async function uploadImage(file) {
   uploadedImage.value = file;
+  errorUpload.value = null;
 
-  const text = await scanner.value.scanFile(uploadedImage.value, true);
+  try {
+    const text = await scanner.value.scanFile(uploadedImage.value, true);
 
-  setResult(text);
+    setResult(text);
 
-  await nextTick();
+    await nextTick();
 
-  const fr = new FileReader();
+    const fr = new FileReader();
 
-  fr.onload = () => {
-    uploadedQrPreview.value.src = fr.result;
-  };
+    fr.onload = () => {
+      uploadedQrPreview.value.src = fr.result;
+    };
 
-  fr.readAsDataURL(uploadedImage.value);
+    fr.readAsDataURL(uploadedImage.value);
+  } catch (err) {
+    uploadedImage.value = null;
+    errorUpload.value = err;
+  }
 }
 
 function onScan(text) {
@@ -124,31 +132,36 @@ setupCamera();
       </div>
       <div v-show="upload">
         <div
-          class="p-4 min-h-[200px] border-2 border-dashed border-gray-300 rounded-lg text-center flex flex-col justify-center gap-4"
+          class="p-4 min-h-[200px] border-2 border-dashed border-gray-300 rounded-lg flex flex-col space-y-4"
           @drop.prevent="onDropImage"
           @dragenter.prevent
           @dragover.prevent
           @dragleave.prevent
         >
-          <img
-            v-if="uploadedImage"
-            class="w-fit mx-auto max-h-[200px]"
-            ref="uploadedQrPreview"
-          />
-          <div class="space-y-2">
-            <base-button
-              tag="label"
-              class="block w-fit mx-auto"
-              for="upload-qr-image"
-              >Browse QR Image</base-button
-            >
-            <input
-              type="file"
-              id="upload-qr-image"
-              class="hidden"
-              @change="onUploadImage"
+          <base-alert v-if="errorUpload" @close="errorUpload = null">{{
+            errorUpload
+          }}</base-alert>
+          <div class="text-center flex-grow flex flex-col justify-center gap-4">
+            <img
+              v-if="uploadedImage"
+              class="w-fit mx-auto max-h-[200px]"
+              ref="uploadedQrPreview"
             />
-            <p class="italic text-gray-400">Or Drop Image To Scan</p>
+            <div class="space-y-2">
+              <base-button
+                tag="label"
+                class="block w-fit mx-auto"
+                for="upload-qr-image"
+                >Browse QR Image</base-button
+              >
+              <input
+                type="file"
+                id="upload-qr-image"
+                class="hidden"
+                @change="onUploadImage"
+              />
+              <p class="italic text-gray-400">Or Drop Image To Scan</p>
+            </div>
           </div>
         </div>
       </div>
