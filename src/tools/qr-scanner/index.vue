@@ -13,16 +13,21 @@ const uploadedQrPreview = ref();
 const copied = ref(false);
 const link = ref(false);
 const errorUpload = ref(false);
+const errorCamera = ref(false);
 
 async function setupCamera() {
-  const devices = await Html5Qrcode.getCameras();
+  try {
+    const devices = await Html5Qrcode.getCameras();
 
-  if (devices && devices.length) {
-    cameraId.value = devices[0].id;
+    if (devices && devices.length) {
+      cameraId.value = devices[0].id;
 
-    scanner.value = new Html5Qrcode('qr-code-scanner');
+      scanner.value = new Html5Qrcode('qr-code-scanner');
 
-    startScanCamera();
+      startScanCamera();
+    }
+  } catch (err) {
+    errorCamera.value = err;
   }
 }
 async function startScanCamera() {
@@ -165,7 +170,11 @@ setupCamera();
           </div>
         </div>
       </div>
-      <div v-show="!upload" id="qr-code-scanner"></div>
+      <div v-show="!upload" id="qr-code-scanner">
+        <base-alert v-if="errorCamera" :closable="false">{{
+          errorCamera
+        }}</base-alert>
+      </div>
     </div>
     <div class="space-y-2">
       <div class="flex items-center justify-between">
