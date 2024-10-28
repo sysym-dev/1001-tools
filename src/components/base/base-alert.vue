@@ -1,6 +1,12 @@
 <script setup>
 import { AlertTriangle as AlertIcon, X as CloseIcon } from '@vicons/tabler';
 
+defineProps({
+  closable: {
+    type: Boolean,
+    default: true,
+  },
+});
 const emit = defineEmits(['close']);
 
 function onClose() {
@@ -16,7 +22,7 @@ function onClose() {
       <alert-icon class="w-4 h-4 mt-1" />
       <slot />
     </div>
-    <button class="mt-1" @click="onClose">
+    <button v-if="closable" class="mt-1" @click="onClose">
       <close-icon class="w-4 h-4" />
     </button>
   </div>
