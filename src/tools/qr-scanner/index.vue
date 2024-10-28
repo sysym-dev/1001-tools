@@ -193,7 +193,7 @@ setupCamera();
         class="rounded-lg px-3 py-2 pb-3 border border-gray-300 min-h-[200px] text-gray-900 flex flex-col justify-between"
       >
         <template v-if="result">
-          <p>{{ result }}</p>
+          <p class="break-all">{{ result }}</p>
           <div :class="['grid gap-2', link ? 'grid-cols-2' : 'grid-cols-1']">
             <base-button
               color="sky"
