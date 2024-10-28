@@ -163,6 +163,8 @@ setupCamera();
                 type="file"
                 id="upload-qr-image"
                 class="hidden"
+                accept="image/*"
+                capture
                 @change="onUploadImage"
               />
               <p class="italic text-gray-400">Or Drop Image To Scan</p>
