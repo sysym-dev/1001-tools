@@ -2,7 +2,7 @@
 import BaseButton from 'src/components/base/base-button.vue';
 import BaseAlert from 'src/components/base/base-alert.vue';
 import { Html5Qrcode } from 'html5-qrcode';
-import { nextTick, ref } from 'vue';
+import { nextTick, onMounted, ref } from 'vue';
 
 const cameraId = ref();
 const scanner = ref();
@@ -22,16 +22,24 @@ async function setupCamera() {
     if (devices && devices.length) {
       cameraId.value = devices[0].id;
 
-      scanner.value = new Html5Qrcode('qr-code-scanner');
-
       startScanCamera();
     }
   } catch (err) {
     errorCamera.value = err;
   }
 }
+async function setupScanner() {
+  scanner.value = new Html5Qrcode('qr-code-scanner');
+
+  await setupCamera();
+}
 async function startScanCamera() {
-  scanner.value.start(cameraId.value, { qrbox: 200 }, onScan, onErrorScan);
+  scanner.value.clear();
+  result.value = null;
+
+  if (cameraId.value) {
+    scanner.value.start(cameraId.value, { qrbox: 200 }, onScan, onErrorScan);
+  }
 }
 function setResult(text) {
   result.value = text;
@@ -75,8 +83,11 @@ function onErrorScan(err) {
   // console.log(err)
 }
 function onChangeToUpload() {
-  scanner.value.stop();
+  if (scanner.value.getState() === 2) {
+    scanner.value.stop();
+  }
 
+  result.value = null;
   upload.value = true;
 }
 function onChangeToScan() {
@@ -110,11 +121,13 @@ function onDropImage(e) {
   }
 }
 
-setupCamera();
+onMounted(() => {
+  setupScanner();
+});
 </script>
 
 <template>
-  <div class="grid grid-cols-2 gap-8">
+  <div class="grid md:grid-cols-2 gap-8">
     <div class="space-y-2">
       <div class="flex items-center justify-between">
         <p class="font-semibold">
@@ -164,7 +177,6 @@ setupCamera();
                 id="upload-qr-image"
                 class="hidden"
                 accept="image/*"
-                capture
                 @change="onUploadImage"
               />
               <p class="italic text-gray-400">Or Drop Image To Scan</p>
@@ -172,10 +184,11 @@ setupCamera();
           </div>
         </div>
       </div>
-      <div v-show="!upload" id="qr-code-scanner">
+      <div v-show="!upload">
         <base-alert v-if="errorCamera" :closable="false">{{
           errorCamera
         }}</base-alert>
+        <div id="qr-code-scanner"></div>
       </div>
     </div>
     <div class="space-y-2">
