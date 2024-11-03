@@ -4,7 +4,6 @@ import path from 'path';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: '/1001-tools',
   plugins: [vue()],
   resolve: {
     alias: {

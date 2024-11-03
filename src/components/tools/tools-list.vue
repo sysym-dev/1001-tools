@@ -1,5 +1,8 @@
 <script setup>
-import { ArrowsLeftRight } from '@vicons/tabler';
+import {
+  ArrowsLeftRight as ConvertIcon,
+  Scan as ScanIcon,
+} from '@vicons/tabler';
 import { computed } from 'vue';
 
 const props = defineProps({
@@ -13,8 +16,8 @@ const menus = [
     name: 'JSON',
     childrenNames: ['JSON to TOML'],
     children: [
-      { id: 'json-to-toml', name: 'JSON to TOML', icon: ArrowsLeftRight },
-      { id: 'toml-to-json', name: 'TOML to JSON', icon: ArrowsLeftRight },
+      { id: 'json-to-toml', name: 'JSON to TOML', icon: ConvertIcon },
+      { id: 'toml-to-json', name: 'TOML to JSON', icon: ConvertIcon },
     ],
   },
   {
@@ -22,9 +25,15 @@ const menus = [
     name: 'TOML',
     childrenNames: ['TOML to JSON'],
     children: [
-      { id: 'toml-to-json', name: 'TOML to JSON', icon: ArrowsLeftRight },
-      { id: 'json-to-toml', name: 'JSON to TOML', icon: ArrowsLeftRight },
+      { id: 'toml-to-json', name: 'TOML to JSON', icon: ConvertIcon },
+      { id: 'json-to-toml', name: 'JSON to TOML', icon: ConvertIcon },
     ],
+  },
+  {
+    id: 'qr',
+    name: 'QR',
+    childrenNames: ['QR Code Scanner'],
+    children: [{ id: 'qr-scanner', name: 'QR Code Scanner', icon: ScanIcon }],
   },
 ];
 

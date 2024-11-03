@@ -47,6 +47,19 @@ export const routes = [
     component: () => import('./pages/toml.vue'),
   },
   {
+    path: '/qr',
+    name: 'qr',
+    meta: {
+      title: 'Free Online Tools for QR',
+      description:
+        'Explore our collection of QR tools to generate, scan, and customize QR Codes. Access free and easy-to-use tools designed for all your QR code needs.',
+      keywords: 'qr tools, qr code generator, qr scanner, create qr code',
+      breadcrumbTitle: 'QR',
+      withBreadcrumbs: true,
+    },
+    component: () => import('./pages/qr.vue'),
+  },
+  {
     path: '/json-to-toml',
     name: 'json-to-toml',
     meta: {
@@ -75,5 +88,21 @@ export const routes = [
       withBreadcrumbs: true,
     },
     component: () => import('./tools/toml-to-json/index.vue'),
+  },
+  {
+    path: '/qr-scanner',
+    name: 'qr-scanner',
+    meta: {
+      title: 'Scan QR Code',
+      description:
+        "Use our online QR Code scanner to quickly and securely scan codes or upload images. No additional apps needed—just use your device's camera or upload a QR image to start scanning now!",
+      keywords:
+        'qr code scanner, online qr code scanner, scan qr code camera, scan qr code image',
+      breadcrumbs: [{ id: 'qr', name: 'QR' }],
+      breadcrumbTitle: 'QR Code Scanner',
+      headingTitle: 'Scan QR Code',
+      withBreadcrumbs: true,
+    },
+    component: () => import('./tools/qr-scanner/index.vue'),
   },
 ];
