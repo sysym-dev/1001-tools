@@ -4,7 +4,6 @@ import BaseAlert from 'src/components/base/base-alert.vue';
 import { Html5Qrcode } from 'html5-qrcode';
 import { nextTick, onMounted, ref } from 'vue';
 
-const cameraId = ref();
 const scanner = ref();
 const result = ref();
 const upload = ref(false);
@@ -15,30 +14,24 @@ const link = ref(false);
 const errorUpload = ref(false);
 const errorCamera = ref(false);
 
-async function setupCamera() {
-  try {
-    const devices = await Html5Qrcode.getCameras();
-
-    if (devices && devices.length) {
-      cameraId.value = devices[0].id;
-
-      startScanCamera();
-    }
-  } catch (err) {
-    errorCamera.value = err;
-  }
-}
 async function setupScanner() {
   scanner.value = new Html5Qrcode('qr-code-scanner');
 
-  await setupCamera();
+  startScanCamera();
 }
 async function startScanCamera() {
   scanner.value.clear();
   result.value = null;
 
-  if (cameraId.value) {
-    scanner.value.start(cameraId.value, { qrbox: 200 }, onScan, onErrorScan);
+  try {
+    await scanner.value.start(
+      { facingMode: 'environment' },
+      { qrbox: 200 },
+      onScan,
+      onErrorScan,
+    );
+  } catch (err) {
+    errorCamera.value = err;
   }
 }
 function setResult(text) {
