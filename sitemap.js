@@ -2,8 +2,16 @@ import { writeFile } from 'fs/promises';
 import path from 'path';
 
 async function generateSitemap() {
-  const baseUrl = 'http://localhost:5173';
-  const routes = ['', '/json', '/json-to-toml'];
+  const baseUrl = 'https://sysym.dev/1001-tools';
+  const routes = [
+    '',
+    '/json',
+    '/toml',
+    '/qr',
+    '/json-to-toml',
+    '/toml-to-json',
+    '/qr-scanner',
+  ];
 
   const list = routes
     .map((route) => `<url><loc>${baseUrl}${route}</loc></url>`)
