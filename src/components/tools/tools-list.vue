@@ -2,6 +2,7 @@
 import {
   ArrowsLeftRight as ConvertIcon,
   Scan as ScanIcon,
+  Barcode as GenerateQrIcon,
 } from '@vicons/tabler';
 import { computed } from 'vue';
 
@@ -32,8 +33,11 @@ const menus = [
   {
     id: 'qr',
     name: 'QR',
-    childrenNames: ['QR Code Scanner'],
-    children: [{ id: 'qr-scanner', name: 'QR Code Scanner', icon: ScanIcon }],
+    childrenNames: ['QR Code Scanner', 'QR Code Generator'],
+    children: [
+      { id: 'qr-scanner', name: 'QR Code Scanner', icon: ScanIcon },
+      { id: 'qr-generator', name: 'QR Code Generator', icon: GenerateQrIcon },
+    ],
   },
 ];
 
