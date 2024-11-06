@@ -105,4 +105,20 @@ export const routes = [
     },
     component: () => import('./tools/qr-scanner/index.vue'),
   },
+  {
+    path: '/qr-generator',
+    name: 'qr-generator',
+    meta: {
+      title: 'Generate QR Code',
+      description:
+        'Generate QR codes instantly with our online QR code generator. Customize and download your QR code in just a few clicks—no additional software required!',
+      keywords:
+        'qr code generator, online qr code generator, create qr code, qr code maker',
+      breadcrumbs: [{ id: 'qr', name: 'QR' }],
+      breadcrumbTitle: 'QR Code Generator',
+      headingTitle: 'Generate QR Code',
+      withBreadcrumbs: true,
+    },
+    component: () => import('./tools/qr-generator/index.vue'),
+  },
 ];
