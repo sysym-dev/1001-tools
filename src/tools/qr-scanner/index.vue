@@ -1,6 +1,7 @@
 <script setup>
 import BaseButton from 'src/components/base/base-button.vue';
 import BaseAlert from 'src/components/base/base-alert.vue';
+import BaseInput from 'src/components/base/base-input.vue';
 import { Html5Qrcode } from 'html5-qrcode';
 import { nextTick, onMounted, ref } from 'vue';
 
@@ -195,9 +196,7 @@ onMounted(() => {
           Clear
         </button>
       </div>
-      <div
-        class="rounded-lg px-3 py-2 pb-3 border border-gray-300 min-h-[200px] text-gray-900 flex flex-col justify-between"
-      >
+      <base-input box>
         <template v-if="result">
           <p class="break-all">{{ result }}</p>
           <div :class="['grid gap-2', link ? 'grid-cols-2' : 'grid-cols-1']">
@@ -223,7 +222,7 @@ onMounted(() => {
           </div>
         </template>
         <p v-else class="text-gray-400">Scan Results Here</p>
-      </div>
+      </base-input>
     </div>
   </div>
 </template>
