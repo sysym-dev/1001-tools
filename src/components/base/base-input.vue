@@ -1,7 +1,10 @@
 <script setup>
 defineProps({
   box: Boolean,
+  textarea: Boolean,
 });
+
+const value = defineModel();
 </script>
 
 <template>
@@ -11,4 +14,9 @@ defineProps({
   >
     <slot />
   </div>
+  <textarea
+    v-else-if="textarea"
+    class="rounded-lg px-3 py-2 pb-3 border border-gray-300 w-full min-h-[200px] focus:ring-sky-600 focus:border-sky-600"
+    v-model="value"
+  ></textarea>
 </template>
