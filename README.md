@@ -7,4 +7,4 @@ Todo:
 - [x] JSON to TOML
 - [x] TOML to JSON
 - [x] QR Code Scanner
-- [ ] QR Code Generator
+- [x] QR Code Generator
