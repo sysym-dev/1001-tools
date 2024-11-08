@@ -11,7 +11,7 @@ function onDownload() {
   const a = document.createElement('a');
 
   a.setAttribute('href', qrcanvas.value.$el.src);
-  a.setAttribute('download', 'qrcode');
+  a.setAttribute('download', `${value.value}.png`);
 
   a.click();
 }
