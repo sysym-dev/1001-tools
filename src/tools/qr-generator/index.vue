@@ -8,9 +8,10 @@ const value = ref();
 const qrcanvas = ref();
 
 function onDownload() {
+  const url = qrcanvas.value.$el.toDataURL();
   const a = document.createElement('a');
 
-  a.setAttribute('href', qrcanvas.value.$el.src);
+  a.setAttribute('href', url);
   a.setAttribute('download', `${value.value}.png`);
 
   a.click();
@@ -37,9 +38,8 @@ function onDownload() {
         <div :class="{ 'opacity-25': !value }">
           <vue-qrcode
             ref="qrcanvas"
-            tag="img"
             :value="value || 'example'"
-            :options="{ margin: 0, width: 150, tag: 'img' }"
+            :options="{ margin: 0, width: 150, tag: 'canvas' }"
           />
         </div>
         <base-button v-if="value" color="sky" @click="onDownload"
