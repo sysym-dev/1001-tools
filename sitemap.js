@@ -11,6 +11,7 @@ async function generateSitemap() {
     '/json-to-toml',
     '/toml-to-json',
     '/qr-scanner',
+    '/qr-generator',
   ];
 
   const list = routes
