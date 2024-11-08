@@ -70,9 +70,8 @@ function onClear() {
             :options="{ margin: 0, width: 150, tag: 'canvas' }"
           />
         </div>
-        <div class="flex gap-2">
+        <div v-if="value" class="flex gap-2">
           <base-button
-            v-if="value"
             color="sky"
             v-tooltip="{
               content: 'Copied!',
@@ -83,9 +82,7 @@ function onClear() {
             @click="onCopy"
             >Copy</base-button
           >
-          <base-button v-if="value" color="sky" @click="onDownload"
-            >Download</base-button
-          >
+          <base-button color="sky" @click="onDownload">Download</base-button>
         </div>
       </base-input>
     </div>
