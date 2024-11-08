@@ -6,6 +6,7 @@ import { ref } from 'vue';
 
 const value = ref();
 const qrcanvas = ref();
+const copied = ref(false);
 
 function onDownload() {
   const url = qrcanvas.value.$el.toDataURL();
@@ -15,6 +16,21 @@ function onDownload() {
   a.setAttribute('download', `${value.value}.png`);
 
   a.click();
+}
+function onCopy() {
+  qrcanvas.value.$el.toBlob(async (blob) => {
+    const item = new ClipboardItem({
+      [blob.type]: blob,
+    });
+
+    await navigator.clipboard.write([item]);
+
+    copied.value = true;
+
+    setTimeout(() => {
+      copied.value = false;
+    }, 1000);
+  });
 }
 </script>
 
@@ -42,9 +58,23 @@ function onDownload() {
             :options="{ margin: 0, width: 150, tag: 'canvas' }"
           />
         </div>
-        <base-button v-if="value" color="sky" @click="onDownload"
-          >Download</base-button
-        >
+        <div class="flex gap-2">
+          <base-button
+            v-if="value"
+            color="sky"
+            v-tooltip="{
+              content: 'Copied!',
+              triggers: [],
+              shown: copied,
+              delay: { show: 0, hide: 0 },
+            }"
+            @click="onCopy"
+            >Copy</base-button
+          >
+          <base-button v-if="value" color="sky" @click="onDownload"
+            >Download</base-button
+          >
+        </div>
       </base-input>
     </div>
   </div>
