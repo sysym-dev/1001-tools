@@ -32,12 +32,24 @@ function onCopy() {
     }, 1000);
   });
 }
+function onClear() {
+  value.value = null;
+}
 </script>
 
 <template>
   <div class="grid md:grid-cols-2 gap-8">
     <div class="space-y-2">
-      <p class="font-semibold">QR Content</p>
+      <div class="flex items-center justify-between">
+        <p class="font-semibold">QR Content</p>
+        <button
+          v-if="value"
+          class="text-red-600 font-semibold"
+          @click="onClear"
+        >
+          Clear
+        </button>
+      </div>
       <base-input
         textarea
         class="min-h-[300px]"
@@ -46,7 +58,7 @@ function onCopy() {
       />
     </div>
     <div class="space-y-2">
-      <p class="font-semibold">QR Result</p>
+      <p class="font-semibold">QR Generated</p>
       <base-input
         box
         class="flex flex-col items-center justify-center min-h-[300px] gap-y-6"
