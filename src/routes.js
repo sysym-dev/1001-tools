@@ -60,6 +60,19 @@ export const routes = [
     component: () => import('./pages/qr.vue'),
   },
   {
+    path: '/date-and-time',
+    name: 'date-and-time',
+    meta: {
+      title: 'Free Online Tools for QR',
+      description:
+        'Explore our collection of QR tools to generate, scan, and customize QR Codes. Access free and easy-to-use tools designed for all your QR code needs.',
+      keywords: 'qr tools, qr code generator, qr scanner, create qr code',
+      breadcrumbTitle: 'QR',
+      withBreadcrumbs: true,
+    },
+    component: () => import('./pages/date-and-time.vue'),
+  },
+  {
     path: '/json-to-toml',
     name: 'json-to-toml',
     meta: {
@@ -120,5 +133,21 @@ export const routes = [
       withBreadcrumbs: true,
     },
     component: () => import('./tools/qr-generator/index.vue'),
+  },
+  {
+    path: '/timer',
+    name: 'timer',
+    meta: {
+      title: 'Timer',
+      description:
+        'Generate QR codes instantly with our online QR code generator. Customize and download your QR code in just a few clicks—no additional software required!',
+      keywords:
+        'qr code generator, online qr code generator, create qr code, qr code maker',
+      breadcrumbs: [{ id: 'date-and-time', name: 'Date and Time' }],
+      breadcrumbTitle: 'Timer',
+      headingTitle: 'Timer',
+      withBreadcrumbs: true,
+    },
+    component: () => import('./tools/timer/index.vue'),
   },
 ];
