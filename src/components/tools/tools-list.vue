@@ -3,6 +3,7 @@ import {
   ArrowsLeftRight as ConvertIcon,
   Scan as ScanIcon,
   Barcode as GenerateQrIcon,
+  Clock as CountdownIcon,
 } from '@vicons/tabler';
 import { computed } from 'vue';
 
@@ -38,6 +39,12 @@ const menus = [
       { id: 'qr-scanner', name: 'QR Code Scanner', icon: ScanIcon },
       { id: 'qr-generator', name: 'QR Code Generator', icon: GenerateQrIcon },
     ],
+  },
+  {
+    id: 'datetime',
+    name: 'Date and Time',
+    childrenNames: ['Timer'],
+    children: [{ id: 'timer', name: 'Timer', icon: CountdownIcon }],
   },
 ];
 
