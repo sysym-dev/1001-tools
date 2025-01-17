@@ -12,6 +12,7 @@ const diff = ref(null);
 const timerInterval = ref();
 
 const started = computed(() => diff.value > 0);
+const running = computed(() => timerInterval.value);
 const timerLabel = computed(() => {
   const labels = {
     hour: 'Jam',
@@ -53,12 +54,7 @@ const timerDisplay = computed(() => {
 function pad(num) {
   return `${num}`.padStart(2, '0');
 }
-function onStart() {
-  const totalSecond = timer.hour * 3600 + timer.minute * 60 + timer.second;
-  const finishAt = totalSecond * 1000 - 1;
-
-  diff.value = finishAt;
-
+function startTimer() {
   timerInterval.value = setInterval(() => {
     diff.value -= 100;
 
@@ -66,6 +62,22 @@ function onStart() {
       clearInterval(timerInterval.value);
     }
   }, 100);
+}
+function onStart() {
+  const totalSecond = timer.hour * 3600 + timer.minute * 60 + timer.second;
+  const finishAt = totalSecond * 1000 - 1;
+
+  diff.value = finishAt;
+
+  startTimer();
+}
+function onPause() {
+  clearInterval(timerInterval.value);
+
+  timerInterval.value = null;
+}
+function onResume() {
+  startTimer();
 }
 </script>
 
@@ -83,6 +95,12 @@ function onStart() {
       <base-button v-if="!started" color="sky" @click="onStart"
         >Start</base-button
       >
+      <template v-else>
+        <base-button v-if="running" color="sky" @click="onPause"
+          >Pause</base-button
+        >
+        <base-button v-else color="sky" @click="onResume">Resume</base-button>
+      </template>
     </div>
   </base-input>
 </template>
