@@ -2,6 +2,11 @@
 import BaseInput from 'src/components/base/base-input.vue';
 import BaseButton from 'src/components/base/base-button.vue';
 import { computed, reactive, ref } from 'vue';
+import {
+  PlayerPlay as PlayIcon,
+  PlayerPause as PauseIcon,
+  RotateClockwise as ResetIcon,
+} from '@vicons/tabler';
 
 const timer = reactive({
   hour: 0,
@@ -79,7 +84,7 @@ function onPause() {
 function onResume() {
   startTimer();
 }
-function onReset() {
+function onRestart() {
   diff.value = null;
 }
 </script>
@@ -95,16 +100,24 @@ function onReset() {
       <p>{{ timerDisplay.second }}</p>
     </div>
     <div class="flex gap-2">
-      <base-button v-if="!started" color="sky" @click="onStart"
-        >Start</base-button
-      >
+      <base-button v-if="!started" color="sky" @click="onStart">
+        <play-icon class="w-4 h-4" />
+        <p>Start</p>
+      </base-button>
       <template v-else>
-        <base-button v-if="running" color="sky" @click="onPause"
-          >Pause</base-button
-        >
+        <base-button v-if="running" color="sky" @click="onPause">
+          <pause-icon class="w-4 h-4" />
+          <p>Pause</p>
+        </base-button>
         <template v-else>
-          <base-button color="sky" @click="onResume">Resume</base-button>
-          <base-button @click="onReset">Reset</base-button>
+          <base-button color="sky" @click="onResume">
+            <play-icon class="w-4 h-4" />
+            <p>Resume</p>
+          </base-button>
+          <base-button @click="onRestart">
+            <reset-icon class="w-4 h-4" />
+            <p>Restart</p>
+          </base-button>
         </template>
       </template>
     </div>
