@@ -79,6 +79,9 @@ function onPause() {
 function onResume() {
   startTimer();
 }
+function onReset() {
+  diff.value = null;
+}
 </script>
 
 <template>
@@ -99,7 +102,10 @@ function onResume() {
         <base-button v-if="running" color="sky" @click="onPause"
           >Pause</base-button
         >
-        <base-button v-else color="sky" @click="onResume">Resume</base-button>
+        <template v-else>
+          <base-button color="sky" @click="onResume">Resume</base-button>
+          <base-button @click="onReset">Reset</base-button>
+        </template>
       </template>
     </div>
   </base-input>
