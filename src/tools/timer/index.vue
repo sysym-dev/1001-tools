@@ -5,13 +5,25 @@ import { computed, reactive, ref } from 'vue';
 
 const timer = reactive({
   hour: 0,
-  minute: 0,
+  minute: 10,
   second: 10,
 });
 const diff = ref(null);
 const timerInterval = ref();
 
 const started = computed(() => diff.value > 0);
+const timerLabel = computed(() => {
+  const labels = {
+    hour: 'Jam',
+    minute: 'Menit',
+    second: 'Detik',
+  };
+
+  return Object.entries(timer)
+    .filter(([key, value]) => value > 0)
+    .map(([key, value]) => `${value} ${labels[key]}`)
+    .join(' ');
+});
 const timerDisplay = computed(() => {
   if (diff.value === null) {
     return {
@@ -59,6 +71,7 @@ function onStart() {
 
 <template>
   <base-input box class="flex flex-col items-center justify-center gap-4">
+    <p>{{ timerLabel }}</p>
     <div class="flex justify-center items-center font-bold text-5xl">
       <p>{{ timerDisplay.hour }}</p>
       <p>:</p>
