@@ -23,7 +23,7 @@ const color = computed(() => {
   <component
     :is="tag"
     :class="[
-      'cursor-pointer text-center px-3 py-2 border font-semibold text-sm rounded-lg',
+      'cursor-pointer text-center px-3 py-2 border font-semibold text-sm rounded-lg flex items-center justify-center gap-2',
       color,
     ]"
   >
