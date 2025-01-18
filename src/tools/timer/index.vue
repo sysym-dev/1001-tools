@@ -16,6 +16,8 @@ const timer = reactive({
 });
 const diff = ref(null);
 const timerInterval = ref();
+const nextIntervalAt = ref(null);
+const pausedAt = ref(null);
 const editingTimer = ref(false);
 const editingTimerInput = ref();
 const editingTimerValue = ref('');
@@ -23,7 +25,7 @@ const editingTimerMask = ref();
 
 const started = computed(() => diff.value > 0);
 const onceStarted = computed(() => diff.value !== null);
-const running = computed(() => timerInterval.value);
+const running = computed(() => timerInterval.value || pausedAt.value === null);
 const timerPlaceholder = computed(
   () => `${pad(timer.hour)}:${pad(timer.minute)}:${pad(timer.second)}`,
 );
@@ -67,12 +69,16 @@ function pad(num) {
   return `${num}`.padStart(2, '0');
 }
 function startTimer() {
+  nextIntervalAt.value = Date.now() + 1000;
+
   timerInterval.value = setInterval(() => {
     diff.value--;
 
     if (diff.value < 1) {
       clearInterval(timerInterval.value);
     }
+
+    nextIntervalAt.value = Date.now() + 1000;
   }, 1000);
 }
 function onStart() {
@@ -87,10 +93,22 @@ function onStart() {
 function onPause() {
   clearInterval(timerInterval.value);
 
+  pausedAt.value = Date.now();
+
   timerInterval.value = null;
 }
 function onResume() {
-  startTimer();
+  const timeout = nextIntervalAt.value - pausedAt.value;
+
+  pausedAt.value = null;
+
+  setTimeout(() => {
+    diff.value--;
+
+    if (diff.value > 0) {
+      startTimer();
+    }
+  }, timeout);
 }
 function onReset() {
   diff.value = null;
