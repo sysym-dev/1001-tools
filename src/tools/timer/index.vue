@@ -80,7 +80,7 @@ function startTimer() {
 function onStart() {
   if (!editingTimer.value) {
     const totalSecond = timer.hour * 3600 + timer.minute * 60 + timer.second;
-    const finishAt = totalSecond * 1000 - 1;
+    const finishAt = totalSecond * 1000 + 1000 - 1;
 
     diff.value = finishAt;
 
