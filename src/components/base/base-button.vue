@@ -10,6 +10,7 @@ const props = defineProps({
     type: String,
     default: 'gray',
   },
+  disabled: Boolean,
 });
 const color = computed(() => {
   return {
@@ -22,8 +23,9 @@ const color = computed(() => {
 <template>
   <component
     :is="tag"
+    :disabled="disabled"
     :class="[
-      'cursor-pointer text-center px-3 py-2 border font-semibold text-sm rounded-lg flex items-center justify-center gap-2',
+      'disabled:opacity-50 cursor-pointer text-center px-3 py-2 border font-semibold text-sm rounded-lg flex items-center justify-center gap-2',
       color,
     ]"
   >

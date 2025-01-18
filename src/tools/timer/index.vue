@@ -1,23 +1,32 @@
 <script setup>
 import BaseInput from 'src/components/base/base-input.vue';
 import BaseButton from 'src/components/base/base-button.vue';
-import { computed, reactive, ref } from 'vue';
+import { computed, nextTick, reactive, ref } from 'vue';
 import {
   PlayerPlay as PlayIcon,
   PlayerPause as PauseIcon,
   RotateClockwise as ResetIcon,
 } from '@vicons/tabler';
+import IMask from 'imask';
 
 const timer = reactive({
   hour: 0,
-  minute: 10,
+  minute: 0,
   second: 10,
 });
 const diff = ref(null);
 const timerInterval = ref();
+const editingTimer = ref(false);
+const editingTimerInput = ref();
+const editingTimerValue = ref('');
+const editingTimerMask = ref();
 
 const started = computed(() => diff.value > 0);
+const onceStarted = computed(() => diff.value !== null);
 const running = computed(() => timerInterval.value);
+const timerPlaceholder = computed(
+  () => `${pad(timer.hour)}:${pad(timer.minute)}:${pad(timer.second)}`,
+);
 const timerLabel = computed(() => {
   const labels = {
     hour: 'Jam',
@@ -69,12 +78,14 @@ function startTimer() {
   }, 100);
 }
 function onStart() {
-  const totalSecond = timer.hour * 3600 + timer.minute * 60 + timer.second;
-  const finishAt = totalSecond * 1000 - 1;
+  if (!editingTimer.value) {
+    const totalSecond = timer.hour * 3600 + timer.minute * 60 + timer.second;
+    const finishAt = totalSecond * 1000 - 1;
 
-  diff.value = finishAt;
+    diff.value = finishAt;
 
-  startTimer();
+    startTimer();
+  }
 }
 function onPause() {
   clearInterval(timerInterval.value);
@@ -87,22 +98,89 @@ function onResume() {
 function onRestart() {
   diff.value = null;
 }
+async function onEditTimer() {
+  if (!started.value) {
+    editingTimer.value = true;
+    editingTimerValue.value = null;
+
+    await nextTick();
+
+    editingTimerMask.value = IMask(editingTimerInput.value, {
+      mask: 'hh:mm:ss',
+      blocks: {
+        hh: {
+          mask: IMask.MaskedRange,
+          from: 0,
+          to: 99,
+          maxLength: 2,
+        },
+        mm: {
+          mask: IMask.MaskedRange,
+          from: 0,
+          to: 59,
+          maxLength: 2,
+        },
+        ss: {
+          mask: IMask.MaskedRange,
+          from: 0,
+          to: 59,
+          maxLength: 2,
+        },
+      },
+      lazy: false,
+      placeholderChar: '0',
+    });
+
+    editingTimerInput.value.focus();
+  }
+}
+async function onChangeTimer() {
+  editingTimer.value = false;
+
+  const value = editingTimerMask.value.value;
+
+  if (value !== '00:00:00') {
+    const [h, m, s] = value.split(':');
+
+    timer.hour = parseInt(h);
+    timer.minute = parseInt(m);
+    timer.second = parseInt(s);
+  }
+}
 </script>
 
 <template>
   <base-input box class="flex flex-col items-center justify-center gap-4">
     <p>{{ timerLabel }}</p>
-    <div class="flex justify-center items-center font-bold text-5xl">
-      <p>{{ timerDisplay.hour }}</p>
-      <p>:</p>
-      <p>{{ timerDisplay.minute }}</p>
-      <p>:</p>
-      <p>{{ timerDisplay.second }}</p>
+    <div class="relative">
+      <div
+        :class="[
+          'flex justify-center items-center font-bold text-5xl',
+          started ? '' : 'cursor-pointer',
+          editingTimer ? 'opacity-0' : '',
+        ]"
+        v-tooltip="{ content: 'Click To Edit', disabled: started }"
+        @click="onEditTimer"
+      >
+        <p>{{ timerDisplay.hour }}</p>
+        <p>:</p>
+        <p>{{ timerDisplay.minute }}</p>
+        <p>:</p>
+        <p>{{ timerDisplay.second }}</p>
+      </div>
+      <input
+        v-if="editingTimer"
+        ref="editingTimerInput"
+        class="absolute -top-[7px] left-0 bg-transparent leading-none m-0 border-0 p-0 text-5xl font-bold w-full placeholder-gray-300 focus:ring-0"
+        :placeholder="timerPlaceholder"
+        @blur="onChangeTimer"
+        v-model="editingTimerValue"
+      />
     </div>
     <div class="flex gap-2">
       <base-button v-if="!started" color="sky" @click="onStart">
         <play-icon class="w-4 h-4" />
-        <p>Start</p>
+        <p>{{ onceStarted ? 'Start Again' : 'Start' }}</p>
       </base-button>
       <template v-else>
         <base-button v-if="running" color="sky" @click="onPause">
