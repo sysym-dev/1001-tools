@@ -1,4 +1,5 @@
 <script setup>
+import Alarm from 'src/assets/sfx/alarm.mp3';
 import BaseInput from 'src/components/base/base-input.vue';
 import BaseButton from 'src/components/base/base-button.vue';
 import { computed, nextTick, reactive, ref } from 'vue';
@@ -24,7 +25,7 @@ const editingTimerValue = ref('');
 const editingTimerMask = ref();
 
 const started = computed(() => diff.value > 0);
-const onceStarted = computed(() => diff.value !== null);
+const finished = computed(() => diff.value !== null && diff.value < 1);
 const running = computed(() => timerInterval.value || pausedAt.value === null);
 const timerPlaceholder = computed(
   () => `${pad(timer.hour)}:${pad(timer.minute)}:${pad(timer.second)}`,
@@ -68,6 +69,9 @@ const timerDisplay = computed(() => {
 function pad(num) {
   return `${num}`.padStart(2, '0');
 }
+function notifyFinish() {
+  new Audio(Alarm).play();
+}
 function startTimer() {
   nextIntervalAt.value = Date.now() + 1000;
 
@@ -76,6 +80,8 @@ function startTimer() {
 
     if (diff.value < 1) {
       clearInterval(timerInterval.value);
+
+      notifyFinish();
     }
 
     nextIntervalAt.value = Date.now() + 1000;
@@ -173,6 +179,7 @@ async function onChangeTimer() {
           'flex justify-center items-center font-bold text-5xl',
           started ? '' : 'cursor-pointer',
           editingTimer ? 'opacity-0' : '',
+          finished ? 'text-red-600' : '',
         ]"
         v-tooltip="{ content: 'Click To Edit', disabled: started }"
         @click="onEditTimer"
@@ -194,7 +201,7 @@ async function onChangeTimer() {
     </div>
     <div class="flex gap-2">
       <template v-if="!started">
-        <base-button v-if="onceStarted" color="sky" @click="onReset">
+        <base-button v-if="finished" color="red" @click="onReset">
           <reset-icon class="w-4 h-4" />
           <p>Restart</p>
         </base-button>
