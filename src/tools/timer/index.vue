@@ -57,11 +57,9 @@ const timerDisplay = computed(() => {
   }
 
   return {
-    hour: pad(
-      Math.floor((diff.value % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
-    ),
-    minute: pad(Math.floor((diff.value % (1000 * 60 * 60)) / (1000 * 60))),
-    second: pad(Math.floor((diff.value % (1000 * 60)) / 1000)),
+    hour: pad(Math.floor(diff.value / 3600).toString()),
+    minute: pad(Math.floor((diff.value % 3600) / 60).toString()),
+    second: pad((diff.value % 60).toString()),
   };
 });
 
@@ -70,17 +68,16 @@ function pad(num) {
 }
 function startTimer() {
   timerInterval.value = setInterval(() => {
-    diff.value -= 100;
+    diff.value--;
 
     if (diff.value < 1) {
       clearInterval(timerInterval.value);
     }
-  }, 100);
+  }, 1000);
 }
 function onStart() {
   if (!editingTimer.value) {
-    const totalSecond = timer.hour * 3600 + timer.minute * 60 + timer.second;
-    const finishAt = totalSecond * 1000 + 1000 - 1;
+    const finishAt = timer.hour * 3600 + timer.minute * 60 + timer.second;
 
     diff.value = finishAt;
 
@@ -95,7 +92,7 @@ function onPause() {
 function onResume() {
   startTimer();
 }
-function onRestart() {
+function onReset() {
   diff.value = null;
 }
 async function onEditTimer() {
@@ -178,10 +175,16 @@ async function onChangeTimer() {
       />
     </div>
     <div class="flex gap-2">
-      <base-button v-if="!started" color="sky" @click="onStart">
-        <play-icon class="w-4 h-4" />
-        <p>{{ onceStarted ? 'Start Again' : 'Start' }}</p>
-      </base-button>
+      <template v-if="!started">
+        <base-button v-if="onceStarted" color="sky" @click="onReset">
+          <reset-icon class="w-4 h-4" />
+          <p>Restart</p>
+        </base-button>
+        <base-button v-else color="sky" @click="onStart">
+          <play-icon class="w-4 h-4" />
+          <p>Start</p>
+        </base-button>
+      </template>
       <template v-else>
         <base-button v-if="running" color="sky" @click="onPause">
           <pause-icon class="w-4 h-4" />
@@ -192,9 +195,9 @@ async function onChangeTimer() {
             <play-icon class="w-4 h-4" />
             <p>Resume</p>
           </base-button>
-          <base-button @click="onRestart">
+          <base-button @click="onReset">
             <reset-icon class="w-4 h-4" />
-            <p>Restart</p>
+            <p>Reset</p>
           </base-button>
         </template>
       </template>
