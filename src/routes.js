@@ -63,11 +63,12 @@ export const routes = [
     path: '/date-and-time',
     name: 'date-and-time',
     meta: {
-      title: 'Free Online Tools for QR',
+      title: 'Date and Time Tools',
       description:
-        'Explore our collection of QR tools to generate, scan, and customize QR Codes. Access free and easy-to-use tools designed for all your QR code needs.',
-      keywords: 'qr tools, qr code generator, qr scanner, create qr code',
-      breadcrumbTitle: 'QR',
+        'Access free online tools to manage date and time efficiently. Use our tools for scheduling, date calculations, countdowns, and more.',
+      keywords:
+        'date tools, time tools, online date calculator, time management, schedule planner',
+      breadcrumbTitle: 'Date and Time',
       withBreadcrumbs: true,
     },
     component: () => import('./pages/date-and-time.vue'),
