@@ -3,8 +3,11 @@
 <url><loc>https://sysym.dev/1001-tools/json</loc></url>
 <url><loc>https://sysym.dev/1001-tools/toml</loc></url>
 <url><loc>https://sysym.dev/1001-tools/qr</loc></url>
+<url><loc>https://sysym.dev/1001-tools/date</loc></url>
+<url><loc>https://sysym.dev/1001-tools/date-and-time</loc></url>
 <url><loc>https://sysym.dev/1001-tools/json-to-toml</loc></url>
 <url><loc>https://sysym.dev/1001-tools/toml-to-json</loc></url>
 <url><loc>https://sysym.dev/1001-tools/qr-scanner</loc></url>
 <url><loc>https://sysym.dev/1001-tools/qr-generator</loc></url>
+<url><loc>https://sysym.dev/1001-tools/timer</loc></url>
 </urlset>
