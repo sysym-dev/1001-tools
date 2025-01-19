@@ -41,7 +41,7 @@ const menus = [
     ],
   },
   {
-    id: 'datetime',
+    id: 'date-and-time',
     name: 'Date and Time',
     childrenNames: ['Timer'],
     children: [{ id: 'timer', name: 'Timer', icon: CountdownIcon }],
