@@ -140,9 +140,9 @@ export const routes = [
     meta: {
       title: 'Timer',
       description:
-        'Generate QR codes instantly with our online QR code generator. Customize and download your QR code in just a few clicks—no additional software required!',
+        'Use our online timer to easily count down time for any purpose. Perfect for daily activities, workouts, cooking, and more.',
       keywords:
-        'qr code generator, online qr code generator, create qr code, qr code maker',
+        'online timer, countdown timer, stopwatch, time tracker, time management tool',
       breadcrumbs: [{ id: 'date-and-time', name: 'Date and Time' }],
       breadcrumbTitle: 'Timer',
       headingTitle: 'Timer',
