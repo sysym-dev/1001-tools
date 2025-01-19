@@ -8,10 +8,13 @@ async function generateSitemap() {
     '/json',
     '/toml',
     '/qr',
+    '/date',
+    '/date-and-time',
     '/json-to-toml',
     '/toml-to-json',
     '/qr-scanner',
     '/qr-generator',
+    '/timer',
   ];
 
   const list = routes

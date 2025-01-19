@@ -60,6 +60,20 @@ export const routes = [
     component: () => import('./pages/qr.vue'),
   },
   {
+    path: '/date-and-time',
+    name: 'date-and-time',
+    meta: {
+      title: 'Date and Time Tools',
+      description:
+        'Access free online tools to manage date and time efficiently. Use our tools for scheduling, date calculations, countdowns, and more.',
+      keywords:
+        'date tools, time tools, online date calculator, time management, schedule planner',
+      breadcrumbTitle: 'Date and Time',
+      withBreadcrumbs: true,
+    },
+    component: () => import('./pages/date-and-time.vue'),
+  },
+  {
     path: '/json-to-toml',
     name: 'json-to-toml',
     meta: {
@@ -120,5 +134,21 @@ export const routes = [
       withBreadcrumbs: true,
     },
     component: () => import('./tools/qr-generator/index.vue'),
+  },
+  {
+    path: '/timer',
+    name: 'timer',
+    meta: {
+      title: 'Timer',
+      description:
+        'Use our online timer to easily count down time for any purpose. Perfect for daily activities, workouts, cooking, and more.',
+      keywords:
+        'online timer, countdown timer, stopwatch, time tracker, time management tool',
+      breadcrumbs: [{ id: 'date-and-time', name: 'Date and Time' }],
+      breadcrumbTitle: 'Timer',
+      headingTitle: 'Timer',
+      withBreadcrumbs: true,
+    },
+    component: () => import('./tools/timer/index.vue'),
   },
 ];

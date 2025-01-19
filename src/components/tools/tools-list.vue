@@ -3,6 +3,7 @@ import {
   ArrowsLeftRight as ConvertIcon,
   Scan as ScanIcon,
   Barcode as GenerateQrIcon,
+  Clock as CountdownIcon,
 } from '@vicons/tabler';
 import { computed } from 'vue';
 
@@ -38,6 +39,12 @@ const menus = [
       { id: 'qr-scanner', name: 'QR Code Scanner', icon: ScanIcon },
       { id: 'qr-generator', name: 'QR Code Generator', icon: GenerateQrIcon },
     ],
+  },
+  {
+    id: 'date-and-time',
+    name: 'Date and Time',
+    childrenNames: ['Timer'],
+    children: [{ id: 'timer', name: 'Timer', icon: CountdownIcon }],
   },
 ];
 
@@ -86,7 +93,7 @@ const filteredMenus = computed(() => {
     </template>
     <template v-else>
       <p v-if="!filteredMenus.length" class="text-gray-500">No Tools Found</p>
-      <div v-else class="space-y-6">
+      <div v-else class="grid gap-6 sm:grid-cols-2 md:grid-cols-3">
         <template v-for="menu in filteredMenus" :key="menu.id">
           <div class="space-y-2">
             <p class="text-lg font-bold">{{ menu.name }}</p>
