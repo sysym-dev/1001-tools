@@ -93,7 +93,7 @@ const filteredMenus = computed(() => {
     </template>
     <template v-else>
       <p v-if="!filteredMenus.length" class="text-gray-500">No Tools Found</p>
-      <div v-else class="space-y-6">
+      <div v-else class="grid gap-6 sm:grid-cols-2 md:grid-cols-3">
         <template v-for="menu in filteredMenus" :key="menu.id">
           <div class="space-y-2">
             <p class="text-lg font-bold">{{ menu.name }}</p>
