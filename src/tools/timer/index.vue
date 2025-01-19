@@ -19,6 +19,7 @@ const diff = ref(null);
 const timerInterval = ref();
 const nextIntervalAt = ref(null);
 const pausedAt = ref(null);
+const pausedCause = ref(null);
 const editingTimer = ref(false);
 const editingTimerInput = ref();
 const editingTimerValue = ref('');
@@ -85,6 +86,25 @@ function startTimer() {
     nextIntervalAt.value = Date.now() + 1000;
   }, 1000);
 }
+function pauseTimer(cause) {
+  clearInterval(timerInterval.value);
+
+  pausedAt.value = Date.now();
+  pausedCause.value = cause;
+
+  timerInterval.value = null;
+}
+function resumeTimer(timeout) {
+  pausedAt.value = null;
+
+  setTimeout(() => {
+    diff.value--;
+
+    if (diff.value > 0) {
+      startTimer();
+    }
+  }, timeout);
+}
 function setTimer() {
   const timerFromStorage = localStorage.getItem('timer');
 
@@ -112,24 +132,12 @@ function onStart() {
   }
 }
 function onPause() {
-  clearInterval(timerInterval.value);
-
-  pausedAt.value = Date.now();
-
-  timerInterval.value = null;
+  pauseTimer('button');
 }
 function onResume() {
   const timeout = nextIntervalAt.value - pausedAt.value;
 
-  pausedAt.value = null;
-
-  setTimeout(() => {
-    diff.value--;
-
-    if (diff.value > 0) {
-      startTimer();
-    }
-  }, timeout);
+  resumeTimer(timeout);
 }
 function onReset() {
   diff.value = null;
@@ -193,6 +201,22 @@ async function onChangeTimer() {
 }
 
 setTimer();
+
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) {
+    if (running.value) {
+      pauseTimer('hidden');
+    }
+  } else {
+    if (started.value && pausedAt.value && pausedCause.value === 'hidden') {
+      const elapsed = Date.now() - pausedAt.value;
+
+      diff.value -= Math.floor(elapsed / 1000);
+
+      resumeTimer(elapsed % 1000);
+    }
+  }
+});
 </script>
 
 <template>
