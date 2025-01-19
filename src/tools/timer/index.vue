@@ -23,6 +23,7 @@ const editingTimer = ref(false);
 const editingTimerInput = ref();
 const editingTimerValue = ref('');
 const editingTimerMask = ref();
+const notifyFinishAudio = ref(new Audio(Alarm));
 
 const started = computed(() => diff.value > 0);
 const finished = computed(() => diff.value !== null && diff.value < 1);
@@ -69,9 +70,6 @@ const timerDisplay = computed(() => {
 function pad(num) {
   return `${num}`.padStart(2, '0');
 }
-function notifyFinish() {
-  new Audio(Alarm).play();
-}
 function startTimer() {
   nextIntervalAt.value = Date.now() + 1000;
 
@@ -81,7 +79,7 @@ function startTimer() {
     if (diff.value < 1) {
       clearInterval(timerInterval.value);
 
-      notifyFinish();
+      notifyFinishAudio.value.play();
     }
 
     nextIntervalAt.value = Date.now() + 1000;
@@ -117,6 +115,12 @@ function onResume() {
   }, timeout);
 }
 function onReset() {
+  diff.value = null;
+}
+function onRestart() {
+  notifyFinishAudio.value.pause();
+  notifyFinishAudio.value.currentTime = 0;
+
   diff.value = null;
 }
 async function onEditTimer() {
@@ -201,7 +205,7 @@ async function onChangeTimer() {
     </div>
     <div class="flex gap-2">
       <template v-if="!started">
-        <base-button v-if="finished" color="red" @click="onReset">
+        <base-button v-if="finished" color="red" @click="onRestart">
           <reset-icon class="w-4 h-4" />
           <p>Restart</p>
         </base-button>
