@@ -8,3 +8,5 @@ Todo:
 - [x] TOML to JSON
 - [x] QR Code Scanner
 - [x] QR Code Generator
+- [x] Timer
+- [ ] Stopwatch
