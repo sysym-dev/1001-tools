@@ -85,6 +85,23 @@ function startTimer() {
     nextIntervalAt.value = Date.now() + 1000;
   }, 1000);
 }
+function setTimer() {
+  const timerFromStorage = localStorage.getItem('timer');
+
+  if (timerFromStorage) {
+    const timerArray = timerFromStorage
+      .split(':')
+      .filter((digit) => !isNaN(digit));
+
+    if (timerArray.length === 3) {
+      const [h, m, s] = timerFromStorage.split(':');
+
+      timer.hour = parseInt(h);
+      timer.minute = parseInt(m);
+      timer.second = parseInt(s);
+    }
+  }
+}
 function onStart() {
   if (!editingTimer.value) {
     const finishAt = timer.hour * 3600 + timer.minute * 60 + timer.second;
@@ -170,8 +187,12 @@ async function onChangeTimer() {
     timer.hour = parseInt(h);
     timer.minute = parseInt(m);
     timer.second = parseInt(s);
+
+    localStorage.setItem('timer', value);
   }
 }
+
+setTimer();
 </script>
 
 <template>
